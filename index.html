@@ -83,6 +83,9 @@ nav.steps button.active .num{background:var(--green);color:#fff;border-color:var
 nav.steps button.complete .num{background:var(--gold);color:#3a2a00;border-color:var(--gold)}
 nav.steps .lbl{flex:1;font-size:.94rem;line-height:1.25}
 nav.steps .prog{font-size:.75rem;color:var(--muted);white-space:nowrap}
+nav.steps button.later{opacity:.45}
+nav.steps button.later:hover{opacity:.8}
+nav.steps button.later .prog{visibility:hidden}
 main{min-width:0}
 section.step{display:none}
 section.step.active{display:block;animation:fade .25s ease}
@@ -260,7 +263,7 @@ footer button{background:none;border:0;color:var(--muted);text-decoration:underl
     </a>
     <span class="spacer"></span>
     <span class="status" id="status" title="Κατάσταση Python"><span class="dot"></span><span class="txt">Η Python ξυπνάει…</span></span>
-    <span class="stars" title="Αστέρια που κέρδισες"><span class="st">★</span><span id="starCount">0</span>/<span id="starTotal">0</span></span>
+    <span class="stars" title="Αστέρια που κέρδισες"><span class="st">★</span><span id="starCount">0</span><span id="starTotal" hidden></span></span>
   </div>
 </header>
 
@@ -1900,7 +1903,7 @@ function refreshProgress(){
     const ids = taskIds(sec);
     const b = navBtns[i]; if (!b) return;
     const d = ids.filter(x => done.has(x)).length;
-    $('.prog', b).textContent = ids.length ? `${d}/${ids.length} ★` : '';
+    $('.prog', b).textContent = d ? `${d} ★` : '';
     b.classList.toggle('complete', ids.length > 0 && d === ids.length);
   });
   renderDiploma();
@@ -2372,6 +2375,10 @@ function buildNav(){
     if (n) n.addEventListener('click', () => go(i + 1));
   });
 }
+function markLater(){
+  const mx = LS.get('maxStep', 0);
+  navBtns.forEach((b, j) => b.classList.toggle('later', j > mx));
+}
 function go(i, scroll = true){
   i = Math.max(0, Math.min(sections.length - 1, i | 0));
   sections.forEach((s, j) => s.classList.toggle('active', j === i));
@@ -2379,6 +2386,8 @@ function go(i, scroll = true){
   (editorsBySection.get(sections[i]) || []).forEach(e => e.refresh());
   if (location.hash !== '#' + i) history.replaceState(null, '', '#' + i);
   LS.set('step', i);
+  if (i > LS.get('maxStep', 0)) LS.set('maxStep', i);
+  markLater();
   if (scroll) window.scrollTo({ top: 0, behavior: 'auto' });
   navBtns[i].scrollIntoView({ block: 'nearest', inline: 'nearest' });
 }
