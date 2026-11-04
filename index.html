@@ -1,0 +1,1767 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Μαθαίνω Python</title>
+<meta name="description" content="Μάθε Python βήμα-βήμα: ζωγράφισε με τη χελώνα, φτιάξε παιχνίδια και κέρδισε αστέρια. Ο κώδικας τρέχει μέσα στον browser.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='30' cy='36' rx='20' ry='15' fill='%232f9e6b'/%3E%3Ccircle cx='54' cy='30' r='7' fill='%2380c99f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Noto+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<style>
+:root{
+  --bg:#fbf7ef; --surface:#ffffff; --surface-2:#f4efe3; --ink:#1f2a24; --muted:#5b6961; --line:#e5dccb;
+  --green:#2f9e6b; --green-ink:#1c6b46; --green-soft:#e2f3e9;
+  --orange:#e9801b; --orange-ink:#9a4f08; --orange-soft:#fdeedb;
+  --blue:#3474cf; --blue-ink:#1f4f96; --blue-soft:#e5eefb;
+  --red:#d24343; --red-ink:#9b2626; --red-soft:#fbe6e6;
+  --gold:#f2b01e;
+  --code-bg:#1d2330; --code-ink:#e9e6dc; --code-gutter:#6c7486;
+  --console-bg:#f6f2e8; --console-ink:#24302a;
+  --shadow:0 1px 2px rgba(40,30,10,.06),0 4px 14px rgba(40,30,10,.06);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131719; --surface:#1b2023; --surface-2:#222a2d; --ink:#e8ece9; --muted:#9daaa3; --line:#2d363a;
+    --green:#4cc38a; --green-ink:#7fdcab; --green-soft:#183427;
+    --orange:#f29a45; --orange-ink:#ffc285; --orange-soft:#38281a;
+    --blue:#6ea2ee; --blue-ink:#a9c8f7; --blue-soft:#1a2940;
+    --red:#ee6b6b; --red-ink:#ffaaaa; --red-soft:#3a1e1e;
+    --console-bg:#101416; --console-ink:#dfe6e2;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131719; --surface:#1b2023; --surface-2:#222a2d; --ink:#e8ece9; --muted:#9daaa3; --line:#2d363a;
+  --green:#4cc38a; --green-ink:#7fdcab; --green-soft:#183427;
+  --orange:#f29a45; --orange-ink:#ffc285; --orange-soft:#38281a;
+  --blue:#6ea2ee; --blue-ink:#a9c8f7; --blue-soft:#1a2940;
+  --red:#ee6b6b; --red-ink:#ffaaaa; --red-soft:#3a1e1e;
+  --console-bg:#101416; --console-ink:#dfe6e2;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.6 "Noto Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Comfortaa,"Noto Sans",sans-serif;line-height:1.25;letter-spacing:-.01em}
+h1{font-size:2rem;margin:.2em 0 .4em}
+h2{font-size:1.45rem;margin:1.8em 0 .6em}
+h3{font-size:1.15rem;margin:1.6em 0 .5em}
+p{margin:.6em 0}
+a{color:var(--blue-ink)}
+code,kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.88em}
+:not(pre)>code{background:var(--surface-2);border:1px solid var(--line);padding:.05em .35em;border-radius:6px}
+kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:0 .35em;background:var(--surface)}
+button{font:inherit;cursor:pointer}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
+.brand{display:flex;align-items:center;gap:10px;font-family:Comfortaa,sans-serif;font-weight:700;font-size:1.15rem;color:var(--ink);text-decoration:none}
+.brand svg{width:38px;height:38px}
+.spacer{flex:1}
+.stars{display:flex;align-items:center;gap:6px;font-weight:700;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.stars .st{color:var(--gold);font-size:1.15em}
+.status{font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.status .dot{width:9px;height:9px;border-radius:50%;background:var(--orange);animation:pulse 1.2s infinite}
+.status.ready .dot{background:var(--green);animation:none}
+.status.error .dot{background:var(--red);animation:none}
+@keyframes pulse{50%{opacity:.3}}
+
+/* layout */
+.layout{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:250px minmax(0,1fr);gap:28px;padding:22px 16px 60px}
+nav.steps{position:sticky;top:76px;align-self:start;display:flex;flex-direction:column;gap:4px}
+nav.steps button{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid transparent;background:none;color:var(--ink);padding:8px 10px;border-radius:12px}
+nav.steps button:hover{background:var(--surface)}
+nav.steps button.active{background:var(--surface);border-color:var(--line);box-shadow:var(--shadow)}
+nav.steps .num{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.9rem;background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+nav.steps button.active .num{background:var(--green);color:#fff;border-color:var(--green)}
+nav.steps button.complete .num{background:var(--gold);color:#3a2a00;border-color:var(--gold)}
+nav.steps .lbl{flex:1;font-size:.94rem;line-height:1.25}
+nav.steps .prog{font-size:.75rem;color:var(--muted);white-space:nowrap}
+main{min-width:0}
+section.step{display:none}
+section.step.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.kicker{color:var(--green-ink);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
+.lead{font-size:1.1rem;color:var(--muted)}
+
+/* callouts */
+.callout{border-radius:var(--radius);padding:12px 16px;margin:16px 0;border:1px solid var(--line);background:var(--surface)}
+.callout .tag{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:1px 8px;margin-bottom:4px}
+.callout.tip{background:var(--blue-soft);border-color:transparent}.callout.tip .tag{background:var(--blue);color:#fff}
+.callout.oops{background:var(--red-soft);border-color:transparent}.callout.oops .tag{background:var(--red);color:#fff}
+.callout.fun{background:var(--orange-soft);border-color:transparent}.callout.fun .tag{background:var(--orange);color:#fff}
+.callout p:first-of-type{margin-top:2px}
+
+table.ref{width:100%;border-collapse:collapse;margin:12px 0;background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);font-size:.95rem}
+table.ref th,table.ref td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+table.ref th{background:var(--surface-2);font-size:.85rem}
+table.ref tr:last-child td{border-bottom:none}
+.table-scroll{overflow-x:auto}
+
+/* runner */
+.runner{margin:14px 0 22px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);background:var(--surface)}
+.runner .label{display:flex;align-items:center;gap:8px;padding:6px 12px;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--orange-soft);color:var(--orange-ink)}
+.editor{background:var(--code-bg)}
+.editor .CodeMirror{height:auto;background:var(--code-bg);color:var(--code-ink);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:15px;line-height:1.55;padding:6px 0}
+.editor .CodeMirror-gutters{background:var(--code-bg);border-right:1px solid #2c3445}
+.editor .CodeMirror-linenumber{color:var(--code-gutter)}
+.editor .CodeMirror-cursor{border-left:2px solid #ffd479}
+.editor .CodeMirror-selected,.editor .CodeMirror-focused .CodeMirror-selected{background:#3a4560}
+.editor .cm-keyword{color:#ff8fb1;font-weight:600}
+.editor .cm-builtin{color:#7fd1ff}
+.editor .cm-string{color:#b8e986}
+.editor .cm-number{color:#ffc66d}
+.editor .cm-comment{color:#8a93a6;font-style:italic}
+.editor .cm-def,.editor .cm-variable-2{color:#ffd479}
+.editor .cm-operator{color:#e9e6dc}
+.editor .cm-property{color:#9fe0d0}
+.editor .CodeMirror-matchingbracket{color:#fff!important;background:#46506a}
+.editor .errline{background:rgba(238,90,90,.28)}
+.editor textarea.fallback{width:100%;min-height:120px;background:var(--code-bg);color:var(--code-ink);border:0;padding:12px;font:15px/1.55 "JetBrains Mono",monospace;resize:vertical}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--surface)}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:7px 14px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--surface-2)}
+.btn.run{background:var(--green);border-color:var(--green);color:#fff}
+.btn.run:hover{filter:brightness(1.07);background:var(--green)}
+.btn.check{background:var(--gold);border-color:var(--gold);color:#3a2a00}
+.btn.check:hover{filter:brightness(1.05);background:var(--gold)}
+.btn:disabled{opacity:.6;cursor:wait}
+.bar .hint-k{margin-left:auto;font-size:.78rem;color:var(--muted)}
+.result{border-top:1px solid var(--line);padding:12px;display:grid;gap:12px}
+.result.with-turtle{grid-template-columns:minmax(0,1fr) minmax(0,400px)}
+.console{margin:0;background:var(--console-bg);color:var(--console-ink);border-radius:10px;padding:10px 12px;font:14px/1.5 "JetBrains Mono",monospace;white-space:pre-wrap;word-break:break-word;min-height:44px;max-height:320px;overflow:auto}
+.console .empty{color:var(--muted);font-style:italic;font-family:"Noto Sans",sans-serif}
+.turtle-wrap{position:relative;width:100%;max-width:400px;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#fff;justify-self:center}
+.turtle-wrap canvas{position:absolute;inset:0;width:100%;height:100%}
+.msg{border-radius:10px;padding:10px 14px;font-size:.96rem}
+.msg strong{display:block;margin-bottom:2px}
+.msg.err{background:var(--red-soft);color:var(--red-ink)}
+.msg.err .tech{display:block;margin-top:6px;font:12.5px/1.4 "JetBrains Mono",monospace;opacity:.8}
+.msg.ok{background:var(--green-soft);color:var(--green-ink)}
+.msg.no{background:var(--orange-soft);color:var(--orange-ink)}
+.msg.info{background:var(--blue-soft);color:var(--blue-ink)}
+
+/* exercises */
+.ex{margin:26px 0;border:2px solid var(--green-soft);border-radius:calc(var(--radius) + 4px);padding:16px 16px 4px;background:var(--surface)}
+.ex.done{border-color:var(--gold)}
+.ex-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ex-head .badge{background:var(--green);color:#fff;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.85rem}
+.ex.done .ex-head .badge{background:var(--gold);color:#3a2a00}
+.ex-head h3{margin:0;font-size:1.12rem}
+.ex-head .star{margin-left:auto;font-size:1.6rem;color:var(--line);transition:transform .3s}
+.ex.done .ex-head .star{color:var(--gold)}
+.ex.pop .ex-head .star{animation:pop .6s ease}
+@keyframes pop{40%{transform:scale(1.8) rotate(20deg)}}
+.ex .more{color:var(--muted);font-size:.94rem}
+details.hint{margin:8px 0}
+details.hint summary{cursor:pointer;color:var(--blue-ink);font-weight:600}
+details.hint[open]{background:var(--blue-soft);border-radius:10px;padding:8px 12px}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:36px;padding-top:18px;border-top:1px solid var(--line)}
+.pager .btn{padding:10px 18px}
+.pager .next{background:var(--green);color:#fff;border-color:var(--green);margin-left:auto}
+
+/* welcome */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:20px;align-items:center}
+.hero svg{width:100%;height:auto}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.card .ic{font-size:1.5rem}
+.card h3{margin:.3em 0 .2em;font-size:1.02rem}
+.card p{margin:0;font-size:.93rem;color:var(--muted)}
+.namebox{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin:16px 0}
+.namebox label{font-weight:700}
+.namebox input{font:inherit;padding:7px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-width:0;flex:1;max-width:260px}
+
+/* quiz */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin:12px 0}
+.q .qt{font-weight:600;margin-bottom:6px}
+.q label{display:flex;gap:8px;align-items:flex-start;padding:5px 8px;border-radius:8px;cursor:pointer}
+.q label:hover{background:var(--surface-2)}
+.q input{margin-top:.35em;accent-color:var(--green)}
+.q.right{border-color:var(--green);background:var(--green-soft)}
+.q.wrong{border-color:var(--red);background:var(--red-soft)}
+.q .why{display:none;font-size:.92rem;margin-top:6px}
+.q.right .why,.q.wrong .why{display:block}
+.diploma{margin:26px 0;border-radius:20px;padding:26px;text-align:center;background:linear-gradient(135deg,var(--green-soft),var(--orange-soft));border:2px dashed var(--gold)}
+.diploma .big{font-size:3rem;line-height:1}
+.diploma h2{margin:.3em 0}
+
+footer{max-width:1180px;margin:0 auto;padding:20px 16px 40px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+footer button{background:none;border:0;color:var(--muted);text-decoration:underline;padding:0}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:14px;padding-top:10px}
+  nav.steps{position:static;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:6px;scrollbar-width:thin}
+  nav.steps button{flex:none;padding:6px 10px}
+  nav.steps .lbl,nav.steps .prog{display:none}
+  nav.steps button.active .lbl{display:inline;white-space:nowrap}
+  .result.with-turtle{grid-template-columns:minmax(0,1fr)}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero svg{max-width:150px;justify-self:center;order:-1}
+  .cards{grid-template-columns:minmax(0,1fr)}
+  .status .txt{display:none}
+  .namebox input{flex:1 1 100%;max-width:none;order:2}
+  .namebox .btn{order:3}
+  .pager{flex-direction:column}
+  .pager .next{margin-left:0}
+  .bar .hint-k{display:none}
+  h1{font-size:1.7rem}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#0" aria-label="Αρχή">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <ellipse cx="14" cy="47" rx="6" ry="4" fill="#7fc79c"/><ellipse cx="44" cy="47" rx="6" ry="4" fill="#7fc79c"/>
+        <ellipse cx="14" cy="24" rx="6" ry="4" fill="#7fc79c"/><ellipse cx="44" cy="24" rx="6" ry="4" fill="#7fc79c"/>
+        <circle cx="54" cy="35" r="7.5" fill="#7fc79c"/><circle cx="56.5" cy="33" r="1.6" fill="#1f2a24"/>
+        <ellipse cx="29" cy="35.5" rx="21" ry="16" fill="#2f9e6b"/>
+        <path d="M29 22l7 5v8l-7 5-7-5v-8z" fill="#58b886"/><path d="M15 31l5 3v6l-5 3M43 31l-5 3v6l5 3" fill="none" stroke="#58b886" stroke-width="2.4" stroke-linejoin="round"/>
+      </svg>
+      <span>Μαθαίνω Python</span>
+    </a>
+    <span class="spacer"></span>
+    <span class="status" id="status" title="Κατάσταση Python"><span class="dot"></span><span class="txt">Η Python ξυπνάει…</span></span>
+    <span class="stars" title="Αστέρια που κέρδισες"><span class="st">★</span><span id="starCount">0</span>/<span id="starTotal">0</span></span>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="steps" id="nav" aria-label="Βήματα"></nav>
+  <main id="main">
+
+<!-- ============ 0. ΚΑΛΩΣ ΗΡΘΕΣ ============ -->
+<section class="step" data-title="Καλώς ήρθες" data-num="★">
+  <div class="hero">
+    <div>
+      <div class="kicker">Ξεκινάμε</div>
+      <h1><span class="greet">Γεια σου!</span> Πάμε να μάθουμε Python;</h1>
+      <p class="lead">Εδώ θα γράψεις τα πρώτα σου προγράμματα: θα ζωγραφίσεις με μια χελώνα, θα φτιάξεις παιχνίδια και θα κάνεις τον υπολογιστή να σου μιλάει. Η Python είναι η ίδια γλώσσα που χρησιμοποιούν επιστήμονες, παιχνίδια και μεγάλες εταιρείες.</p>
+    </div>
+    <svg viewBox="0 0 200 170" aria-hidden="true">
+      <path d="M10 150 Q60 120 100 140 T190 130" fill="none" stroke="#e9801b" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/>
+      <ellipse cx="55" cy="118" rx="16" ry="10" fill="#7fc79c"/><ellipse cx="135" cy="118" rx="16" ry="10" fill="#7fc79c"/>
+      <ellipse cx="55" cy="58" rx="16" ry="10" fill="#7fc79c"/><ellipse cx="135" cy="58" rx="16" ry="10" fill="#7fc79c"/>
+      <circle cx="170" cy="86" r="20" fill="#7fc79c"/><circle cx="177" cy="80" r="4" fill="#1f2a24"/><circle cx="178.5" cy="78.5" r="1.3" fill="#fff"/>
+      <path d="M168 96 q8 6 16 0" fill="none" stroke="#1f2a24" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="95" cy="88" rx="58" ry="44" fill="#2f9e6b"/>
+      <path d="M95 52l18 13v22l-18 13-18-13V65z" fill="#58b886"/>
+      <path d="M57 74l14 9v16l-14 9M133 74l-14 9v16l14 9" fill="none" stroke="#58b886" stroke-width="6" stroke-linejoin="round"/>
+      <text x="95" y="96" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="17" font-weight="700" fill="#fff">&gt;_</text>
+    </svg>
+  </div>
+
+  <div class="namebox">
+    <label for="nameInput">Πώς σε λένε;</label>
+    <input id="nameInput" maxlength="30" autocomplete="off" placeholder="Γράψε το όνομά σου">
+    <button class="btn run" id="nameSave">Αποθήκευση</button>
+  </div>
+
+  <h2>Πώς δουλεύει</h2>
+  <div class="cards">
+    <div class="card"><div class="ic">📖</div><h3>Διαβάζεις</h3><p>Κάθε βήμα έχει μικρές εξηγήσεις με παραδείγματα.</p></div>
+    <div class="card"><div class="ic">▶️</div><h3>Δοκιμάζεις</h3><p>Κάθε κουτί με κώδικα τρέχει με το κουμπί «Τρέξε». Άλλαξέ το όσο θέλεις!</p></div>
+    <div class="card"><div class="ic">⭐</div><h3>Κερδίζεις αστέρια</h3><p>Λύσε τις ασκήσεις και πάτα «Έλεγξε». Μάζεψε όλα τα αστέρια!</p></div>
+  </div>
+
+  <div class="callout tip"><span class="tag">Μυστικό</span>
+    <p>Δεν μπορείς να χαλάσεις τίποτα! Αν μπερδευτείς, πάτα «Από την αρχή» και ο κώδικας γυρίζει όπως ήταν. Ό,τι γράφεις αποθηκεύεται αυτόματα σε αυτόν τον υπολογιστή.</p>
+  </div>
+
+  <p>Ας δοκιμάσουμε αμέσως. Πάτα το πράσινο κουμπί <strong>▶ Τρέξε</strong>:</p>
+  <div class="try" data-id="w-1"><script type="text/plain">
+    print("Γεια σου! Είμαι ο υπολογιστής σου.")
+    print("Είμαι έτοιμος να ακούσω τις εντολές σου!")
+  </script></div>
+  <p>Μόλις έτρεξες το πρώτο σου πρόγραμμα. Πάμε στο Βήμα 1!</p>
+</section>
+
+<!-- ============ 1. PRINT ============ -->
+<section class="step" data-title="Γεια σου, Python!" data-num="1">
+  <div class="kicker">Βήμα 1</div>
+  <h1>Γεια σου, Python!</h1>
+  <p class="lead">Ένα πρόγραμμα είναι μια λίστα με οδηγίες για τον υπολογιστή. Τις εκτελεί μία-μία, από πάνω προς τα κάτω, και κάνει <em>ακριβώς</em> ό,τι του λες.</p>
+
+  <h2>Η εντολή print</h2>
+  <p>Η <code>print</code> εμφανίζει ένα μήνυμα στην οθόνη. Το κείμενο μπαίνει μέσα σε παρενθέσεις και εισαγωγικά.</p>
+  <div class="try" data-id="s1-1"><script type="text/plain">
+    print("Γεια σου, κόσμε!")
+    print("Μαθαίνω Python!")
+    print("2 + 2")
+    print(2 + 2)
+  </script></div>
+  <p>Πρόσεξε τις δύο τελευταίες γραμμές. Με εισαγωγικά, η Python τυπώνει το κείμενο όπως είναι. Χωρίς εισαγωγικά, κάνει τον λογαριασμό!</p>
+
+  <div class="callout tip"><span class="tag">Μυστικό</span>
+    <p>Οι εντολές γράφονται με λατινικά και μικρά γράμματα: <code>print</code>, όχι <code>Print</code>. Ελληνικά γράφεις μόνο μέσα στα εισαγωγικά. Αν δεις παράξενο σφάλμα, κοίτα μήπως το πληκτρολόγιο είναι στα ελληνικά (αλλάζει με <kbd>Alt</kbd>+<kbd>Shift</kbd>).</p>
+  </div>
+
+  <h2>Σχόλια</h2>
+  <p>Ό,τι γράφεις μετά από το <code>#</code> είναι <strong>σχόλιο</strong>: μια σημείωση για ανθρώπους. Η Python την αγνοεί.</p>
+  <div class="try" data-id="s1-2"><script type="text/plain">
+    # Αυτό είναι σχόλιο, δεν εμφανίζεται πουθενά
+    print("Αυτό εμφανίζεται!")  # κι αυτό είναι σχόλιο
+  </script></div>
+
+  <div class="ex" data-ex="e1" data-title="Η κάρτα μου">
+    <p>Γράψε ένα πρόγραμμα που εμφανίζει <strong>τρεις γραμμές</strong> για σένα: το όνομά σου, την τάξη σου και κάτι που σου αρέσει.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Κάθε γραμμή είναι μια ξεχωριστή <code>print(...)</code>. Μην ξεχάσεις τα εισαγωγικά!</p></details>
+    <script type="text/plain" class="starter">
+      # Γράψε εδώ τρεις print
+      print("Με λένε ...")
+    </script>
+    <p class="more">Θες κι άλλο; Ζωγράφισε ένα φατσάκι με χαρακτήρες, π.χ. <code>print("  (^_^)  ")</code>.</p>
+  </div>
+
+  <div class="ex" data-ex="e2" data-title="Ακρίβεια!">
+    <p>Ο υπολογιστής είναι πολύ αυστηρός. Τύπωσε <strong>ακριβώς</strong> αυτή τη φράση, με κεφαλαίο Μ και θαυμαστικό στο τέλος:</p>
+    <p><code>Μου αρέσει η Python!</code></p>
+    <script type="text/plain" class="starter">
+      print("...")
+    </script>
+  </div>
+</section>
+
+<!-- ============ 2. ΜΕΤΑΒΛΗΤΕΣ ============ -->
+<section class="step" data-title="Μεταβλητές και ερωτήσεις" data-num="2">
+  <div class="kicker">Βήμα 2</div>
+  <h1>Μεταβλητές και ερωτήσεις</h1>
+  <p class="lead">Μια μεταβλητή είναι σαν ένα κουτάκι με ετικέτα. Βάζεις μέσα μια τιμή και τη βρίσκεις αργότερα με το όνομά της.</p>
+
+  <div class="try" data-id="s2-1"><script type="text/plain">
+    onoma = "Ελένη"
+    fagito = "πίτσα"
+    print("Γεια σου,", onoma)
+    print("Το αγαπημένο σου φαγητό είναι η", fagito)
+  </script></div>
+  <p>Το <code>=</code> σημαίνει «βάλε στο κουτάκι». Στην <code>print</code> μπορείς να βάλεις πολλά πράγματα χωρισμένα με κόμμα, και η Python αφήνει κενό ανάμεσά τους. Άλλαξε το όνομα και το φαγητό και τρέξε το ξανά!</p>
+
+  <div class="callout tip"><span class="tag">Κανόνες για ονόματα</span>
+    <p>Τα ονόματα μεταβλητών έχουν λατινικά γράμματα, αριθμούς και <code>_</code>, χωρίς κενά, και δεν ξεκινούν με αριθμό. Σωστά: <code>onoma</code>, <code>agapimeno_xroma</code>, <code>paiktis2</code>. Λάθος: <code>2paiktis</code>, <code>to onoma</code>.</p>
+  </div>
+
+  <h2>Η εντολή input</h2>
+  <p>Η <code>input</code> κάνει μια ερώτηση και περιμένει να απαντήσεις. Η απάντηση μπαίνει σε μια μεταβλητή.</p>
+  <div class="try" data-id="s2-2"><script type="text/plain">
+    onoma = input("Πώς σε λένε; ")
+    print("Χάρηκα που σε γνώρισα,", onoma)
+  </script></div>
+  <p>Όταν πατήσεις «Τρέξε», θα εμφανιστεί ένα παραθυράκι για να γράψεις την απάντησή σου.</p>
+
+  <h2>Κόλλημα κειμένων</h2>
+  <p>Με το <code>+</code> κολλάς κείμενα μεταξύ τους. Πρόσεξε όμως: δεν βάζει κενό μόνο του!</p>
+  <div class="try" data-id="s2-3"><script type="text/plain">
+    print("Καλη" + "μέρα")
+    print("Γεια" + "σου")
+    print("Γεια" + " " + "σου")
+  </script></div>
+
+  <div class="ex" data-ex="e3" data-title="Ο ευγενικός υπολογιστής">
+    <p>Γράψε ένα πρόγραμμα που ρωτάει το όνομα του χρήστη και μετά τον χαιρετάει, π.χ. <code>Γεια σου, Νίκο!</code></p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Η πρώτη γραμμή είναι έτοιμη. Πρόσθεσε μια <code>print</code> που χρησιμοποιεί τη μεταβλητή <code>onoma</code> (χωρίς εισαγωγικά γύρω της!).</p></details>
+    <script type="text/plain" class="starter">
+      onoma = input("Πώς σε λένε; ")
+      # γράψε εδώ την print
+    </script>
+    <p class="more">Θες κι άλλο; Ρώτα και το αγαπημένο του φαγητό και απάντησε «Μμμ, κι εμένα μου αρέσει!».</p>
+  </div>
+
+  <div class="ex" data-ex="e4" data-title="Γεννήτρια υπερήρωα">
+    <p>Ρώτα ένα <strong>χρώμα</strong> και ένα <strong>ζώο</strong>. Μετά τύπωσε το όνομα του υπερήρωα, π.χ. <code>Ο υπερήρωάς σου είναι: Κόκκινος Πάνθηρας!</code></p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Χρειάζεσαι δύο <code>input</code>, μία για κάθε ερώτηση, σε δύο διαφορετικές μεταβλητές. Μετά μια <code>print</code> με τις δύο μεταβλητές χωρισμένες με κόμμα.</p></details>
+    <script type="text/plain" class="starter">
+      xroma = input("Πες μου ένα χρώμα: ")
+      # ρώτα ένα ζώο
+
+      # τύπωσε το όνομα του υπερήρωα
+    </script>
+    <p class="more">Θες κι άλλο; Ρώτα και μια υπερδύναμη και γράψε μια πρόταση για την αποστολή του ήρωα.</p>
+  </div>
+</section>
+
+<!-- ============ 3. ΑΡΙΘΜΟΙ ============ -->
+<section class="step" data-title="Αριθμοί και λογαριασμοί" data-num="3">
+  <div class="kicker">Βήμα 3</div>
+  <h1>Αριθμοί και λογαριασμοί</h1>
+  <p class="lead">Η Python είναι το πιο γρήγορο κομπιουτεράκι που έχεις δει. Κάνει λογαριασμούς σε κλάσματα του δευτερολέπτου.</p>
+
+  <div class="table-scroll"><table class="ref">
+    <tr><th>Σύμβολο</th><th>Τι κάνει</th><th>Παράδειγμα</th><th>Αποτέλεσμα</th></tr>
+    <tr><td><code>+</code></td><td>πρόσθεση</td><td><code>5 + 3</code></td><td>8</td></tr>
+    <tr><td><code>-</code></td><td>αφαίρεση</td><td><code>5 - 3</code></td><td>2</td></tr>
+    <tr><td><code>*</code></td><td>πολλαπλασιασμός</td><td><code>5 * 3</code></td><td>15</td></tr>
+    <tr><td><code>/</code></td><td>διαίρεση</td><td><code>7 / 2</code></td><td>3.5</td></tr>
+    <tr><td><code>//</code></td><td>ακέραια διαίρεση</td><td><code>7 // 2</code></td><td>3</td></tr>
+    <tr><td><code>%</code></td><td>υπόλοιπο διαίρεσης</td><td><code>7 % 2</code></td><td>1</td></tr>
+    <tr><td><code>**</code></td><td>δύναμη</td><td><code>2 ** 3</code></td><td>8</td></tr>
+  </table></div>
+
+  <div class="try" data-id="s3-1"><script type="text/plain">
+    print(7 * 8)
+    print(100 / 4)
+    print(2 ** 10)
+    print((3 + 4) * 2)
+    print(3 + 4 * 2)
+  </script></div>
+  <p>Όπως στα μαθηματικά, ο πολλαπλασιασμός γίνεται πριν από την πρόσθεση, εκτός αν βάλεις παρενθέσεις. Οι δεκαδικοί αριθμοί γράφονται με <strong>τελεία</strong>: <code>2.5</code>, όχι <code>2,5</code>.</p>
+
+  <div class="callout oops"><span class="tag">Συχνό λάθος</span>
+    <p>Η <code>input</code> δίνει πάντα <strong>κείμενο</strong>, ακόμα κι αν γράψεις αριθμό. Για την Python, το <code>"12"</code> (κείμενο) δεν είναι το ίδιο με το <code>12</code> (αριθμός). Για να κάνεις λογαριασμούς, μετάτρεψέ το σε αριθμό με την <code>int()</code>.</p>
+  </div>
+  <div class="try" data-id="s3-2"><script type="text/plain">
+    ilikia = int(input("Πόσων χρονών είσαι; "))
+    print("Του χρόνου θα είσαι", ilikia + 1)
+  </script></div>
+  <p>Πείραμα: σβήσε το <code>int(</code> και την τελευταία <code>)</code> της πρώτης γραμμής και τρέξε το. Τι λέει το σφάλμα;</p>
+
+  <div class="ex" data-ex="e5" data-title="Σκυλίσια χρόνια">
+    <p>Λένε ότι ένας χρόνος για τον άνθρωπο είναι σαν 7 χρόνια για τον σκύλο. Ρώτα την ηλικία του χρήστη και τύπωσε πόσων χρονών θα ήταν αν ήταν σκύλος.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Πολλαπλασίασε την ηλικία με το 7: <code>ilikia * 7</code>.</p></details>
+    <script type="text/plain" class="starter">
+      ilikia = int(input("Πόσων χρονών είσαι; "))
+      # τύπωσε την ηλικία σε σκυλίσια χρόνια
+    </script>
+    <p class="more">Θες κι άλλο; Υπολόγισε περίπου πόσες μέρες έχεις ζήσει (κάθε χρόνος έχει 365 μέρες).</p>
+  </div>
+
+  <div class="ex" data-ex="e6" data-title="Η πιτσαρία της γειτονιάς">
+    <p>Ένα κομμάτι πίτσα κοστίζει <strong>2.5 €</strong>. Ρώτα πόσα κομμάτια θέλει ο πελάτης και τύπωσε πόσα πρέπει να πληρώσει.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Φτιάξε μια μεταβλητή <code>timi = 2.5</code>. Το σύνολο είναι <code>kommatia * timi</code>.</p></details>
+    <script type="text/plain" class="starter">
+      timi = 2.5
+      kommatia = int(input("Πόσα κομμάτια θέλεις; "))
+      # υπολόγισε και τύπωσε το σύνολο
+    </script>
+    <p class="more">Θες κι άλλο; Ρώτα πόσα χρήματα δίνει ο πελάτης και υπολόγισε τα ρέστα. Για δεκαδικούς χρησιμοποίησε <code>float()</code> αντί για <code>int()</code>.</p>
+  </div>
+</section>
+
+<!-- ============ 4. ΧΕΛΩΝΑ ============ -->
+<section class="step" data-title="Η χελώνα ζωγραφίζει" data-num="4">
+  <div class="kicker">Βήμα 4</div>
+  <h1>Η χελώνα ζωγραφίζει</h1>
+  <p class="lead">Φαντάσου μια χελώνα στη μέση ενός χαρτιού, με έναν μαρκαδόρο κολλημένο στην ουρά της. Όπου περπατάει, αφήνει γραμμή. Εσύ της δίνεις τις οδηγίες!</p>
+
+  <div class="try" data-id="s4-1"><script type="text/plain">
+    import turtle
+    t = turtle.Turtle()
+
+    t.forward(100)
+    t.left(90)
+    t.forward(50)
+  </script></div>
+  <p>Η γραμμή <code>import turtle</code> φέρνει τη βιβλιοθήκη της χελώνας. Η <code>t = turtle.Turtle()</code> φτιάχνει μια χελώνα με όνομα <code>t</code>. Μετά, κάθε εντολή για τη χελώνα ξεκινά με <code>t.</code></p>
+
+  <h2>Οι εντολές της χελώνας</h2>
+  <div class="table-scroll"><table class="ref">
+    <tr><th>Εντολή</th><th>Τι κάνει</th></tr>
+    <tr><td><code>t.forward(100)</code></td><td>προχωράει 100 βήματα</td></tr>
+    <tr><td><code>t.backward(50)</code></td><td>πάει πίσω 50 βήματα</td></tr>
+    <tr><td><code>t.left(90)</code></td><td>στρίβει αριστερά 90 μοίρες</td></tr>
+    <tr><td><code>t.right(90)</code></td><td>στρίβει δεξιά 90 μοίρες</td></tr>
+    <tr><td><code>t.penup()</code> / <code>t.pendown()</code></td><td>σηκώνει / κατεβάζει τον μαρκαδόρο</td></tr>
+    <tr><td><code>t.goto(0, 100)</code></td><td>πηγαίνει στο σημείο (0, 100)</td></tr>
+    <tr><td><code>t.color("red")</code></td><td>αλλάζει χρώμα</td></tr>
+    <tr><td><code>t.pensize(5)</code></td><td>αλλάζει πάχος γραμμής</td></tr>
+    <tr><td><code>t.circle(50)</code></td><td>κάνει κύκλο με ακτίνα 50</td></tr>
+    <tr><td><code>t.dot(20)</code></td><td>κάνει μια τελεία μεγέθους 20</td></tr>
+    <tr><td><code>t.speed(0)</code></td><td>η χελώνα πάει πολύ γρήγορα (1 = αργά, 10 = γρήγορα, 0 = αστραπή)</td></tr>
+    <tr><td><code>turtle.bgcolor("lightblue")</code></td><td>αλλάζει το χρώμα του φόντου</td></tr>
+  </table></div>
+
+  <div class="callout tip"><span class="tag">Χρώματα</span>
+    <p>Τα χρώματα γράφονται στα αγγλικά: <code>"red"</code>, <code>"blue"</code>, <code>"green"</code>, <code>"orange"</code>, <code>"purple"</code>, <code>"pink"</code>, <code>"gold"</code>, <code>"black"</code>, <code>"brown"</code>, <code>"skyblue"</code>…</p>
+  </div>
+
+  <div class="try" data-id="s4-2"><script type="text/plain">
+    import turtle
+    t = turtle.Turtle()
+
+    t.color("purple")
+    t.pensize(4)
+    t.circle(60)
+
+    t.penup()
+    t.goto(-25, 150)
+    t.pendown()
+    t.color("orange")
+    t.dot(30)
+  </script></div>
+
+  <div class="callout fun"><span class="tag">Μοίρες</span>
+    <p>Μια ολόκληρη βόλτα γύρω-γύρω είναι <strong>360 μοίρες</strong>. Μισή βόλτα είναι 180°. Η στροφή 90° κάνει γωνία όπως η γωνία ενός τετραγώνου.</p>
+  </div>
+
+  <div class="ex" data-ex="e7" data-title="Το τετράγωνο">
+    <p>Βάλε τη χελώνα να ζωγραφίσει ένα <strong>τετράγωνο</strong> με πλευρά 100. Θα πρέπει να γυρίσει εκεί απ' όπου ξεκίνησε.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Το τετράγωνο έχει 4 πλευρές. Για καθεμία: προχώρα 100 και στρίψε 90 μοίρες. Δηλαδή τέσσερις φορές το ζευγάρι <code>t.forward(100)</code> και <code>t.right(90)</code>.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+
+      t.forward(100)
+      t.right(90)
+      # συνέχισε...
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e8" data-title="Το τρίγωνο">
+    <p>Ζωγράφισε ένα <strong>ισόπλευρο τρίγωνο</strong> με πλευρά 120. Πόσες μοίρες πρέπει να στρίβει η χελώνα;</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Για να κλείσει το σχήμα, η χελώνα πρέπει να κάνει μια ολόκληρη βόλτα (360°) σε 3 στροφές. Άρα κάθε στροφή είναι 360 ÷ 3 = 120 μοίρες.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+      t.color("green")
+
+    </script>
+    <p class="more">Θες κι άλλο; Πάνω στο τετράγωνο βάλε ένα τρίγωνο για σκεπή και φτιάξε ένα σπίτι!</p>
+  </div>
+</section>
+
+<!-- ============ 5. ΕΠΑΝΑΛΗΨΕΙΣ ============ -->
+<section class="step" data-title="Επαναλήψεις" data-num="5">
+  <div class="kicker">Βήμα 5</div>
+  <h1>Επαναλήψεις με το for</h1>
+  <p class="lead">Στο τετράγωνο έγραψες τέσσερις φορές τα ίδια. Οι προγραμματιστές βαριούνται να γράφουν ξανά και ξανά το ίδιο πράγμα. Γι' αυτό υπάρχει το <code>for</code>.</p>
+
+  <div class="try" data-id="s5-1"><script type="text/plain">
+    for i in range(5):
+        print("Γεια!", i)
+  </script></div>
+  <p>Οι γραμμές με <strong>εσοχή</strong> (τα 4 κενά στην αρχή) είναι αυτές που επαναλαμβάνονται. Το <code>range(5)</code> μετράει 0, 1, 2, 3, 4. Είναι πέντε αριθμοί, αλλά ξεκινάει από το 0! Αν θες να μετρήσεις από 1 έως 10, γράφεις <code>range(1, 11)</code>.</p>
+
+  <div class="callout oops"><span class="tag">Συχνό λάθος</span>
+    <p>Το <code>for</code> θέλει <strong>άνω-κάτω τελεία</strong> <code>:</code> στο τέλος της γραμμής, και οι γραμμές από κάτω θέλουν <strong>εσοχή</strong>. Πάτα <kbd>Tab</kbd> για να μπουν τα 4 κενά.</p>
+  </div>
+
+  <h2>Το τετράγωνο με for</h2>
+  <div class="try" data-id="s5-2"><script type="text/plain">
+    import turtle
+    t = turtle.Turtle()
+
+    for i in range(4):
+        t.forward(100)
+        t.right(90)
+
+    print("Έτοιμο!")
+  </script></div>
+  <p>Το <code>print("Έτοιμο!")</code> δεν έχει εσοχή, άρα δεν είναι μέσα στην επανάληψη. Τρέχει μία φορά, στο τέλος. Δοκίμασε να αλλάξεις το 4 σε 6 και τη γωνία σε 60. Τι σχήμα βγαίνει;</p>
+
+  <h2>Λίστες</h2>
+  <p>Μια <strong>λίστα</strong> κρατάει πολλές τιμές μαζί, μέσα σε αγκύλες <code>[ ]</code>. Το <code>for</code> μπορεί να περάσει μία-μία όλες τις τιμές της.</p>
+  <div class="try" data-id="s5-3"><script type="text/plain">
+    import turtle
+    t = turtle.Turtle()
+    t.pensize(8)
+
+    xromata = ["red", "orange", "gold", "green", "blue", "purple"]
+    for x in xromata:
+        print("Τώρα ζωγραφίζω με", x)
+        t.color(x)
+        t.forward(50)
+        t.left(60)
+  </script></div>
+
+  <div class="ex" data-ex="e9" data-title="Μετράμε μέχρι το 10">
+    <p>Με ένα <code>for</code>, τύπωσε τους αριθμούς από το <strong>1 έως το 10</strong>, έναν σε κάθε γραμμή.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Θυμήσου ότι το <code>range(1, 11)</code> μετράει από 1 έως 10 (το 11 δεν το φτάνει ποτέ). Μέσα στην επανάληψη γράψε <code>print(i)</code>.</p></details>
+    <script type="text/plain" class="starter">
+      for i in range(...):
+          print(...)
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e10" data-title="Το αστέρι">
+    <p>Ζωγράφισε ένα αστέρι: επανάλαβε <strong>5 φορές</strong> «προχώρα 150, στρίψε δεξιά 144 μοίρες».</p>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+      t.color("gold")
+      t.pensize(3)
+
+    </script>
+    <p class="more">Θες κι άλλο; Κάν' το κόκκινο με κίτρινο γέμισμα: γράψε <code>t.color("red", "yellow")</code> και <code>t.begin_fill()</code> πριν από την επανάληψη, και <code>t.end_fill()</code> μετά.</p>
+  </div>
+
+  <div class="ex" data-ex="e11" data-title="Η μαγική σπείρα">
+    <p>Συμπλήρωσε την επανάληψη: σε κάθε γύρο η χελώνα να προχωράει <code>i * 3</code> βήματα και να στρίβει 91 μοίρες. Θα δεις μια πολύχρωμη σπείρα!</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Μέσα στο <code>for</code> (με εσοχή) πρόσθεσε <code>t.forward(i * 3)</code> και <code>t.right(91)</code>. Το <code>xromata[i % 6]</code> διαλέγει τα χρώματα με τη σειρά, ξανά και ξανά.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      turtle.bgcolor("black")
+      t = turtle.Turtle()
+      t.speed(0)
+      xromata = ["red", "orange", "yellow", "green", "blue", "purple"]
+
+      for i in range(100):
+          t.color(xromata[i % 6])
+          # προχώρα i * 3 βήματα και στρίψε 91 μοίρες
+    </script>
+    <p class="more">Θες κι άλλο; Δοκίμασε άλλες γωνίες: 89, 120, 145… Κάθε αριθμός φτιάχνει άλλο σχέδιο!</p>
+  </div>
+</section>
+
+<!-- ============ 6. IF ============ -->
+<section class="step" data-title="Αποφάσεις με if" data-num="6">
+  <div class="kicker">Βήμα 6</div>
+  <h1>Αποφάσεις με το if</h1>
+  <p class="lead">Τα προγράμματα μπορούν να αποφασίζουν: «<em>αν</em> συμβαίνει αυτό, κάνε εκείνο, <em>αλλιώς</em> κάνε κάτι άλλο».</p>
+
+  <div class="try" data-id="s6-1"><script type="text/plain">
+    vathmos = int(input("Τι βαθμό πήρες στο διαγώνισμα (1-20); "))
+
+    if vathmos >= 18:
+        print("Άριστα! Μπράβο σου!")
+    elif vathmos >= 10:
+        print("Πέρασες! Συνέχισε έτσι.")
+    else:
+        print("Την επόμενη φορά θα τα πας καλύτερα!")
+  </script></div>
+  <p>Η Python ελέγχει τις συνθήκες με τη σειρά. Το <code>if</code> σημαίνει «αν», το <code>elif</code> σημαίνει «αλλιώς, αν» και το <code>else</code> σημαίνει «σε κάθε άλλη περίπτωση». Τρέξε το πολλές φορές με διαφορετικούς βαθμούς.</p>
+
+  <div class="table-scroll"><table class="ref">
+    <tr><th>Σύγκριση</th><th>Σημαίνει</th><th>Παράδειγμα που ισχύει</th></tr>
+    <tr><td><code>==</code></td><td>ίσο</td><td><code>5 == 5</code></td></tr>
+    <tr><td><code>!=</code></td><td>διαφορετικό</td><td><code>5 != 3</code></td></tr>
+    <tr><td><code>&lt;</code> / <code>&gt;</code></td><td>μικρότερο / μεγαλύτερο</td><td><code>3 &lt; 5</code></td></tr>
+    <tr><td><code>&lt;=</code> / <code>&gt;=</code></td><td>μικρότερο ή ίσο / μεγαλύτερο ή ίσο</td><td><code>5 &gt;= 5</code></td></tr>
+  </table></div>
+
+  <div class="callout oops"><span class="tag">Συχνό λάθος</span>
+    <p>Το <code>=</code> (ένα ίσον) βάζει τιμή σε μεταβλητή. Το <code>==</code> (δύο ίσον) <strong>ρωτάει</strong> αν δύο πράγματα είναι ίσα. Στο <code>if</code> θέλεις σχεδόν πάντα το <code>==</code>.</p>
+  </div>
+
+  <h2>Ζυγός ή μονός;</h2>
+  <p>Θυμάσαι το <code>%</code> από το Βήμα 3; Δίνει το υπόλοιπο της διαίρεσης. Ένας αριθμός είναι ζυγός όταν το υπόλοιπο της διαίρεσής του με το 2 είναι 0.</p>
+  <div class="try" data-id="s6-2"><script type="text/plain">
+    print(8 % 2)
+    print(7 % 2)
+    print(15 % 2)
+  </script></div>
+
+  <div class="ex" data-ex="e12" data-title="Ο μυστικός κωδικός">
+    <p>Ρώτα τον χρήστη τον κωδικό. Αν γράψει <code>python123</code>, τύπωσε <code>Καλώς ήρθες, πράκτορα!</code>. Αλλιώς τύπωσε <code>Πρόσβαση απαγορεύεται!</code></p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Χρησιμοποίησε <code>if kodikos == "python123":</code> και ένα <code>else:</code>. Μην ξεχάσεις τις άνω-κάτω τελείες και τις εσοχές!</p></details>
+    <script type="text/plain" class="starter">
+      kodikos = input("Γράψε τον μυστικό κωδικό: ")
+
+    </script>
+    <p class="more">Θες κι άλλο; Δώσε στον χρήστη 3 προσπάθειες.</p>
+  </div>
+
+  <div class="ex" data-ex="e13" data-title="Ζυγός ή μονός;">
+    <p>Ρώτα έναν αριθμό και τύπωσε <code>ζυγός</code> αν είναι ζυγός ή <code>μονός</code> αν είναι μονός.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Μην ξεχάσεις το <code>int()</code>! Μετά: <code>if arithmos % 2 == 0:</code></p></details>
+    <script type="text/plain" class="starter">
+      arithmos = int(input("Γράψε έναν αριθμό: "))
+
+    </script>
+  </div>
+</section>
+
+<!-- ============ 7. RANDOM ============ -->
+<section class="step" data-title="Τύχη και παιχνίδια" data-num="7">
+  <div class="kicker">Βήμα 7</div>
+  <h1>Τύχη και παιχνίδια</h1>
+  <p class="lead">Τα παιχνίδια χρειάζονται λίγη τύχη: ένα ζάρι, μια τυχαία κάρτα, έναν κρυμμένο αριθμό. Αυτό το κάνει η βιβλιοθήκη <code>random</code>.</p>
+
+  <div class="try" data-id="s7-1"><script type="text/plain">
+    import random
+
+    zari = random.randint(1, 6)
+    print("Το ζάρι έφερε:", zari)
+
+    frouta = ["μήλο", "μπανάνα", "κεράσι", "καρπούζι"]
+    print("Σήμερα θα φας:", random.choice(frouta))
+  </script></div>
+  <p>Τρέξε το πολλές φορές: κάθε φορά βγαίνει κάτι διαφορετικό! Το <code>random.randint(1, 6)</code> δίνει έναν τυχαίο ακέραιο από 1 έως 6. Το <code>random.choice(...)</code> διαλέγει κάτι τυχαίο από μια λίστα.</p>
+
+  <h2>Επανάληψη με while</h2>
+  <p>Το <code>while</code> επαναλαμβάνει κάτι <strong>όσο</strong> ισχύει μια συνθήκη. Είναι χρήσιμο όταν δεν ξέρεις από πριν πόσες φορές θα χρειαστεί.</p>
+  <div class="try" data-id="s7-2"><script type="text/plain">
+    import random
+
+    apantiseis = ["Σίγουρα!", "Μάλλον όχι...", "Ρώτα ξανά αύριο",
+                  "Τα άστρα λένε ναι", "Ούτε να το σκέφτεσαι!"]
+
+    erotisi = input("Κάνε μια ερώτηση στη μαγική μπάλα (ή γράψε τέλος): ")
+    while erotisi != "τέλος":
+        print("🔮", random.choice(apantiseis))
+        erotisi = input("Άλλη ερώτηση; (ή γράψε τέλος): ")
+
+    print("Η μαγική μπάλα πάει για ύπνο. Αντίο!")
+  </script></div>
+
+  <div class="callout oops"><span class="tag">Προσοχή</span>
+    <p>Το <code>while</code> πρέπει κάποια στιγμή να σταματάει! Αν η συνθήκη ισχύει πάντα, το πρόγραμμα τρέχει για πάντα. Εδώ η σελίδα θα το σταματήσει για σένα και θα σου το πει.</p>
+  </div>
+
+  <div class="ex" data-ex="e14" data-title="Το ζάρι">
+    <p>Φτιάξε ένα ηλεκτρονικό ζάρι: τύπωσε έναν <strong>τυχαίο αριθμό από 1 έως 6</strong>.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Ξεκίνα με <code>import random</code> και χρησιμοποίησε <code>random.randint(1, 6)</code>.</p></details>
+    <script type="text/plain" class="starter">
+      import random
+
+    </script>
+    <p class="more">Θες κι άλλο; Ρίξε δύο ζάρια και τύπωσε και το άθροισμά τους.</p>
+  </div>
+
+  <div class="ex" data-ex="e15" data-title="Μάντεψε τον αριθμό">
+    <p>Ο υπολογιστής κρύβει έναν αριθμό από 1 έως 20. Μέσα στο <code>while</code>, πρόσθεσε τις βοήθειες:</p>
+    <ul>
+      <li>αν ο μυστικός αριθμός είναι <strong>μεγαλύτερος</strong> από τη μαντεψιά, τύπωσε <code>Μεγαλύτερος!</code></li>
+      <li>αλλιώς τύπωσε <code>Μικρότερος!</code></li>
+    </ul>
+    <details class="hint"><summary>Βοήθεια</summary><p>Μέσα στο <code>while</code>, πριν από τη νέα <code>input</code>: <code>if mystikos &gt; manteia:</code> … <code>else:</code> … Πρόσεξε τις εσοχές: οι <code>print</code> θέλουν 8 κενά.</p></details>
+    <script type="text/plain" class="starter">
+      import random
+
+      mystikos = random.randint(1, 20)
+      manteia = int(input("Μάντεψε έναν αριθμό από 1 έως 20: "))
+
+      while manteia != mystikos:
+          # πες «Μεγαλύτερος!» ή «Μικρότερος!»
+
+          manteia = int(input("Ξαναδοκίμασε: "))
+
+      print("Μπράβο! Τον βρήκες!")
+    </script>
+    <p class="more">Θες κι άλλο; Μέτρα τις προσπάθειες και τύπωσέ τες στο τέλος.</p>
+  </div>
+</section>
+
+<!-- ============ 8. ΛΑΘΗ + ΚΟΥΙΖ ============ -->
+<section class="step" data-title="Κυνήγι σφαλμάτων και κουίζ" data-num="8">
+  <div class="kicker">Βήμα 8</div>
+  <h1>Κυνήγι σφαλμάτων</h1>
+  <p class="lead">Όλοι οι προγραμματιστές κάνουν λάθη, κάθε μέρα! Το σημαντικό είναι να ξέρεις να τα βρίσκεις. Όταν κάτι πάει στραβά, εδώ θα δεις ένα κόκκινο κουτάκι που σου εξηγεί τι έγινε και σε ποια γραμμή.</p>
+
+  <div class="table-scroll"><table class="ref">
+    <tr><th>Σφάλμα</th><th>Τι σημαίνει συνήθως</th></tr>
+    <tr><td><code>SyntaxError</code></td><td>Κάτι είναι λάθος γραμμένο: εισαγωγικά, παρενθέσεις ή <code>:</code></td></tr>
+    <tr><td><code>IndentationError</code></td><td>Λάθος εσοχές (κενά στην αρχή της γραμμής)</td></tr>
+    <tr><td><code>NameError</code></td><td>Η Python δεν ξέρει μια λέξη: ορθογραφικό ή κεφαλαίο γράμμα</td></tr>
+    <tr><td><code>TypeError</code></td><td>Ανακάτεψες κείμενο με αριθμό</td></tr>
+    <tr><td><code>ValueError</code></td><td>Το <code>int()</code> πήρε κάτι που δεν είναι αριθμός</td></tr>
+  </table></div>
+
+  <p>Τρέξε αυτό το πρόγραμμα για να δεις πώς φαίνεται ένα σφάλμα:</p>
+  <div class="try" data-id="s8-1"><script type="text/plain">
+    print("Όλα καλά μέχρι εδώ")
+    print("Εδώ ξέχασα κάτι...)
+  </script></div>
+
+  <div class="ex" data-ex="e16" data-title="Βρες τα 4 λάθη">
+    <p>Αυτό το πρόγραμμα θέλει να ζωγραφίσει ένα τετράγωνο, αλλά έχει <strong>4 λάθη</strong>. Βρες τα και διόρθωσέ τα ένα-ένα. Το κόκκινο κουτάκι θα σε βοηθάει!</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Ψάξε για: εισαγωγικά που δεν κλείνουν, κεφαλαίο γράμμα εκεί που δεν πρέπει, μια άνω-κάτω τελεία που λείπει, και μια γραμμή με λάθος εσοχή.</p></details>
+    <script type="text/plain" class="starter">
+      print("Ας ζωγραφίσουμε!)
+      import Turtle
+      t = turtle.Turtle()
+      for i in range(4)
+          t.forward(100)
+        t.right(90)
+    </script>
+  </div>
+
+  <h2>Δοκιμαστήριο</h2>
+  <p>Δέκα ερωτήσεις για όλα όσα έμαθες. Με 8 σωστές κερδίζεις αστέρι!</p>
+  <div id="quiz"></div>
+  <div class="bar" style="border:0;padding:0;background:none"><button class="btn check" id="quizCheck">✓ Έλεγξε τις απαντήσεις</button></div>
+  <div id="quizResult" style="margin-top:12px"></div>
+
+  <div id="diploma"></div>
+</section>
+
+<!-- ============ 9. ΕΡΓΑΣΤΗΡΙ ============ -->
+<section class="step" data-title="Το εργαστήρι σου" data-num="9">
+  <div class="kicker">Ελεύθερο παιχνίδι</div>
+  <h1>Το εργαστήρι σου</h1>
+  <p class="lead">Εδώ δεν υπάρχουν ασκήσεις. Γράψε ό,τι θέλεις! Ο κώδικάς σου αποθηκεύεται αυτόματα.</p>
+  <div class="try" data-id="lab" data-label="Το πρόγραμμά μου"><script type="text/plain">
+    # Το δικό μου πρόγραμμα!
+    import turtle
+    t = turtle.Turtle()
+
+  </script></div>
+
+  <h2>Ιδέες</h2>
+  <ul>
+    <li><strong>Ουράνιο τόξο:</strong> κύκλοι με διαφορετικά χρώματα και ακτίνες, μέσα σε ένα <code>for</code>.</li>
+    <li><strong>Λουλούδι:</strong> 36 κύκλοι, με στροφή 10° μετά από κάθε κύκλο.</li>
+    <li><strong>Κουίζ γνώσεων:</strong> 5 ερωτήσεις με <code>input</code> και <code>if</code>, που μετράει τις σωστές απαντήσεις.</li>
+    <li><strong>Πέτρα, ψαλίδι, χαρτί</strong> με τον υπολογιστή, με <code>random.choice</code>.</li>
+    <li><strong>Νυχτερινός ουρανός:</strong> μαύρο φόντο και 50 αστεράκια σε τυχαίες θέσεις με <code>t.goto(...)</code> και <code>t.dot(...)</code>.</li>
+  </ul>
+
+  <h2>Πού να συνεχίσεις</h2>
+  <ul>
+    <li><a href="https://projects.raspberrypi.org" target="_blank" rel="noopener">projects.raspberrypi.org</a>: δωρεάν projects βήμα-βήμα, πολλά στα ελληνικά.</li>
+    <li><a href="https://python.microbit.org" target="_blank" rel="noopener">python.microbit.org</a>: Python για το micro:bit, με εικονικό micro:bit.</li>
+    <li><a href="https://thonny.org" target="_blank" rel="noopener">Thonny</a>: ένα πρόγραμμα για να γράφεις Python στον υπολογιστή σου (ζήτα βοήθεια από έναν μεγάλο για την εγκατάσταση).</li>
+  </ul>
+</section>
+
+  </main>
+</div>
+
+<footer>
+  <span>Ο κώδικας τρέχει μέσα στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>. Η πρόοδός σου αποθηκεύεται μόνο σε αυτόν τον υπολογιστή.</span>
+  <button id="resetAll">Μηδενισμός προόδου</button>
+</footer>
+
+<!-- ================= Python: η χελώνα ================= -->
+<script type="text/plain" id="py-turtle">
+import math
+
+_ops = []
+_state = {'bg': 'white', 'cmode': 1.0}
+_turtles = []
+_default = [None]
+
+def _reset():
+    _ops.clear()
+    _turtles.clear()
+    _default[0] = None
+    _state['bg'] = 'white'
+    _state['cmode'] = 1.0
+
+def _col(c):
+    if isinstance(c, (tuple, list)) and len(c) == 3:
+        r, g, b = [float(v) for v in c]
+        if _state['cmode'] == 1.0:
+            r, g, b = r * 255, g * 255, b * 255
+        r, g, b = [int(max(0, min(255, v))) for v in (r, g, b)]
+        return 'rgb(%d,%d,%d)' % (r, g, b)
+    if isinstance(c, str):
+        s = c.strip().replace(' ', '')
+        ok = True
+        try:
+            import js
+            ok = bool(js.CSS.supports('color', s))
+        except Exception:
+            pass
+        if not ok or not s:
+            raise ValueError("Η χελώνα δεν ξέρει το χρώμα «%s». Γράψε το χρώμα στα αγγλικά, π.χ. \"red\", \"blue\", \"green\"." % c)
+        return s
+    raise ValueError("Η χελώνα δεν καταλαβαίνει αυτό το χρώμα: %r" % (c,))
+
+def _num(v, what='αριθμό'):
+    if isinstance(v, bool) or not isinstance(v, (int, float)):
+        raise TypeError("Η χελώνα περίμενε %s, αλλά πήρε «%s». Μήπως ξέχασες το int() ή έβαλες εισαγωγικά;" % (what, v))
+    return float(v)
+
+_SPEEDS = {'fastest': 0, 'fast': 10, 'normal': 6, 'slow': 3, 'slowest': 1}
+
+class Turtle:
+    def __init__(self, shape=None, *a, **k):
+        self.x = 0.0; self.y = 0.0; self.h = 0.0
+        self._pen = True; self.pc = 'black'; self.fc = 'black'; self.w = 2.0
+        self._filling = False; self._fillpts = []; self._fillidx = 0
+        self._spd = 6; self._vis = True
+        _turtles.append(self)
+        self._id = len(_turtles) - 1
+        _ops.append(['new', self._id])
+
+    def _move(self, nx, ny):
+        if self._pen:
+            _ops.append(['line', self._id, self.x, self.y, nx, ny, self.pc, self.w, self._spd])
+        else:
+            _ops.append(['jump', self._id, nx, ny])
+        self.x, self.y = nx, ny
+        if self._filling:
+            self._fillpts.append([nx, ny])
+
+    def forward(self, d):
+        d = _num(d); r = math.radians(self.h)
+        self._move(self.x + d * math.cos(r), self.y + d * math.sin(r))
+    fd = forward
+    def backward(self, d): self.forward(-_num(d))
+    bk = back = backward
+    def right(self, a):
+        self.h = (self.h - _num(a, 'μοίρες')) % 360
+        _ops.append(['turn', self._id, self.h, self._spd])
+    rt = right
+    def left(self, a): self.right(-_num(a, 'μοίρες'))
+    lt = left
+    def setheading(self, a):
+        self.h = _num(a, 'μοίρες') % 360
+        _ops.append(['turn', self._id, self.h, self._spd])
+    seth = setheading
+    def heading(self): return round(self.h, 6)
+    def goto(self, x, y=None):
+        if y is None:
+            x, y = x
+        self._move(_num(x), _num(y))
+    setpos = setposition = goto
+    def setx(self, x): self.goto(x, self.y)
+    def sety(self, y): self.goto(self.x, y)
+    def home(self):
+        self.goto(0, 0); self.setheading(0)
+    def position(self): return (round(self.x, 2), round(self.y, 2))
+    pos = position
+    def xcor(self): return round(self.x, 2)
+    def ycor(self): return round(self.y, 2)
+    def distance(self, x, y=None):
+        if y is None:
+            x, y = x
+        return math.hypot(x - self.x, y - self.y)
+    def towards(self, x, y=None):
+        if y is None:
+            x, y = x
+        return math.degrees(math.atan2(y - self.y, x - self.x)) % 360
+    def penup(self): self._pen = False
+    pu = up = penup
+    def pendown(self): self._pen = True
+    pd = down = pendown
+    def isdown(self): return self._pen
+    def pensize(self, w=None):
+        if w is None: return self.w
+        self.w = max(0.5, _num(w))
+    width = pensize
+    def pencolor(self, *c):
+        if not c: return self.pc
+        self.pc = _col(c[0] if len(c) == 1 else c)
+    def fillcolor(self, *c):
+        if not c: return self.fc
+        self.fc = _col(c[0] if len(c) == 1 else c)
+    def color(self, *args):
+        if not args: return (self.pc, self.fc)
+        if len(args) == 1:
+            self.pc = self.fc = _col(args[0])
+        elif len(args) == 2:
+            self.pc = _col(args[0]); self.fc = _col(args[1])
+        elif len(args) == 3:
+            self.pc = self.fc = _col(args)
+        else:
+            raise TypeError("Το color() θέλει ένα ή δύο χρώματα.")
+    def begin_fill(self):
+        self._filling = True
+        self._fillpts = [[self.x, self.y]]
+        self._fillidx = len(_ops)
+    def end_fill(self):
+        if self._filling and len(self._fillpts) > 2:
+            _ops.append(['fill', self._id, self._fillpts, self.fc, self._fillidx])
+        self._filling = False
+    def filling(self): return self._filling
+    def circle(self, radius, extent=None, steps=None):
+        radius = _num(radius)
+        extent = 360.0 if extent is None else _num(extent)
+        frac = abs(extent) / 360.0
+        if steps is None:
+            steps = 1 + int(min(11 + abs(radius) / 6.0, 59.0) * frac)
+        w = extent / steps
+        w2 = 0.5 * w
+        l = 2.0 * radius * math.sin(math.radians(w2))
+        if radius < 0:
+            l, w, w2 = -l, -w, -w2
+        self.left(w2)
+        for _ in range(steps):
+            self.forward(l)
+            self.left(w)
+        self.left(-w2)
+    def dot(self, size=None, *color):
+        if size is not None and not isinstance(size, (int, float)):
+            color = (size,) + color; size = None
+        s = max(self.w + 4, self.w * 2) if size is None else _num(size)
+        c = self.pc if not color else _col(color[0] if len(color) == 1 else color)
+        _ops.append(['dot', self._id, self.x, self.y, s, c])
+    def write(self, arg, move=False, align='left', font=('Arial', 8, 'normal')):
+        size = 8
+        try: size = float(font[1])
+        except Exception: pass
+        _ops.append(['text', self._id, self.x, self.y, str(arg), self.pc, size, str(align)])
+    def speed(self, s=None):
+        if s is None: return self._spd
+        if isinstance(s, str):
+            s = _SPEEDS.get(s.lower(), 6)
+        s = _num(s)
+        self._spd = 0 if (s > 10 or s < 0.5) else int(round(s))
+    def hideturtle(self):
+        self._vis = False; _ops.append(['vis', self._id, False])
+    ht = hideturtle
+    def showturtle(self):
+        self._vis = True; _ops.append(['vis', self._id, True])
+    st = showturtle
+    def isvisible(self): return self._vis
+    def shape(self, *a): return 'turtle'
+    def shapesize(self, *a, **k): pass
+    turtlesize = shapesize
+    def stamp(self): return 0
+    def clear(self): pass
+    def reset(self):
+        self.home(); self.pc = self.fc = 'black'; self.w = 2.0; self._pen = True
+    def getscreen(self): return _screen
+
+Pen = RawTurtle = RawPen = Turtle
+
+class _Screen:
+    def bgcolor(self, *c):
+        if not c: return _state['bg']
+        _state['bg'] = _col(c[0] if len(c) == 1 else c)
+        _ops.append(['bg', _state['bg']])
+    def colormode(self, m=None):
+        if m is None: return _state['cmode']
+        _state['cmode'] = 255 if m == 255 else 1.0
+    def title(self, *a): pass
+    def setup(self, *a, **k): pass
+    def screensize(self, *a, **k): pass
+    def exitonclick(self): pass
+    def mainloop(self): pass
+    def done(self): pass
+    def bye(self): pass
+    def tracer(self, *a, **k): pass
+    def update(self): pass
+    def listen(self, *a): pass
+    def onkey(self, *a, **k): pass
+    onkeypress = onkey
+    def onclick(self, *a, **k): pass
+    onscreenclick = onclick
+    def ontimer(self, *a, **k): pass
+    def window_width(self): return 400
+    def window_height(self): return 400
+    def turtles(self): return list(_turtles)
+
+_screen = _Screen()
+def Screen(): return _screen
+bgcolor = _screen.bgcolor
+colormode = _screen.colormode
+title = _screen.title
+setup = _screen.setup
+screensize = _screen.screensize
+done = mainloop = exitonclick = bye = _screen.done
+tracer = _screen.tracer
+update = _screen.update
+listen = _screen.listen
+onkey = onkeypress = _screen.onkey
+onscreenclick = _screen.onclick
+
+def _get():
+    if _default[0] is None:
+        _default[0] = Turtle()
+    return _default[0]
+
+def _mk(n):
+    def f(*a, **k):
+        return getattr(_get(), n)(*a, **k)
+    f.__name__ = n
+    return f
+
+for _n in ['forward', 'fd', 'backward', 'bk', 'back', 'right', 'rt', 'left', 'lt',
+           'goto', 'setpos', 'setposition', 'setx', 'sety', 'setheading', 'seth', 'home',
+           'circle', 'dot', 'write', 'penup', 'pu', 'up', 'pendown', 'pd', 'down',
+           'pensize', 'width', 'pencolor', 'fillcolor', 'color', 'begin_fill', 'end_fill',
+           'filling', 'speed', 'hideturtle', 'ht', 'showturtle', 'st', 'isvisible', 'shape',
+           'shapesize', 'turtlesize', 'position', 'pos', 'xcor', 'ycor', 'heading', 'isdown',
+           'stamp', 'clear', 'reset', 'towards', 'distance']:
+    globals()[_n] = _mk(_n)
+del _n
+</script>
+
+<!-- ================= Python: ο «διαχειριστής» ================= -->
+<script type="text/plain" id="py-harness">
+import sys, types, json, traceback, builtins
+
+_tm = types.ModuleType('turtle')
+exec(TURTLE_SRC, _tm.__dict__)
+sys.modules['turtle'] = _tm
+
+class _TooLong(BaseException): pass
+class _NoMoreInput(BaseException): pass
+_LIMIT = 400000
+_FILE = '<kodikas>'
+
+class _Tee:
+    def __init__(self):
+        self.all = []; self.pr = []
+    def write(self, t):
+        t = str(t); self.all.append(t); self.pr.append(t); return len(t)
+    def flush(self): pass
+
+def _run(code, inputs=None):
+    import js
+    _tm._reset()
+    tee = _Tee()
+    feed = None if inputs is None else [str(v) for v in inputs]
+
+    def _input(prompt=''):
+        p = str(prompt)
+        tee.all.append(p)
+        if feed is None:
+            r = js.window.prompt(p if p.strip() else 'Γράψε την απάντησή σου:', '')
+            v = '' if r is None else str(r)
+        else:
+            if not feed:
+                raise _NoMoreInput()
+            v = feed.pop(0)
+        tee.all.append(v + '\n')
+        return v
+
+    cnt = [0]
+    def _local(frame, event, arg):
+        if event == 'line':
+            cnt[0] += 1
+            if cnt[0] > _LIMIT:
+                raise _TooLong()
+        return _local
+    def _glob(frame, event, arg):
+        if frame.f_code.co_filename == _FILE:
+            return _local
+        return None
+
+    g = {'__name__': '__main__'}
+    old_in = builtins.input
+    old_out = (sys.stdout, sys.stderr)
+    builtins.input = _input
+    sys.stdout = sys.stderr = tee
+    err = None
+    try:
+        co = compile(code, _FILE, 'exec')
+        sys.settrace(_glob)
+        try:
+            exec(co, g)
+        finally:
+            sys.settrace(None)
+    except SyntaxError as e:
+        err = {'type': type(e).__name__, 'msg': str(e.msg), 'line': e.lineno}
+    except _TooLong:
+        err = {'type': 'TooLong', 'msg': '', 'line': None}
+    except _NoMoreInput:
+        err = {'type': 'NoMoreInput', 'msg': '', 'line': None}
+    except SystemExit:
+        err = None
+    except BaseException as e:
+        line = None
+        for fr in traceback.extract_tb(e.__traceback__):
+            if fr.filename == _FILE:
+                line = fr.lineno
+        err = {'type': type(e).__name__, 'msg': str(e), 'line': line}
+    finally:
+        sys.settrace(None)
+        sys.stdout, sys.stderr = old_out
+        builtins.input = old_in
+    return json.dumps({'out': ''.join(tee.pr), 'display': ''.join(tee.all),
+                       'err': err, 'ops': _tm._ops, 'bg': _tm._state['bg']})
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+
+<script>
+(function(){
+"use strict";
+const PYODIDE_INDEX = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
+
+/* ---------- αποθήκευση (μόνο σε αυτόν τον browser) ---------- */
+const LS = {
+  get(k, d){ try{ const v = localStorage.getItem('mp:'+k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem('mp:'+k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem('mp:'+k); }catch(e){} },
+  clearAll(){ try{ Object.keys(localStorage).filter(k=>k.startsWith('mp:')).forEach(k=>localStorage.removeItem(k)); }catch(e){} }
+};
+
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function dedent(s){
+  s = s.replace(/^\s*\n/, '').replace(/\s+$/, '');
+  const lines = s.split('\n');
+  const ind = Math.min(...lines.filter(l => l.trim()).map(l => l.match(/^ */)[0].length));
+  return lines.map(l => l.slice(isFinite(ind) ? ind : 0)).join('\n') + '\n';
+}
+
+/* ---------- Python (Pyodide) ---------- */
+let py = null, pyPromise = null;
+function setStatus(kind, txt){
+  const s = $('#status'); s.className = 'status ' + kind; $('.txt', s).textContent = txt;
+}
+function loadPy(){
+  if (!pyPromise){
+    pyPromise = (async () => {
+      setStatus('', 'Η Python ξυπνάει…');
+      if (typeof loadPyodide !== 'function') throw new Error('no pyodide');
+      py = await loadPyodide({ indexURL: PYODIDE_INDEX });
+      py.globals.set('TURTLE_SRC', $('#py-turtle').textContent);
+      py.runPython($('#py-harness').textContent);
+      setStatus('ready', 'Η Python είναι έτοιμη');
+      return py;
+    })().catch(e => {
+      setStatus('error', 'Η Python δεν φόρτωσε');
+      pyPromise = null;
+      throw e;
+    });
+  }
+  return pyPromise;
+}
+async function runPy(code, inputs){
+  await loadPy();
+  const fn = py.globals.get('_run');
+  const arg = inputs ? py.toPy(inputs) : null;
+  try { return JSON.parse(fn(code, arg)); }
+  finally { fn.destroy(); if (arg && arg.destroy) arg.destroy(); }
+}
+
+/* ---------- φιλικά μηνύματα σφάλματος ---------- */
+function friendly(err){
+  const t = err.type, m = err.msg || '';
+  const where = err.line ? ` στη γραμμή ${err.line}` : '';
+  let title = `Ουπς! Κάτι δεν πήγε καλά${where}.`, text = '';
+  const grab = re => { const x = m.match(re); return x ? x[1] : ''; };
+  if (t === 'SyntaxError'){
+    title = `Η Python δεν καταλαβαίνει πώς είναι γραμμένη η γραμμή ${err.line || ''}.`;
+    if (/unterminated (triple-quoted )?string|EOL while scanning/.test(m)) text = 'Ξέχασες να κλείσεις τα εισαγωγικά. Κάθε κείμενο θέλει εισαγωγικά και στην αρχή και στο τέλος: "έτσι".';
+    else if (/expected ':'/.test(m)) text = 'Λείπει η άνω-κάτω τελεία <code>:</code> στο τέλος της γραμμής. Τη θέλουν τα <code>for</code>, <code>while</code>, <code>if</code>, <code>elif</code> και <code>else</code>.';
+    else if (/was never closed/.test(m)) text = 'Άνοιξες μια παρένθεση <code>(</code> ή αγκύλη <code>[</code> και δεν την έκλεισες.';
+    else if (/unmatched/.test(m)) text = 'Υπάρχει μια παρένθεση ή αγκύλη που περισσεύει.';
+    else if (/invalid character|invalid non-printable/.test(m)) text = 'Υπάρχει ένας χαρακτήρας που η Python δεν αναγνωρίζει. Μήπως έγραψες κάποιο σύμβολο (όπως ; ή εισαγωγικά « ») με το ελληνικό πληκτρολόγιο; Γύρνα σε λατινικά με Alt+Shift.';
+    else if (/Maybe you meant '=='|cannot assign to/.test(m)) text = 'Για να συγκρίνεις χρησιμοποίησε <code>==</code> (δύο ίσον). Το ένα <code>=</code> βάζει τιμή σε μεταβλητή.';
+    else if (/forgot a comma/.test(m)) text = 'Μήπως ξέχασες ένα κόμμα ανάμεσα σε δύο πράγματα;';
+    else if (/invalid decimal literal/.test(m)) text = 'Κάτι δεν πάει καλά με έναν αριθμό. Τα ονόματα μεταβλητών δεν μπορούν να ξεκινούν με αριθμό.';
+    else text = 'Έλεγξε τα εισαγωγικά, τις παρενθέσεις και την άνω-κάτω τελεία. Κοίτα και την προηγούμενη γραμμή: μερικές φορές το λάθος είναι εκεί.';
+  } else if (t === 'IndentationError' || t === 'TabError'){
+    title = `Πρόβλημα με τις εσοχές στη γραμμή ${err.line || ''}.`;
+    if (/expected an indented block/.test(m)) text = 'Μετά από μια γραμμή που τελειώνει σε <code>:</code>, οι επόμενες γραμμές θέλουν εσοχή. Πάτα <kbd>Tab</kbd> στην αρχή τους.';
+    else if (/unexpected indent/.test(m)) text = 'Αυτή η γραμμή έχει κενά στην αρχή, χωρίς να χρειάζεται. Σβήσε τα.';
+    else text = 'Οι εσοχές δεν ταιριάζουν. Όλες οι γραμμές μέσα στο ίδιο <code>for</code> ή <code>if</code> θέλουν ακριβώς τα ίδια κενά στην αρχή.';
+  } else if (t === 'NameError'){
+    const n = grab(/name '(.+?)' is not defined/);
+    title = `Η Python δεν ξέρει τι είναι το «${esc(n)}»${where}.`;
+    text = 'Έλεγξε την ορθογραφία και τα κεφαλαία-μικρά (<code>print</code>, όχι <code>Print</code>). Αν είναι μεταβλητή, μήπως την έγραψες αλλιώς πιο πάνω; Αν ήθελες κείμενο, βάλ\' το μέσα σε εισαγωγικά.';
+  } else if (t === 'TypeError'){
+    if (/can only concatenate str|unsupported operand type\(s\) for \+: 'int' and 'str'|unsupported operand type\(s\) for \+: 'float' and 'str'|must be str, not/.test(m)){
+      title = `Ανακάτεψες κείμενο με αριθμό${where}.`;
+      text = 'Δεν γίνεται να ενώσεις κείμενο με αριθμό με το <code>+</code>. Αν το κείμενο ήρθε από <code>input</code>, μετάτρεψέ το με <code>int(...)</code>. Αλλιώς, στην <code>print</code> χώρισε με κόμμα αντί για <code>+</code>.';
+    } else if (/not supported between instances of 'str' and 'int'|not supported between instances of 'int' and 'str'/.test(m)){
+      title = `Συγκρίνεις κείμενο με αριθμό${where}.`;
+      text = 'Μήπως ξέχασες το <code>int(...)</code> γύρω από την <code>input</code>;';
+    } else if (/can't multiply sequence by non-int/.test(m)){
+      title = `Πολλαπλασιάζεις κείμενο με δεκαδικό αριθμό${where}.`;
+      text = 'Αν το κείμενο ήρθε από <code>input</code>, μετάτρεψέ το πρώτα σε αριθμό με <code>int(...)</code>.';
+    } else if (/ellipsis/.test(m)){
+      title = `Ξέχασες να συμπληρώσεις τις τελείες${where}.`;
+      text = 'Στη θέση των <code>...</code> πρέπει να γράψεις κάτι δικό σου. Διάβασε ξανά την άσκηση!';
+    } else if (/object is not callable/.test(m)){
+      text = 'Προσπάθησες να «τρέξεις» κάτι που δεν είναι εντολή. Μήπως έδωσες σε μια μεταβλητή το όνομα μιας εντολής, π.χ. <code>print = ...</code>;';
+    } else if (/argument|positional/.test(m)){
+      text = 'Η εντολή πήρε λάθος αριθμό από τιμές μέσα στις παρενθέσεις. Έλεγξε τι γράφεις μέσα στις <code>( )</code>.';
+    } else if (/Η χελώνα/.test(m)){ text = esc(m); }
+    else text = 'Κάτι δεν ταιριάζει με τον τύπο των τιμών (κείμενο, αριθμός, λίστα).';
+  } else if (t === 'ValueError'){
+    if (/invalid literal for int/.test(m)){
+      const v = grab(/: '(.*)'$/);
+      title = `Το int() περίμενε αριθμό${where}.`;
+      text = v ? `Πήρε όμως «${esc(v)}», που δεν είναι ακέραιος αριθμός. Αν είναι δεκαδικός, χρησιμοποίησε <code>float()</code>.` : 'Πήρε όμως κενή απάντηση. Γράψε έναν αριθμό στο παραθυράκι.';
+    } else if (/could not convert string to float/.test(m)){
+      title = `Το float() περίμενε αριθμό${where}.`; text = 'Πήρε κάτι που δεν είναι αριθμός. Οι δεκαδικοί γράφονται με τελεία, π.χ. 2.5.';
+    } else if (/Η χελώνα/.test(m)){ title = `Η χελώνα μπερδεύτηκε${where}.`; text = esc(m); }
+    else text = 'Μια εντολή πήρε τιμή που δεν μπορεί να χρησιμοποιήσει.';
+  } else if (t === 'ZeroDivisionError'){
+    title = `Διαίρεση με το μηδέν${where}!`; text = 'Ούτε η Python ούτε οι μαθηματικοί μπορούν να διαιρέσουν με το 0.';
+  } else if (t === 'ModuleNotFoundError' || t === 'ImportError'){
+    const n = grab(/No module named '(.+?)'/);
+    title = `Δεν υπάρχει βιβλιοθήκη «${esc(n)}»${where}.`; text = 'Έλεγξε το όνομα. Οι βιβλιοθήκες γράφονται με μικρά γράμματα, π.χ. <code>turtle</code>, <code>random</code>.';
+  } else if (t === 'AttributeError'){
+    const n = grab(/has no attribute '(.+?)'/);
+    if (/turtle|Turtle/.test(m)){ title = `Η χελώνα δεν ξέρει την εντολή «${esc(n)}»${where}.`; text = 'Έλεγξε την ορθογραφία. Όλες οι εντολές της χελώνας είναι στον πίνακα του Βήματος 4.'; }
+    else if (/random/.test(m)){ title = `Η βιβλιοθήκη random δεν έχει «${esc(n)}»${where}.`; text = 'Μήπως εννοούσες <code>random.randint</code> ή <code>random.choice</code>;'; }
+    else text = `Το «${esc(n)}» δεν υπάρχει εδώ. Έλεγξε την ορθογραφία.`;
+  } else if (t === 'IndexError'){
+    title = `Ζήτησες κάτι από λίστα που δεν υπάρχει${where}.`; text = 'Θυμήσου: η μέτρηση στις λίστες ξεκινά από το 0, άρα σε λίστα με 3 πράγματα οι θέσεις είναι 0, 1 και 2.';
+  } else if (t === 'TooLong'){
+    title = 'Το πρόγραμμα έτρεχε πολλή ώρα και το σταμάτησα.'; text = 'Μάλλον έχεις μια επανάληψη που δεν τελειώνει ποτέ. Έλεγξε τη συνθήκη του <code>while</code>: αλλάζει κάποια στιγμή;';
+  } else if (t === 'NoMoreInput'){
+    title = 'Το πρόγραμμα έκανε περισσότερες ερωτήσεις από όσες περίμενα.'; text = 'Έλεγξε πόσες φορές χρησιμοποιείς <code>input</code>, ή αν η επανάληψή σου σταματάει όταν πρέπει.';
+  } else if (t === 'RecursionError'){
+    text = 'Μια συνάρτηση καλεί τον εαυτό της ξανά και ξανά χωρίς τέλος.';
+  } else {
+    text = 'Διάβασε προσεκτικά τη γραμμή και δοκίμασε ξανά.';
+  }
+  let tech = '';
+  if (!['TooLong', 'NoMoreInput'].includes(t)) tech = `${t}: ${m}${err.line ? ` (γραμμή ${err.line})` : ''}`;
+  return { title, text, tech };
+}
+
+/* ---------- η χελώνα στον καμβά ---------- */
+function drawTurtle(wrap, res, instant){
+  if (wrap._raf) cancelAnimationFrame(wrap._raf);
+  const ops = res.ops || [];
+  const base = wrap.querySelector('canvas.base'), over = wrap.querySelector('canvas.over');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2), S = 400;
+  [base, over].forEach(c => { c.width = S * dpr; c.height = S * dpr; });
+  wrap.style.background = res.bg || 'white';
+  let m = 60;
+  for (const o of ops){
+    if (o[0] === 'line') m = Math.max(m, Math.abs(o[2]), Math.abs(o[3]), Math.abs(o[4]), Math.abs(o[5]));
+    else if (o[0] === 'jump') m = Math.max(m, Math.abs(o[2]), Math.abs(o[3]));
+    else if (o[0] === 'dot') m = Math.max(m, Math.abs(o[2]) + o[4] / 2, Math.abs(o[3]) + o[4] / 2);
+    else if (o[0] === 'text') m = Math.max(m, Math.abs(o[2]), Math.abs(o[3]));
+  }
+  const scale = Math.min(1, 188 / m);
+  const bx = base.getContext('2d'), ox = over.getContext('2d');
+  bx.setTransform(dpr * scale, 0, 0, -dpr * scale, S / 2 * dpr, S / 2 * dpr);
+  bx.lineCap = 'round'; bx.lineJoin = 'round';
+  const toScr = (x, y) => [S / 2 + x * scale, S / 2 - y * scale];
+
+  const T = {}; // κατάσταση κάθε χελώνας
+  let total = 0;
+  for (const o of ops) if (o[0] === 'line') total += Math.hypot(o[4] - o[2], o[5] - o[3]);
+  const minRate = total / 200; // όλο το σχέδιο σε ~3,5 δευτερόλεπτα το πολύ
+
+  function seg(o, x2, y2){
+    bx.strokeStyle = o[6]; bx.lineWidth = o[7] / scale;
+    bx.beginPath(); bx.moveTo(o[2], o[3]); bx.lineTo(x2, y2); bx.stroke();
+  }
+  function apply(o, idx){
+    const k = o[0];
+    if (k === 'new') T[o[1]] = { x: 0, y: 0, h: 0, vis: true };
+    else if (k === 'line'){ seg(o, o[4], o[5]); Object.assign(T[o[1]], { x: o[4], y: o[5] }); }
+    else if (k === 'jump') Object.assign(T[o[1]], { x: o[2], y: o[3] });
+    else if (k === 'turn') T[o[1]].h = o[2];
+    else if (k === 'vis') T[o[1]].vis = o[2];
+    else if (k === 'dot'){ bx.fillStyle = o[5]; bx.beginPath(); bx.arc(o[2], o[3], o[4] / 2 / scale * Math.max(scale, 1) , 0, Math.PI * 2); bx.fill(); }
+    else if (k === 'fill'){
+      bx.fillStyle = o[3]; bx.beginPath(); o[2].forEach((p, i) => i ? bx.lineTo(p[0], p[1]) : bx.moveTo(p[0], p[1])); bx.closePath(); bx.fill();
+      for (let j = o[4]; j < idx; j++){ const q = ops[j]; if (q[0] === 'line' && q[1] === o[1]) seg(q, q[4], q[5]); }
+    }
+    else if (k === 'text'){
+      bx.save(); bx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const [sx, sy] = toScr(o[2], o[3]);
+      bx.fillStyle = o[5]; bx.font = `${Math.max(9, o[6] * 1.4)}px "Noto Sans", sans-serif`;
+      bx.textAlign = o[7] === 'center' ? 'center' : (o[7] === 'right' ? 'right' : 'left');
+      bx.fillText(o[4], sx, sy); bx.restore();
+    }
+  }
+  function sprite(){
+    ox.setTransform(dpr, 0, 0, dpr, 0, 0); ox.clearRect(0, 0, S, S);
+    for (const id in T){
+      const t = T[id]; if (!t.vis) continue;
+      const [sx, sy] = toScr(t.x, t.y);
+      ox.save(); ox.translate(sx, sy); ox.rotate(-t.h * Math.PI / 180);
+      ox.fillStyle = '#7fc79c';
+      [[-5, -7], [5, -7], [-5, 7], [5, 7]].forEach(([x, y]) => { ox.beginPath(); ox.ellipse(x, y, 3.2, 2.2, 0, 0, Math.PI * 2); ox.fill(); });
+      ox.beginPath(); ox.arc(11, 0, 3.6, 0, Math.PI * 2); ox.fill();
+      ox.fillStyle = '#2f9e6b'; ox.strokeStyle = '#1c6b46'; ox.lineWidth = 1.2;
+      ox.beginPath(); ox.ellipse(0, 0, 9, 7, 0, 0, Math.PI * 2); ox.fill(); ox.stroke();
+      ox.restore();
+    }
+  }
+  if (instant){
+    ops.forEach((o, i) => apply(o, i)); sprite(); return;
+  }
+  let i = 0, prog = 0;
+  function frame(){
+    let budget = null;
+    while (i < ops.length){
+      const o = ops[i];
+      if (o[0] === 'line'){
+        const spd = o[8];
+        const L = Math.hypot(o[4] - o[2], o[5] - o[3]);
+        if (spd === 0 || L === 0){ apply(o, i); i++; prog = 0; continue; }
+        if (budget === null) budget = Math.max(2 + spd * 1.7, minRate);
+        const need = L - prog;
+        if (budget >= need){ apply(o, i); budget -= need; i++; prog = 0; continue; }
+        prog += budget;
+        const f = prog / L, x = o[2] + (o[4] - o[2]) * f, y = o[3] + (o[5] - o[3]) * f;
+        seg(o, x, y); Object.assign(T[o[1]], { x, y });
+        break;
+      } else { apply(o, i); i++; }
+    }
+    sprite();
+    if (i < ops.length) wrap._raf = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+/* ---------- πρόοδος ---------- */
+let done = new Set(LS.get('done', []));
+function markDone(id){
+  if (done.has(id)) return false;
+  done.add(id); LS.set('done', [...done]); refreshProgress(); return true;
+}
+const allTasks = () => [...$$('.ex').map(e => e.dataset.ex), 'quiz'];
+function refreshProgress(){
+  const all = allTasks();
+  $('#starCount').textContent = all.filter(id => done.has(id)).length;
+  $('#starTotal').textContent = all.length;
+  $$('.ex').forEach(e => e.classList.toggle('done', done.has(e.dataset.ex)));
+  sections.forEach((sec, i) => {
+    const ids = $$('.ex', sec).map(e => e.dataset.ex).concat($('#quiz', sec) ? ['quiz'] : []);
+    const b = navBtns[i]; if (!b) return;
+    const d = ids.filter(x => done.has(x)).length;
+    $('.prog', b).textContent = ids.length ? `${d}/${ids.length} ★` : '';
+    b.classList.toggle('complete', ids.length > 0 && d === ids.length);
+  });
+  renderDiploma();
+}
+
+/* ---------- ελέγχοι ασκήσεων ---------- */
+const flat = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/ς/g, 'σ');
+const lines = r => r.out.replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean);
+const has = (r, s) => flat(r.out).includes(flat(s));
+function segs(r){
+  return r.ops.filter(o => o[0] === 'line')
+    .map(o => ({ x1: o[2], y1: o[3], x2: o[4], y2: o[5], c: o[6], len: Math.hypot(o[4] - o[2], o[5] - o[3]) }))
+    .filter(s => s.len > 0.01);
+}
+function closedPath(sg){
+  if (!sg.length) return false;
+  return Math.hypot(sg[0].x1 - sg[sg.length - 1].x2, sg[0].y1 - sg[sg.length - 1].y2) < 1.5;
+}
+const countLen = (sg, L) => sg.filter(s => Math.abs(s.len - L) < 1).length;
+const OK = msg => ({ ok: true, msg });
+const NO = msg => ({ ok: false, msg });
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+
+const CHECKS = {
+  e1: { tests: [[]], fn: ([r]) => lines(r).length >= 3 ? OK('Ωραία κάρτα! Τώρα ο υπολογιστής σε ξέρει λίγο καλύτερα.')
+        : NO(`Βλέπω ${lines(r).length} γραμμή/ές στην οθόνη. Χρειάζονται τουλάχιστον 3: μία print για κάθε γραμμή.`) },
+  e2: { tests: [[]], fn: ([r]) => {
+        if (lines(r).some(l => l.replace(/\s+/g, ' ') === 'Μου αρέσει η Python!')) return OK('Ακριβώς έτσι! Ο υπολογιστής σε συγχαίρει.');
+        if (lines(r).some(l => flat(l).replace(/[^a-zα-ω]/g, '') === flat('Μου αρέσει η Python').replace(/[^a-zα-ω]/g, ''))) return NO('Σχεδόν! Έλεγξε κεφαλαία, τόνους και το θαυμαστικό στο τέλος.');
+        return NO('Η φράση πρέπει να είναι ακριβώς: Μου αρέσει η Python!');
+      } },
+  e3: { tests: [['Ελένη'], ['Νίκο']], fn: ([a, b]) => {
+        if (has(a, 'Ελένη') && has(b, 'Νίκο')) return OK('Πολύ ευγενικός υπολογιστής! Χαιρετάει τον καθένα με το όνομά του.');
+        return NO('Δοκίμασα με το όνομα «Ελένη» και δεν το είδα στον χαιρετισμό. Βάλε τη μεταβλητή onoma μέσα στην print, χωρίς εισαγωγικά.');
+      } },
+  e4: { tests: [['κόκκινος', 'Πάνθηρας'], ['Μπλε', 'Δελφίνι']], fn: ([a, b]) => {
+        if (has(a, 'κόκκινος') && has(a, 'Πάνθηρας') && has(b, 'Μπλε') && has(b, 'Δελφίνι')) return OK('Τρομερός υπερήρωας! Ο κόσμος είναι πια ασφαλής.');
+        if (!has(a, 'κόκκινος')) return NO('Το χρώμα δεν εμφανίζεται στο όνομα του υπερήρωα.');
+        return NO('Το ζώο δεν εμφανίζεται. Ρώτησες το ζώο με input και το έβαλες στην print;');
+      } },
+  e5: { tests: () => { const a = rnd(9, 15), b = rnd(20, 40); return [[String(a)], [String(b)]]; },
+        fn: ([a, b], ins) => {
+          const x = +ins[0][0], y = +ins[1][0];
+          if (has(a, String(x * 7)) && has(b, String(y * 7))) return OK('Γαβ! Σωστά λογαριάζεις τα σκυλίσια χρόνια.');
+          if (has(a, String(x).repeat(7))) return NO(`Δοκίμασα με ${x} και είδα «${String(x).repeat(7)}»! Η Python επανέλαβε το κείμενο 7 φορές αντί να πολλαπλασιάσει. Βάλε int(...) γύρω από την input.`);
+          return NO(`Δοκίμασα με ηλικία ${x} και περίμενα να δω ${x * 7}. Πολλαπλασίασε την ηλικία με το 7 και τύπωσέ την.`);
+        } },
+  e6: { tests: [['4'], ['3']], fn: ([a, b]) => {
+        if (has(a, '10') && has(b, '7.5')) return OK('Ο πελάτης πλήρωσε σωστά. Καλή όρεξη!');
+        return NO('Δοκίμασα 4 κομμάτια και περίμενα σύνολο 10 (4 × 2.5). Υπολόγισε kommatia * timi και τύπωσέ το.');
+      } },
+  e7: { tests: [[]], fn: ([r]) => {
+        const sg = segs(r);
+        if (!sg.length) return NO('Η χελώνα δεν ζωγράφισε τίποτα. Έγραψες t.forward(...);');
+        if (countLen(sg, 100) < 4) return NO('Το τετράγωνο θέλει 4 πλευρές με μήκος 100.');
+        if (!closedPath(sg)) return NO('Οι πλευρές είναι εντάξει, αλλά η χελώνα δεν γύρισε στην αρχή. Στρίβει πάντα 90 μοίρες προς την ίδια μεριά;');
+        return OK('Τέλειο τετράγωνο! Η χελώνα σε ακούει.');
+      } },
+  e8: { tests: [[]], fn: ([r]) => {
+        const sg = segs(r);
+        if (countLen(sg, 120) < 3) return NO('Το τρίγωνο θέλει 3 πλευρές με μήκος 120.');
+        if (!closedPath(sg)) return NO('Το τρίγωνο δεν κλείνει. Πόσες μοίρες στρίβει η χελώνα; Δες τη βοήθεια.');
+        return OK('Ένα υπέροχο ισόπλευρο τρίγωνο!');
+      } },
+  e9: { tests: [[]], fn: ([r]) => {
+        const nums = lines(r).filter(l => /^-?\d+$/.test(l)).map(Number);
+        if (JSON.stringify(nums) === JSON.stringify([1,2,3,4,5,6,7,8,9,10])) return OK('Ένα, δύο, τρία… δέκα! Σωστά.');
+        if (nums[0] === 0) return NO('Ξεκινάς από το 0. Θυμήσου: range(1, 11).');
+        if (nums.length && nums[nums.length - 1] === 9) return NO('Σταματάς στο 9. Το range δεν φτάνει ποτέ τον δεύτερο αριθμό, άρα γράψε 11.');
+        return NO('Περίμενα τους αριθμούς 1 έως 10, έναν σε κάθε γραμμή.');
+      } },
+  e10: { tests: [[]], fn: ([r]) => {
+        const sg = segs(r);
+        if (countLen(sg, 150) < 5) return NO('Το αστέρι θέλει 5 γραμμές με μήκος 150. Χρησιμοποίησες for i in range(5):;');
+        if (!closedPath(sg)) return NO('Το αστέρι δεν κλείνει. Η στροφή πρέπει να είναι 144 μοίρες.');
+        return OK('Λάμπει σαν πραγματικό αστέρι! ⭐');
+      } },
+  e11: { tests: [[]], fn: ([r]) => {
+        const sg = segs(r);
+        if (sg.length < 36) return NO('Η χελώνα δεν περπάτησε αρκετά. Μέσα στο for πρόσθεσε t.forward(i * 3) και t.right(91), με εσοχή.');
+        if (new Set(sg.map(s => s.c)).size < 3) return NO('Η σπείρα θέλει πολλά χρώματα. Κράτα τη γραμμή t.color(xromata[i % 6]) μέσα στο for.');
+        return OK('Μαγικό! Δοκίμασε τώρα να αλλάξεις τη γωνία και δες τι γίνεται.');
+      } },
+  e12: { tests: [['python123'], ['1234']], fn: ([a, b]) => {
+        if (!has(a, 'Καλώς ήρθες')) return NO('Έγραψα python123 αλλά δεν είδα «Καλώς ήρθες, πράκτορα!».');
+        if (has(b, 'Καλώς ήρθες')) return NO('Με λάθος κωδικό (1234) με άφησες να μπω! Χρειάζεσαι else.');
+        if (!has(b, 'απαγορεύεται')) return NO('Με λάθος κωδικό περίμενα να δω «Πρόσβαση απαγορεύεται!».');
+        return OK('Η βάση είναι ασφαλής, πράκτορα. 🕵️');
+      } },
+  e13: { tests: () => [[String(2 * rnd(2, 40))], [String(2 * rnd(2, 40) + 1)], ['0']], fn: ([a, b, c], ins) => {
+        const z = x => has(x, 'ζυγ'), mo = x => has(x, 'μον');
+        if (z(a) && !mo(a) && mo(b) && !z(b) && z(c)) return OK('Σωστά! Το % είναι πολύ χρήσιμο εργαλείο.');
+        if (!z(a) || mo(a)) return NO(`Για τον αριθμό ${ins[0][0]} περίμενα να δω μόνο «ζυγός».`);
+        return NO(`Για τον αριθμό ${ins[1][0]} περίμενα να δω μόνο «μονός».`);
+      } },
+  e14: { tests: () => Array.from({ length: 12 }, () => []), fn: rs => {
+        const vals = rs.map(r => { const n = r.out.match(/-?\d+/g); return n ? +n[n.length - 1] : null; });
+        if (vals.some(v => v === null)) return NO('Δεν βλέπω αριθμό στην οθόνη. Τύπωσε το αποτέλεσμα του random.randint(1, 6).');
+        if (vals.some(v => v < 1 || v > 6)) return NO('Βγήκε αριθμός έξω από το 1 έως 6. Έλεγξε το randint.');
+        if (new Set(vals).size < 2) return NO('Έτρεξα το ζάρι 12 φορές και έφερνε πάντα το ίδιο. Χρησιμοποιείς random.randint;');
+        return OK(`Έριξα το ζάρι 12 φορές: ${vals.join(', ')}. Δουλεύει! 🎲`);
+      } },
+  e15: { tests: () => Array.from({ length: 4 }, () => ['20', ...Array.from({ length: 19 }, (_, i) => String(i + 1))]),
+        fn: rs => {
+          let sawSmall = false, sawBig = false;
+          for (const r of rs){
+            if (!has(r, 'Μπράβο')) return NO('Το παιχνίδι δεν τελείωσε όταν βρήκα τον αριθμό.');
+            const hints = lines(r).filter(l => /μεγαλυτερ|μικροτερ/.test(flat(l)));
+            if (hints.length){
+              if (!/μικροτερ/.test(flat(hints[0]))) return NO('Μάντεψα 20 και μου είπες «Μεγαλύτερος». Όμως ο αριθμός είναι το πολύ 20! Έλεγξε τη σύγκριση: if mystikos > manteia.');
+              if (hints.slice(1).some(h => !/μεγαλυτερ/.test(flat(h)))) return NO('Μάντευα μικρούς αριθμούς και μου έλεγες «Μικρότερος». Μήπως μπέρδεψες τα δύο μηνύματα;');
+              sawSmall = true; if (hints.length > 1) sawBig = true;
+            }
+          }
+          if (!sawSmall || !sawBig) return NO('Δεν είδα τις βοήθειες «Μεγαλύτερος!» και «Μικρότερος!». Γράψε το if μέσα στο while.');
+          return OK('Έπαιξα 4 φορές και με βοήθησες σωστά κάθε φορά. Έφτιαξες το πρώτο σου παιχνίδι! 🎉');
+        } },
+  e16: { tests: [[]], fn: ([r]) => {
+        const sg = segs(r);
+        if (!has(r, 'Ας ζωγραφίσουμε')) return NO('Το μήνυμα «Ας ζωγραφίσουμε!» δεν εμφανίστηκε. Μην το σβήσεις, διόρθωσέ το!');
+        if (countLen(sg, 100) < 4 || !closedPath(sg)) return NO('Δεν βγαίνει ακόμα τετράγωνο. Έλεγξε την εσοχή της τελευταίας γραμμής.');
+        return OK('Βρήκες και τα 4 λάθη! Είσαι αληθινός κυνηγός σφαλμάτων. 🔍');
+      } }
+};
+
+/* ---------- κουτιά κώδικα ---------- */
+const editorsBySection = new Map();
+function makeRunner(host, opts){
+  const { id, starter, exId, label } = opts;
+  const saved = LS.get('code:' + id, null);
+  const box = document.createElement('div');
+  box.className = 'runner';
+  box.innerHTML = `
+    ${exId ? '' : `<div class="label">▶ ${esc(label || 'Δοκίμασε')}</div>`}
+    <div class="editor"></div>
+    <div class="bar">
+      <button class="btn run">▶ Τρέξε</button>
+      ${exId ? '<button class="btn check">✓ Έλεγξε</button>' : ''}
+      <button class="btn reset" title="Ο κώδικας γυρίζει όπως ήταν στην αρχή">↺ Από την αρχή</button>
+      <span class="hint-k"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> για να τρέξει</span>
+    </div>
+    <div class="result" hidden>
+      <div class="left"><div class="msg" hidden></div><pre class="console"></pre></div>
+      <div class="turtle-wrap" hidden><canvas class="base"></canvas><canvas class="over"></canvas></div>
+    </div>`;
+  host.appendChild(box);
+  const edEl = $('.editor', box), result = $('.result', box), msg = $('.msg', box), cons = $('.console', box), tw = $('.turtle-wrap', box);
+  const runBtn = $('.run', box), checkBtn = $('.check', box);
+  const value = saved !== null ? saved : starter;
+
+  let ed;
+  if (window.CodeMirror){
+    const cm = CodeMirror(edEl, {
+      value, mode: 'python', lineNumbers: true, indentUnit: 4, tabSize: 4, indentWithTabs: false,
+      matchBrackets: true, autoCloseBrackets: true, viewportMargin: Infinity, lineWrapping: false,
+      extraKeys: {
+        Tab: c => c.somethingSelected() ? c.indentSelection('add') : c.replaceSelection('    ', 'end'),
+        'Shift-Tab': 'indentLess', 'Ctrl-Enter': () => run(), 'Cmd-Enter': () => run()
+      }
+    });
+    let errLine = null;
+    ed = {
+      get: () => cm.getValue(), set: v => cm.setValue(v), refresh: () => cm.refresh(),
+      onChange: f => cm.on('change', f),
+      markErr: n => { ed.clearErr(); if (n && n <= cm.lineCount()){ errLine = cm.addLineClass(n - 1, 'background', 'errline'); } },
+      clearErr: () => { if (errLine){ cm.removeLineClass(errLine, 'background', 'errline'); errLine = null; } }
+    };
+  } else {
+    const ta = document.createElement('textarea'); ta.className = 'fallback'; ta.value = value; ta.spellcheck = false;
+    ta.rows = Math.max(4, value.split('\n').length + 1);
+    ta.addEventListener('keydown', e => {
+      if (e.key === 'Tab'){ e.preventDefault(); const s = ta.selectionStart; ta.setRangeText('    ', s, ta.selectionEnd, 'end'); }
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)){ e.preventDefault(); run(); }
+    });
+    edEl.appendChild(ta);
+    ed = { get: () => ta.value, set: v => ta.value = v, refresh(){}, onChange: f => ta.addEventListener('input', f), markErr(){}, clearErr(){} };
+  }
+  let t0;
+  ed.onChange(() => { ed.clearErr(); clearTimeout(t0); t0 = setTimeout(() => LS.set('code:' + id, ed.get()), 400); });
+
+  function showMsg(kind, html){ msg.hidden = false; msg.className = 'msg ' + kind; msg.innerHTML = html; }
+  function showRes(res, { instant = false } = {}){
+    result.hidden = false;
+    const text = res.display;
+    cons.innerHTML = text ? esc(text) : '<span class="empty">(το πρόγραμμα δεν τύπωσε τίποτα)</span>';
+    const hasTurtle = res.ops && res.ops.length > 0;
+    cons.hidden = !text && (hasTurtle || !!res.err);
+    tw.hidden = !hasTurtle; result.classList.toggle('with-turtle', hasTurtle);
+    if (hasTurtle) drawTurtle(tw, res, instant);
+    if (res.err){
+      const f = friendly(res.err);
+      showMsg('err', `<strong>${f.title}</strong>${f.text}${f.tech ? `<span class="tech">${esc(f.tech)}</span>` : ''}`);
+      ed.markErr(res.err.line);
+    } else { msg.hidden = true; ed.clearErr(); }
+  }
+  async function busy(fn){
+    runBtn.disabled = true; if (checkBtn) checkBtn.disabled = true;
+    if (!py){ result.hidden = false; showMsg('info', '<strong>Μισό λεπτό…</strong>Η Python ξυπνάει. Την πρώτη φορά αργεί λίγα δευτερόλεπτα.'); }
+    try { await fn(); }
+    catch (e){ console.error(e); result.hidden = false; showMsg('err', '<strong>Η Python δεν μπόρεσε να ξεκινήσει.</strong>Έλεγξε ότι έχεις internet και ανανέωσε τη σελίδα.'); }
+    finally { runBtn.disabled = false; if (checkBtn) checkBtn.disabled = false; }
+  }
+  async function run(){
+    await busy(async () => {
+      await new Promise(r => setTimeout(r, 20));
+      const res = await runPy(ed.get(), null);
+      showRes(res);
+    });
+  }
+  async function check(){
+    await busy(async () => {
+      const spec = CHECKS[exId];
+      const ins = typeof spec.tests === 'function' ? spec.tests() : spec.tests;
+      const results = [];
+      for (const inp of ins){
+        const r = await runPy(ed.get(), inp);
+        results.push(r);
+        if (r.err){ showRes(r, { instant: true }); return; }
+      }
+      showRes(results[0], { instant: true });
+      const v = spec.fn(results, ins);
+      if (v.ok){
+        showMsg('ok', `<strong>★ Μπράβο${userName() ? ', ' + esc(userName()) : ''}!</strong>${esc(v.msg)}`);
+        const exEl = box.closest('.ex');
+        if (markDone(exId)){ exEl.classList.add('pop'); setTimeout(() => exEl.classList.remove('pop'), 700); }
+      } else {
+        showMsg('no', `<strong>Σχεδόν!</strong>${esc(v.msg)}`);
+      }
+    });
+  }
+  runBtn.addEventListener('click', run);
+  if (checkBtn) checkBtn.addEventListener('click', check);
+  $('.reset', box).addEventListener('click', () => { ed.set(starter); LS.del('code:' + id); result.hidden = true; ed.clearErr(); });
+  return ed;
+}
+
+/* ---------- κουίζ ---------- */
+const QUIZ = [
+  { q: 'Ποια εντολή εμφανίζει ένα μήνυμα στην οθόνη;', a: ['input()', 'print()', 'show()', 'write()'], c: 1, why: 'Η print() τυπώνει. Η input() ρωτάει τον χρήστη.' },
+  { q: 'Τι θα εμφανίσει το print(3 + 4 * 2);', a: ['14', '11', '3 + 4 * 2', '10'], c: 1, why: 'Ο πολλαπλασιασμός γίνεται πρώτος: 4 × 2 = 8, και 3 + 8 = 11.' },
+  { q: 'Τι θα γίνει με το print("5" + 3);', a: ['Θα εμφανίσει 8', 'Θα εμφανίσει 53', 'Θα βγάλει σφάλμα', 'Θα εμφανίσει "8"'], c: 2, why: 'Το "5" είναι κείμενο και το 3 αριθμός. Δεν ενώνονται με + (TypeError).' },
+  { q: 'Η input() μάς δίνει πάντα…', a: ['αριθμό', 'κείμενο', 'λίστα', 'τίποτα'], c: 1, why: 'Γι\' αυτό χρειαζόμαστε int() για να κάνουμε λογαριασμούς.' },
+  { q: 'Πόσες φορές θα τρέξει το εσωτερικό του for i in range(4):', a: ['3', '4', '5', 'για πάντα'], c: 1, why: 'Το range(4) δίνει 0, 1, 2, 3: τέσσερις αριθμούς.' },
+  { q: 'Ποιο ελέγχει αν το x είναι ίσο με 10;', a: ['x = 10', 'x == 10', 'x => 10', 'ίσο(x, 10)'], c: 1, why: 'Το == συγκρίνει. Το = βάζει τιμή σε μεταβλητή.' },
+  { q: 'Για να ζωγραφίσει η χελώνα κανονικό εξάγωνο, πόσες μοίρες στρίβει κάθε φορά;', a: ['45', '60', '90', '120'], c: 1, why: '360 ÷ 6 = 60 μοίρες.' },
+  { q: 'Τι κάνει το random.randint(1, 6);', a: ['Δίνει πάντα 6', 'Δίνει έναν τυχαίο ακέραιο από 1 έως 6', 'Ρίχνει 6 ζάρια', 'Δίνει τον αριθμό 1.6'], c: 1, why: 'Σαν ένα ηλεκτρονικό ζάρι!' },
+  { q: 'Πόσο κάνει 10 % 3;', a: ['3.33', '1', '3', '30'], c: 1, why: 'Το 10 διά 3 κάνει 3 και περισσεύει 1. Το % δίνει το υπόλοιπο.' },
+  { q: 'Γιατί οι γραμμές κάτω από ένα for έχουν κενά στην αρχή;', a: ['Για να φαίνονται πιο ωραίες', 'Δείχνουν ποιες εντολές επαναλαμβάνονται', 'Για να τρέχει πιο γρήγορα', 'Δεν χρειάζονται, είναι προαιρετικά'], c: 1, why: 'Η εσοχή δείχνει στην Python ποιες γραμμές ανήκουν μέσα στην επανάληψη.' }
+];
+function renderQuiz(){
+  const host = $('#quiz'); if (!host) return;
+  const saved = LS.get('quiz', {});
+  host.innerHTML = QUIZ.map((x, i) => `
+    <div class="q" data-i="${i}">
+      <div class="qt">${i + 1}. ${esc(x.q)}</div>
+      ${x.a.map((a, j) => `<label><input type="radio" name="q${i}" value="${j}" ${saved[i] === j ? 'checked' : ''}><span>${esc(a)}</span></label>`).join('')}
+      <div class="why">${esc(x.why)}</div>
+    </div>`).join('');
+  host.addEventListener('change', e => {
+    if (e.target.name){ const s = LS.get('quiz', {}); s[+e.target.name.slice(1)] = +e.target.value; LS.set('quiz', s); e.target.closest('.q').classList.remove('right', 'wrong'); }
+  });
+  $('#quizCheck').addEventListener('click', () => {
+    let score = 0, answered = 0;
+    $$('.q', host).forEach(qe => {
+      const i = +qe.dataset.i, sel = $('input:checked', qe);
+      qe.classList.remove('right', 'wrong');
+      if (!sel) return;
+      answered++;
+      const ok = +sel.value === QUIZ[i].c; if (ok) score++;
+      qe.classList.add(ok ? 'right' : 'wrong');
+    });
+    const out = $('#quizResult');
+    if (answered < QUIZ.length){ out.innerHTML = `<div class="msg info"><strong>Απάντησες ${answered} από ${QUIZ.length}.</strong>Απάντησε σε όλες τις ερωτήσεις για να δεις το σκορ σου.</div>`; return; }
+    if (score >= 8){ markDone('quiz'); out.innerHTML = `<div class="msg ok"><strong>★ ${score}/10. Εξαιρετικά!</strong>Κέρδισες το αστέρι του δοκιμαστηρίου.</div>`; }
+    else out.innerHTML = `<div class="msg no"><strong>${score}/10.</strong>Διάβασε τις εξηγήσεις στις κόκκινες ερωτήσεις, άλλαξε τις απαντήσεις σου και ξαναπροσπάθησε. Θέλεις 8 για το αστέρι.</div>`;
+  });
+}
+function renderDiploma(){
+  const d = $('#diploma'); if (!d) return;
+  const all = allTasks(), got = all.filter(id => done.has(id)).length, left = all.length - got;
+  if (left === 0){
+    const n = userName();
+    d.innerHTML = `<div class="diploma"><div class="big">🏆</div><h2>Συγχαρητήρια${n ? ', ' + esc(n) : ''}!</h2>
+      <p>Μάζεψες και τα ${all.length} αστέρια. Πλέον ξέρεις print, input, μεταβλητές, αριθμούς, τη χελώνα, for, if, while και random.</p>
+      <p><strong>Είσαι επίσημα προγραμματιστής Python!</strong> Πήγαινε στο «Το εργαστήρι σου» και φτιάξε ό,τι φανταστείς.</p></div>`;
+  } else {
+    d.innerHTML = `<div class="callout fun"><span class="tag">Το δίπλωμά σου</span><p>Σου μένουν <strong>${left}</strong> αστέρια για να πάρεις το δίπλωμα του προγραμματιστή. Κοίτα στο μενού ποια βήματα δεν έχουν ακόμα όλα τα αστέρια.</p></div>`;
+  }
+}
+
+/* ---------- όνομα ---------- */
+const userName = () => (LS.get('name', '') || '').trim();
+function renderName(){
+  const n = userName();
+  $$('.greet').forEach(e => e.textContent = n ? `Γεια σου, ${n}!` : 'Γεια σου!');
+  $('#nameInput').value = n;
+}
+
+/* ---------- πλοήγηση ---------- */
+const sections = $$('section.step');
+const navBtns = [];
+function buildNav(){
+  const nav = $('#nav');
+  sections.forEach((sec, i) => {
+    const b = document.createElement('button');
+    b.innerHTML = `<span class="num">${sec.dataset.num}</span><span class="lbl">${esc(sec.dataset.title)}</span><span class="prog"></span>`;
+    b.addEventListener('click', () => go(i));
+    nav.appendChild(b); navBtns.push(b);
+    const pager = document.createElement('div'); pager.className = 'pager';
+    if (i > 0) pager.innerHTML += `<button class="btn prev">← ${esc(sections[i - 1].dataset.title)}</button>`;
+    if (i < sections.length - 1) pager.innerHTML += `<button class="btn next">${i === 0 ? 'Ξεκινάμε' : 'Επόμενο'}: ${esc(sections[i + 1].dataset.title)} →</button>`;
+    sec.appendChild(pager);
+    const p = $('.prev', pager), n = $('.next', pager);
+    if (p) p.addEventListener('click', () => go(i - 1));
+    if (n) n.addEventListener('click', () => go(i + 1));
+  });
+}
+function go(i, scroll = true){
+  i = Math.max(0, Math.min(sections.length - 1, i | 0));
+  sections.forEach((s, j) => s.classList.toggle('active', j === i));
+  navBtns.forEach((b, j) => b.classList.toggle('active', j === i));
+  (editorsBySection.get(sections[i]) || []).forEach(e => e.refresh());
+  if (location.hash !== '#' + i) history.replaceState(null, '', '#' + i);
+  LS.set('step', i);
+  if (scroll) window.scrollTo({ top: 0, behavior: 'auto' });
+  navBtns[i].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+
+/* ---------- εκκίνηση ---------- */
+function init(){
+  sections.forEach(sec => editorsBySection.set(sec, []));
+  $$('.try').forEach(el => {
+    const src = $('script', el); const starter = dedent(src.textContent); src.remove();
+    const ed = makeRunner(el, { id: el.dataset.id, starter, label: el.dataset.label });
+    editorsBySection.get(el.closest('section.step')).push(ed);
+  });
+  $$('.ex').forEach((el, k) => {
+    const src = $('script.starter', el); const starter = dedent(src.textContent);
+    const head = document.createElement('div'); head.className = 'ex-head';
+    head.innerHTML = `<span class="badge">Άσκηση ${k + 1}</span><h3>${esc(el.dataset.title)}</h3><span class="star" aria-hidden="true">★</span>`;
+    el.prepend(head);
+    const holder = document.createElement('div'); src.replaceWith(holder);
+    const ed = makeRunner(holder, { id: el.dataset.ex, starter, exId: el.dataset.ex });
+    editorsBySection.get(el.closest('section.step')).push(ed);
+  });
+  buildNav();
+  renderQuiz();
+  renderName();
+  refreshProgress();
+  $('#nameSave').addEventListener('click', () => { LS.set('name', $('#nameInput').value.trim().slice(0, 30)); renderName(); renderDiploma(); $('#nameSave').textContent = 'Αποθηκεύτηκε ✓'; setTimeout(() => $('#nameSave').textContent = 'Αποθήκευση', 1500); });
+  $('#nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('#nameSave').click(); });
+  $('#resetAll').addEventListener('click', () => {
+    if (confirm('Σίγουρα; Θα σβηστούν τα αστέρια, οι απαντήσεις και ο κώδικας που έγραψες.')){ LS.clearAll(); location.hash = ''; location.reload(); }
+  });
+  window.addEventListener('hashchange', () => { const h = parseInt(location.hash.slice(1), 10); if (!isNaN(h)) go(h); });
+  const h = parseInt(location.hash.slice(1), 10);
+  go(isNaN(h) ? LS.get('step', 0) : h, false);
+  loadPy().catch(() => {});
+}
+init();
+})();
+</script>
+</body>
+</html>
