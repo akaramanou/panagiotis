@@ -44,6 +44,7 @@
   --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.6 "Noto Sans",system-ui,sans-serif}
 h1,h2,h3{font-family:Comfortaa,"Noto Sans",sans-serif;line-height:1.25;letter-spacing:-.01em}
@@ -178,6 +179,27 @@ details.hint[open]{background:var(--blue-soft);border-radius:10px;padding:8px 12
 .namebox label{font-weight:700}
 .namebox input{font:inherit;padding:7px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-width:0;flex:1;max-width:260px}
 
+/* today + predict */
+.today{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--green);border-radius:12px;padding:10px 14px;margin:6px 0 14px;font-size:.95rem}
+.today .time{color:var(--muted);white-space:nowrap;font-size:.88rem}
+.predict{margin:26px 0;border:2px solid var(--blue-soft);border-radius:calc(var(--radius) + 4px);padding:16px;background:var(--surface)}
+.predict.done{border-color:var(--gold)}
+.predict .pq{font-weight:600;margin:6px 0 10px}
+.predict .runner{margin:10px 0 12px}
+.predict ol.opts{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.predict ol.opts button{width:100%;text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:9px 12px;font:inherit}
+.predict ol.opts button:hover{border-color:var(--blue)}
+.predict ol.opts button.right{background:var(--green-soft);border-color:var(--green);color:var(--green-ink);font-weight:600}
+.predict ol.opts button.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red-ink);text-decoration:line-through}
+.predict .why{display:none;margin:12px 0 0}
+.predict.answered .why{display:block}
+.ex-head .badge.p{background:var(--blue)}
+.predict.done .ex-head .badge.p{background:var(--gold);color:#3a2a00}
+.predict.done .ex-head .star{color:var(--gold)}
+.predict .ex-head{margin-bottom:4px}
+.ex-head .kind{font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:860px){.predict ol.opts{grid-template-columns:minmax(0,1fr)}}
+
 /* quiz */
 .q{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin:12px 0}
 .q .qt{font-weight:600;margin-bottom:6px}
@@ -239,13 +261,13 @@ footer button{background:none;border:0;color:var(--muted);text-decoration:underl
   <nav class="steps" id="nav" aria-label="Βήματα"></nav>
   <main id="main">
 
-<!-- ============ 0. ΚΑΛΩΣ ΗΡΘΕΣ ============ -->
+<!-- ============ ΚΑΛΩΣ ΗΡΘΕΣ ============ -->
 <section class="step" data-title="Καλώς ήρθες" data-num="★">
   <div class="hero">
     <div>
       <div class="kicker">Ξεκινάμε</div>
       <h1><span class="greet">Γεια σου!</span> Πάμε να μάθουμε Python;</h1>
-      <p class="lead">Εδώ θα γράψεις τα πρώτα σου προγράμματα: θα ζωγραφίσεις με μια χελώνα, θα φτιάξεις παιχνίδια και θα κάνεις τον υπολογιστή να σου μιλάει. Η Python είναι η ίδια γλώσσα που χρησιμοποιούν επιστήμονες, παιχνίδια και μεγάλες εταιρείες.</p>
+      <p class="lead">Εδώ θα γράψεις τα πρώτα σου προγράμματα: θα ζωγραφίσεις με μια χελώνα, θα φτιάξεις παιχνίδια και θα κάνεις τον υπολογιστή να σου μιλάει. Η Python είναι η ίδια γλώσσα που χρησιμοποιούν επιστήμονες, όσοι φτιάχνουν παιχνίδια και μεγάλες εταιρείες.</p>
     </div>
     <svg viewBox="0 0 200 170" aria-hidden="true">
       <path d="M10 150 Q60 120 100 140 T190 130" fill="none" stroke="#e9801b" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/>
@@ -268,9 +290,14 @@ footer button{background:none;border:0;color:var(--muted);text-decoration:underl
 
   <h2>Πώς δουλεύει</h2>
   <div class="cards">
-    <div class="card"><div class="ic">📖</div><h3>Διαβάζεις</h3><p>Κάθε βήμα έχει μικρές εξηγήσεις με παραδείγματα.</p></div>
+    <div class="card"><div class="ic">🤔</div><h3>Προβλέπεις</h3><p>Πριν από κάθε καινούργιο πράγμα, μαντεύεις τι θα κάνει ο κώδικας.</p></div>
     <div class="card"><div class="ic">▶️</div><h3>Δοκιμάζεις</h3><p>Κάθε κουτί με κώδικα τρέχει με το κουμπί «Τρέξε». Άλλαξέ το όσο θέλεις!</p></div>
     <div class="card"><div class="ic">⭐</div><h3>Κερδίζεις αστέρια</h3><p>Λύσε τις ασκήσεις και πάτα «Έλεγξε». Μάζεψε όλα τα αστέρια!</p></div>
+  </div>
+
+  <div class="callout fun"><span class="tag">Πώς να το κάνεις</span>
+    <p><strong>Ένα μάθημα τη φορά.</strong> Κάθε μάθημα θέλει περίπου μισή ώρα. Δεν υπάρχει βιασύνη: καλύτερα ένα μάθημα καλά, παρά τρία στα γρήγορα.</p>
+    <p><strong>Αν κολλήσεις:</strong> (1) διάβασε το κόκκινο ή το πορτοκαλί κουτάκι, (2) πάτα «Βοήθεια», (3) πάτα «Κι άλλη βοήθεια», (4) ρώτα τη νονά σου! 😊</p>
   </div>
 
   <div class="callout tip"><span class="tag">Μυστικό</span>
@@ -282,102 +309,540 @@ footer button{background:none;border:0;color:var(--muted);text-decoration:underl
     print("Γεια σου! Είμαι ο υπολογιστής σου.")
     print("Είμαι έτοιμος να ακούσω τις εντολές σου!")
   </script></div>
-  <p>Μόλις έτρεξες το πρώτο σου πρόγραμμα. Πάμε στο Βήμα 1!</p>
+  <p>Μόλις έτρεξες το πρώτο σου πρόγραμμα. Πάμε στο Μάθημα 1!</p>
 </section>
 
 <!-- ============ 1. PRINT ============ -->
 <section class="step" data-title="Γεια σου, Python!" data-num="1">
-  <div class="kicker">Βήμα 1</div>
+  <div class="kicker">Μάθημα 1</div>
   <h1>Γεια σου, Python!</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> η εντολή <code>print</code> και η διαφορά ανάμεσα σε κείμενο και αριθμό.</span><span class="time">⏱ περίπου 30 λεπτά</span></div>
   <p class="lead">Ένα πρόγραμμα είναι μια λίστα με οδηγίες για τον υπολογιστή. Τις εκτελεί μία-μία, από πάνω προς τα κάτω, και κάνει <em>ακριβώς</em> ό,τι του λες.</p>
 
   <h2>Η εντολή print</h2>
-  <p>Η <code>print</code> εμφανίζει ένα μήνυμα στην οθόνη. Το κείμενο μπαίνει μέσα σε παρενθέσεις και εισαγωγικά.</p>
+  <p>Η <code>print</code> εμφανίζει ένα μήνυμα στην οθόνη. Το κείμενο μπαίνει μέσα σε <strong>παρενθέσεις</strong> και <strong>εισαγωγικά</strong>:</p>
   <div class="try" data-id="s1-1"><script type="text/plain">
     print("Γεια σου, κόσμε!")
     print("Μαθαίνω Python!")
+  </script></div>
+  <p>Κάθε <code>print</code> γράφει σε καινούργια γραμμή. Άλλαξε τα μηνύματα και πάτα ξανά «Τρέξε».</p>
+
+  <h2>Κείμενο ή λογαριασμός;</h2>
+  <p>Χωρίς εισαγωγικά, η Python κάνει λογαριασμούς! Δες τη διαφορά:</p>
+  <div class="try" data-id="s1-2"><script type="text/plain">
     print("2 + 2")
     print(2 + 2)
   </script></div>
-  <p>Πρόσεξε τις δύο τελευταίες γραμμές. Με εισαγωγικά, η Python τυπώνει το κείμενο όπως είναι. Χωρίς εισαγωγικά, κάνει τον λογαριασμό!</p>
+  <p>Με εισαγωγικά τυπώνει το κείμενο όπως είναι. Χωρίς εισαγωγικά κάνει τον λογαριασμό.</p>
 
-  <div class="callout tip"><span class="tag">Μυστικό</span>
-    <p>Οι εντολές γράφονται με λατινικά και μικρά γράμματα: <code>print</code>, όχι <code>Print</code>. Ελληνικά γράφεις μόνο μέσα στα εισαγωγικά. Αν δεις παράξενο σφάλμα, κοίτα μήπως το πληκτρολόγιο είναι στα ελληνικά (αλλάζει με <kbd>Alt</kbd>+<kbd>Shift</kbd>).</p>
+  <div class="predict" data-p="p1" data-answer="1">
+    <p class="pq">Τι θα εμφανίσει αυτό το πρόγραμμα;</p>
+    <script type="text/plain">print("5 + 3")</script>
+    <ol class="opts"><li>8</li><li>5 + 3</li><li>"5 + 3"</li><li>Σφάλμα</li></ol>
+    <p class="why">Υπάρχουν εισαγωγικά, άρα είναι κείμενο και τυπώνεται όπως είναι, χωρίς τα εισαγωγικά.</p>
   </div>
 
-  <h2>Σχόλια</h2>
-  <p>Ό,τι γράφεις μετά από το <code>#</code> είναι <strong>σχόλιο</strong>: μια σημείωση για ανθρώπους. Η Python την αγνοεί.</p>
-  <div class="try" data-id="s1-2"><script type="text/plain">
-    # Αυτό είναι σχόλιο, δεν εμφανίζεται πουθενά
-    print("Αυτό εμφανίζεται!")  # κι αυτό είναι σχόλιο
-  </script></div>
+  <div class="callout tip"><span class="tag">Μυστικό</span>
+    <p>Οι εντολές γράφονται με λατινικά και <strong>μικρά</strong> γράμματα: <code>print</code>, όχι <code>Print</code>. Ελληνικά γράφεις μόνο μέσα στα εισαγωγικά. Για να αλλάξεις γλώσσα στο πληκτρολόγιο, πάτα <kbd>Alt</kbd>+<kbd>Shift</kbd>.</p>
+  </div>
 
-  <div class="ex" data-ex="e1" data-title="Η κάρτα μου">
-    <p>Γράψε ένα πρόγραμμα που εμφανίζει <strong>τρεις γραμμές</strong> για σένα: το όνομά σου, την τάξη σου και κάτι που σου αρέσει.</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Κάθε γραμμή είναι μια ξεχωριστή <code>print(...)</code>. Μην ξεχάσεις τα εισαγωγικά!</p></details>
+  <div class="ex" data-ex="e1" data-title="Άλλαξε το μήνυμα" data-kind="Άλλαξε">
+    <p>Άλλαξε το πρόγραμμα ώστε να γράφει <code>Γεια σου, Python!</code> αντί για <code>Γεια σου, κόσμε!</code></p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Σβήσε μόνο τη λέξη «κόσμε» και γράψε «Python» στη θέση της. Τα εισαγωγικά και οι παρενθέσεις μένουν όπως είναι.</p></details>
     <script type="text/plain" class="starter">
-      # Γράψε εδώ τρεις print
+      print("Γεια σου, κόσμε!")
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e2" data-title="Η κάρτα μου" data-kind="Γράψε">
+    <p>Γράψε ένα πρόγραμμα που εμφανίζει <strong>τρεις γραμμές</strong> για σένα: το όνομά σου, την τάξη σου και κάτι που σου αρέσει.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Κάθε γραμμή είναι μια ξεχωριστή <code>print(...)</code>. Η πρώτη είναι έτοιμη, γράψε από κάτω άλλες δύο.</p></details>
+    <script type="text/plain" class="starter">
       print("Με λένε ...")
     </script>
     <p class="more">Θες κι άλλο; Ζωγράφισε ένα φατσάκι με χαρακτήρες, π.χ. <code>print("  (^_^)  ")</code>.</p>
   </div>
 
-  <div class="ex" data-ex="e2" data-title="Ακρίβεια!">
-    <p>Ο υπολογιστής είναι πολύ αυστηρός. Τύπωσε <strong>ακριβώς</strong> αυτή τη φράση, με κεφαλαίο Μ και θαυμαστικό στο τέλος:</p>
-    <p><code>Μου αρέσει η Python!</code></p>
+  <div class="ex" data-ex="e3" data-title="Το κομπιουτεράκι" data-kind="Γράψε">
+    <p>Βάλε την Python να υπολογίσει πόσο κάνει <strong>25 επί 4</strong>. Στην Python ο πολλαπλασιασμός γράφεται με αστεράκι: <code>*</code>.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Για να κάνει η Python τον λογαριασμό, <strong>δεν</strong> βάζεις εισαγωγικά.</p></details>
+    <details class="hint"><summary>Κι άλλη βοήθεια</summary><p>Μέσα στην παρένθεση της <code>print</code> γράψε <code>25 * 4</code>.</p></details>
     <script type="text/plain" class="starter">
-      print("...")
+      print("25 * 4")
     </script>
   </div>
 </section>
 
-<!-- ============ 2. ΜΕΤΑΒΛΗΤΕΣ ============ -->
-<section class="step" data-title="Μεταβλητές και ερωτήσεις" data-num="2">
-  <div class="kicker">Βήμα 2</div>
-  <h1>Μεταβλητές και ερωτήσεις</h1>
+<!-- ============ 2. ΛΑΘΗ ============ -->
+<section class="step" data-title="Τα λάθη είναι φίλοι μας" data-num="2">
+  <div class="kicker">Μάθημα 2</div>
+  <h1>Τα λάθη είναι φίλοι μας</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> πώς διαβάζεις ένα σφάλμα και πώς το διορθώνεις.</span><span class="time">⏱ περίπου 20 λεπτά</span></div>
+  <p class="lead">Όλοι οι προγραμματιστές κάνουν λάθη, κάθε μέρα! Ο υπολογιστής δεν θυμώνει: απλώς σου λέει τι δεν κατάλαβε. Το σημαντικό είναι να ξέρεις να το διαβάζεις.</p>
+
+  <p>Τρέξε αυτό το πρόγραμμα. Έχει ένα λάθος επίτηδες:</p>
+  <div class="try" data-id="s2-1"><script type="text/plain">
+    print("Όλα καλά μέχρι εδώ")
+    print("Εδώ ξέχασα κάτι...)
+  </script></div>
+  <p>Είδες το κόκκινο κουτάκι; Σου λέει <strong>σε ποια γραμμή</strong> είναι το πρόβλημα και <strong>τι</strong> να ελέγξεις. Η γραμμή με το λάθος χρωματίζεται κόκκινη. Διόρθωσέ το: πρόσθεσε τα εισαγωγικά που λείπουν πριν από την παρένθεση στο τέλος.</p>
+
+  <h2>Τα τρία πιο συχνά λάθη</h2>
+  <div class="table-scroll"><table class="ref">
+    <tr><th>Λάθος</th><th>Σωστό</th><th>Τι έγινε</th></tr>
+    <tr><td><code>print("Γεια)</code></td><td><code>print("Γεια")</code></td><td>Ξέχασες να κλείσεις τα εισαγωγικά</td></tr>
+    <tr><td><code>Print("Γεια")</code></td><td><code>print("Γεια")</code></td><td>Κεφαλαίο γράμμα: η Python δεν ξέρει τη λέξη «Print»</td></tr>
+    <tr><td><code>print(Γεια)</code></td><td><code>print("Γεια")</code></td><td>Χωρίς εισαγωγικά, η Python ψάχνει κάτι με το όνομα «Γεια»</td></tr>
+  </table></div>
+
+  <div class="predict" data-p="p2" data-answer="2">
+    <p class="pq">Ποια από αυτές τις γραμμές είναι γραμμένη σωστά;</p>
+    <ol class="opts"><li><code>Print("Καλημέρα")</code></li><li><code>print(Καλημέρα)</code></li><li><code>print("Καλημέρα")</code></li><li><code>print("Καλημέρα)</code></li></ol>
+    <p class="why">Μικρό «p», παρενθέσεις, και εισαγωγικά και στην αρχή και στο τέλος του κειμένου.</p>
+  </div>
+
+  <div class="ex" data-ex="e4" data-title="Διόρθωσε ένα λάθος" data-kind="Διόρθωσε">
+    <p>Αυτό το πρόγραμμα θέλει να γράψει «Καλημέρα!», αλλά έχει ένα λάθος. Πάτα «Τρέξε», διάβασε το κόκκινο κουτάκι και διόρθωσέ το.</p>
+    <script type="text/plain" class="starter">
+      Print("Καλημέρα!")
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e5" data-title="Διόρθωσε δύο λάθη" data-kind="Διόρθωσε">
+    <p>Εδώ υπάρχουν <strong>δύο</strong> λάθη, ένα σε κάθε γραμμή. Διόρθωσε το πρώτο, τρέξε ξανά, και μετά βρες το δεύτερο.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Μέτρα τα εισαγωγικά σε κάθε γραμμή: πρέπει να είναι δύο, ένα στην αρχή κι ένα στο τέλος του κειμένου.</p></details>
+    <script type="text/plain" class="starter">
+      print("Γεια σου)
+      print(Μαθαίνω Python")
+    </script>
+  </div>
+
+  <div class="callout oops"><span class="tag">Προσοχή στο πληκτρολόγιο</span>
+    <p>Αν δεις σφάλμα για «χαρακτήρα που δεν αναγνωρίζεται», μάλλον έγραψες ένα σύμβολο με το ελληνικό πληκτρολόγιο. Γύρνα σε λατινικά με <kbd>Alt</kbd>+<kbd>Shift</kbd> και ξαναγράψ' το.</p>
+  </div>
+</section>
+
+<!-- ============ 3. ΧΕΛΩΝΑ ============ -->
+<section class="step" data-title="Η χελώνα περπατάει" data-num="3">
+  <div class="kicker">Μάθημα 3</div>
+  <h1>Η χελώνα περπατάει</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> τέσσερις εντολές για να κινείς τη χελώνα.</span><span class="time">⏱ περίπου 30 λεπτά</span></div>
+  <p class="lead">Φαντάσου μια χελώνα στη μέση ενός χαρτιού, με έναν μαρκαδόρο κολλημένο στην ουρά της. Όπου περπατάει, αφήνει γραμμή. Εσύ της δίνεις τις οδηγίες!</p>
+
+  <div class="try" data-id="s3-1"><script type="text/plain">
+    import turtle
+    t = turtle.Turtle()
+
+    t.forward(100)
+  </script></div>
+  <p>Οι δύο πρώτες γραμμές υπάρχουν πάντα όταν θέλουμε χελώνα:</p>
+  <ul>
+    <li><code>import turtle</code> φέρνει τη βιβλιοθήκη της χελώνας.</li>
+    <li><code>t = turtle.Turtle()</code> φτιάχνει μια χελώνα που τη λέμε <code>t</code>.</li>
+  </ul>
+  <p>Μετά, κάθε εντολή για τη χελώνα ξεκινά με <code>t.</code> (το όνομά της και μια τελεία).</p>
+
+  <h2>Οι τέσσερις εντολές</h2>
+  <div class="table-scroll"><table class="ref">
+    <tr><th>Εντολή</th><th>Τι κάνει</th></tr>
+    <tr><td><code>t.forward(100)</code></td><td>προχωράει 100 βήματα</td></tr>
+    <tr><td><code>t.backward(50)</code></td><td>πάει πίσω 50 βήματα</td></tr>
+    <tr><td><code>t.left(90)</code></td><td>στρίβει αριστερά 90 μοίρες</td></tr>
+    <tr><td><code>t.right(90)</code></td><td>στρίβει δεξιά 90 μοίρες</td></tr>
+  </table></div>
+
+  <div class="callout fun"><span class="tag">Μοίρες</span>
+    <p>Μια ολόκληρη βόλτα γύρω-γύρω είναι <strong>360 μοίρες</strong>. Η στροφή <strong>90°</strong> κάνει γωνία, σαν τη γωνία ενός βιβλίου.</p>
+  </div>
+
+  <div class="predict" data-p="p3" data-answer="1">
+    <p class="pq">Τι θα ζωγραφίσει η χελώνα;</p>
+    <script type="text/plain">
+      import turtle
+      t = turtle.Turtle()
+      t.forward(100)
+      t.left(90)
+      t.forward(100)
+    </script>
+    <ol class="opts"><li>Μια ευθεία γραμμή</li><li>Μια γωνία, σαν ανάποδο Γ</li><li>Ένα τετράγωνο</li><li>Έναν κύκλο</li></ol>
+    <p class="why">Προχωράει, στρίβει αριστερά και ξαναπροχωράει. Δύο γραμμές με γωνία ανάμεσα.</p>
+  </div>
+
+  <div class="ex" data-ex="e6" data-title="Τελείωσε το τετράγωνο" data-kind="Άλλαξε">
+    <p>Η χελώνα έχει ζωγραφίσει τις <strong>δύο</strong> πρώτες πλευρές ενός τετραγώνου. Πρόσθεσε τις εντολές για τις άλλες δύο, ώστε να γυρίσει εκεί απ' όπου ξεκίνησε.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Κάθε πλευρά είναι το ζευγάρι <code>t.forward(100)</code> και <code>t.right(90)</code>. Αντέγραψε αυτές τις δύο γραμμές άλλες δύο φορές.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+
+      t.forward(100)
+      t.right(90)
+      t.forward(100)
+      t.right(90)
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e7" data-title="Το ορθογώνιο" data-kind="Γράψε">
+    <p>Ζωγράφισε ένα <strong>ορθογώνιο</strong> με δύο μεγάλες πλευρές 150 και δύο μικρές πλευρές 80.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Είναι σαν το τετράγωνο, αλλά οι πλευρές εναλλάσσονται: 150, 80, 150, 80. Μετά από κάθε πλευρά, στρίψε 90 μοίρες.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+
+    </script>
+  </div>
+</section>
+
+<!-- ============ 4. ΧΡΩΜΑΤΑ ============ -->
+<section class="step" data-title="Χρώματα και κύκλοι" data-num="4">
+  <div class="kicker">Μάθημα 4</div>
+  <h1>Χρώματα και κύκλοι</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> χρώματα, πάχος, κύκλοι και πώς σηκώνεις τον μαρκαδόρο.</span><span class="time">⏱ περίπου 30 λεπτά</span></div>
+
+  <div class="try" data-id="s4-1"><script type="text/plain">
+    import turtle
+    t = turtle.Turtle()
+
+    t.color("purple")
+    t.pensize(5)
+    t.circle(60)
+  </script></div>
+
+  <div class="table-scroll"><table class="ref">
+    <tr><th>Εντολή</th><th>Τι κάνει</th></tr>
+    <tr><td><code>t.color("red")</code></td><td>αλλάζει χρώμα</td></tr>
+    <tr><td><code>t.pensize(5)</code></td><td>αλλάζει το πάχος της γραμμής</td></tr>
+    <tr><td><code>t.circle(50)</code></td><td>κάνει κύκλο με ακτίνα 50</td></tr>
+    <tr><td><code>t.dot(20)</code></td><td>κάνει μια στρογγυλή τελεία μεγέθους 20</td></tr>
+    <tr><td><code>t.penup()</code></td><td>σηκώνει τον μαρκαδόρο: περπατάει χωρίς να ζωγραφίζει</td></tr>
+    <tr><td><code>t.pendown()</code></td><td>κατεβάζει ξανά τον μαρκαδόρο</td></tr>
+    <tr><td><code>t.goto(0, 100)</code></td><td>πηγαίνει στο σημείο (0, 100)</td></tr>
+    <tr><td><code>t.speed(0)</code></td><td>η χελώνα πάει πολύ γρήγορα (1 = αργά, 10 = γρήγορα, 0 = αστραπή)</td></tr>
+    <tr><td><code>turtle.bgcolor("lightblue")</code></td><td>αλλάζει το χρώμα του φόντου</td></tr>
+  </table></div>
+
+  <div class="callout tip"><span class="tag">Χρώματα</span>
+    <p>Τα χρώματα γράφονται στα αγγλικά και μέσα σε εισαγωγικά: <code>"red"</code> (κόκκινο), <code>"blue"</code> (μπλε), <code>"green"</code> (πράσινο), <code>"orange"</code> (πορτοκαλί), <code>"purple"</code> (μωβ), <code>"pink"</code> (ροζ), <code>"gold"</code> (χρυσό), <code>"black"</code> (μαύρο), <code>"brown"</code> (καφέ).</p>
+  </div>
+
+  <h2>Πού είναι το (0, 100);</h2>
+  <p>Η χελώνα ξεκινάει από τη μέση, στο σημείο <strong>(0, 0)</strong>. Ο πρώτος αριθμός πάει δεξιά (ή αριστερά, αν είναι αρνητικός) και ο δεύτερος πάει πάνω (ή κάτω). Με <code>penup</code> πριν από το <code>goto</code>, η χελώνα πηγαίνει εκεί χωρίς να αφήσει γραμμή:</p>
+  <div class="try" data-id="s4-2"><script type="text/plain">
+    import turtle
+    t = turtle.Turtle()
+
+    t.penup()
+    t.goto(0, 100)
+    t.pendown()
+    t.dot(40)
+  </script></div>
+
+  <div class="predict" data-p="p4" data-answer="0">
+    <p class="pq">Τι θα ζωγραφίσει η χελώνα;</p>
+    <script type="text/plain">
+      import turtle
+      t = turtle.Turtle()
+      t.penup()
+      t.forward(100)
+    </script>
+    <ol class="opts"><li>Τίποτα! Θα περπατήσει χωρίς να ζωγραφίσει.</li><li>Μια γραμμή 100 βημάτων</li><li>Μια τελεία</li><li>Θα βγάλει σφάλμα</li></ol>
+    <p class="why">Το <code>penup()</code> σηκώνει τον μαρκαδόρο, οπότε η χελώνα κινείται αλλά δεν αφήνει γραμμή.</p>
+  </div>
+
+  <div class="ex" data-ex="e8" data-title="Κόκκινο τετράγωνο" data-kind="Άλλαξε">
+    <p>Αυτό το τετράγωνο είναι μαύρο και λεπτό. Κάν' το <strong>κόκκινο</strong> με <strong>πάχος 5</strong>, προσθέτοντας δύο γραμμές πριν αρχίσει να ζωγραφίζει.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Κάτω από τη γραμμή <code>t = turtle.Turtle()</code> πρόσθεσε <code>t.color("red")</code> και <code>t.pensize(5)</code>.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+
+      t.forward(100)
+      t.right(90)
+      t.forward(100)
+      t.right(90)
+      t.forward(100)
+      t.right(90)
+      t.forward(100)
+      t.right(90)
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e9" data-title="Ο χιονάνθρωπος" data-kind="Γράψε">
+    <p>Ζωγράφισε έναν χιονάνθρωπο με δύο κύκλους: έναν μεγάλο με ακτίνα <strong>60</strong> για το σώμα, και έναν μικρό με ακτίνα <strong>30</strong> από πάνω για το κεφάλι.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Ο κύκλος ζωγραφίζεται πάνω από τη χελώνα. Μετά τον πρώτο κύκλο, σήκωσε τον μαρκαδόρο, πήγαινε στο <code>(0, 120)</code>, κατέβασέ τον και κάνε τον δεύτερο κύκλο.</p></details>
+    <details class="hint"><summary>Κι άλλη βοήθεια</summary><p>Οι γραμμές που χρειάζεσαι, με τη σειρά: <code>t.circle(60)</code>, <code>t.penup()</code>, <code>t.goto(0, 120)</code>, <code>t.pendown()</code>, <code>t.circle(30)</code>.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+
+      t.circle(60)
+    </script>
+    <p class="more">Θες κι άλλο; Βάλε του μάτια με <code>t.dot(8)</code> και μια πορτοκαλί μύτη!</p>
+  </div>
+</section>
+
+<!-- ============ 5. FOR ============ -->
+<section class="step" data-title="Επανάληψη με for" data-num="5">
+  <div class="kicker">Μάθημα 5</div>
+  <h1>Επανάληψη με το for</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> πώς λες στη χελώνα να κάνει κάτι πολλές φορές.</span><span class="time">⏱ περίπου 30 λεπτά</span></div>
+  <p class="lead">Στο τετράγωνο έγραψες τέσσερις φορές τα ίδια. Οι προγραμματιστές βαριούνται να γράφουν ξανά και ξανά το ίδιο πράγμα. Γι' αυτό υπάρχει το <code>for</code>!</p>
+
+  <div class="try" data-id="s5-1"><script type="text/plain">
+    import turtle
+    t = turtle.Turtle()
+
+    for i in range(4):
+        t.forward(100)
+        t.right(90)
+  </script></div>
+  <p>Το <code>for i in range(4):</code> σημαίνει «κάνε τα παρακάτω <strong>4 φορές</strong>». Ποια είναι «τα παρακάτω»; Οι γραμμές που έχουν <strong>εσοχή</strong>, δηλαδή 4 κενά στην αρχή.</p>
+
+  <div class="callout oops"><span class="tag">Δύο κανόνες</span>
+    <p>1. Στο τέλος της γραμμής του <code>for</code> μπαίνει <strong>άνω-κάτω τελεία</strong> <code>:</code></p>
+    <p>2. Οι γραμμές που επαναλαμβάνονται έχουν <strong>εσοχή</strong>. Πάτα <kbd>Tab</kbd> για να μπουν τα 4 κενά.</p>
+  </div>
+
+  <p>Μια γραμμή <strong>χωρίς</strong> εσοχή δεν είναι μέσα στην επανάληψη, οπότε τρέχει μία φορά, στο τέλος:</p>
+  <div class="try" data-id="s5-2"><script type="text/plain">
+    import turtle
+    t = turtle.Turtle()
+
+    for i in range(4):
+        t.forward(100)
+        t.right(90)
+
+    t.color("red")
+    t.dot(20)
+  </script></div>
+
+  <div class="predict" data-p="p5" data-answer="2">
+    <p class="pq">Τι σχήμα θα ζωγραφίσει η χελώνα;</p>
+    <script type="text/plain">
+      import turtle
+      t = turtle.Turtle()
+      for i in range(3):
+          t.forward(100)
+          t.left(120)
+    </script>
+    <ol class="opts"><li>Τετράγωνο</li><li>Ευθεία γραμμή</li><li>Τρίγωνο</li><li>Κύκλο</li></ol>
+    <p class="why">Τρεις πλευρές με στροφή 120° η καθεμία: 3 × 120 = 360, μια ολόκληρη βόλτα. Αυτό είναι ένα τρίγωνο!</p>
+  </div>
+
+  <div class="callout fun"><span class="tag">Το κόλπο με τις γωνίες</span>
+    <p>Για να κλείσει ένα σχήμα, η χελώνα πρέπει να κάνει μια ολόκληρη βόλτα (360°). Άρα η στροφή είναι <strong>360 ÷ αριθμός πλευρών</strong>: τετράγωνο 360 ÷ 4 = 90, τρίγωνο 360 ÷ 3 = 120, εξάγωνο 360 ÷ 6 = 60.</p>
+  </div>
+
+  <div class="ex" data-ex="e10" data-title="Από τετράγωνο σε εξάγωνο" data-kind="Άλλαξε">
+    <p>Άλλαξε <strong>μόνο τρεις αριθμούς</strong> ώστε η χελώνα να ζωγραφίσει ένα <strong>εξάγωνο</strong> (6 πλευρές) με πλευρά 80.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Πόσες φορές; 6. Πόσο μεγάλη πλευρά; 80. Πόσες μοίρες στροφή; 360 ÷ 6.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+
+      for i in range(4):
+          t.forward(100)
+          t.right(90)
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e11" data-title="Το τρίγωνο" data-kind="Γράψε">
+    <p>Με ένα <code>for</code>, ζωγράφισε ένα πράσινο τρίγωνο με πλευρά <strong>120</strong>.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Κοίτα το παράδειγμα του τετραγώνου πιο πάνω. Άλλαξε πόσες φορές επαναλαμβάνεται, το μήκος και τη γωνία (360 ÷ 3).</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+      t.color("green")
+
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e12" data-title="Το αστέρι" data-kind="Γράψε">
+    <p>Ζωγράφισε ένα αστέρι: επανάλαβε <strong>5 φορές</strong> «προχώρα 150, στρίψε δεξιά 144 μοίρες».</p>
+    <details class="hint"><summary>Βοήθεια</summary><p><code>for i in range(5):</code> και από κάτω, με εσοχή, <code>t.forward(150)</code> και <code>t.right(144)</code>.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+      t.color("gold")
+      t.pensize(3)
+
+    </script>
+    <p class="more">Θες κι άλλο; Γέμισέ το με χρώμα: γράψε <code>t.begin_fill()</code> πριν από το <code>for</code> και <code>t.end_fill()</code> μετά (χωρίς εσοχή).</p>
+  </div>
+</section>
+
+<!-- ============ 6. RANGE ============ -->
+<section class="step" data-title="Μετράμε με το range" data-num="6">
+  <div class="kicker">Μάθημα 6</div>
+  <h1>Μετράμε με το range</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> τι κρύβεται μέσα στο <code>i</code> και πώς μετράει το <code>range</code>.</span><span class="time">⏱ περίπου 25 λεπτά</span></div>
+  <p class="lead">Το <code>for</code> δεν είναι μόνο για τη χελώνα. Μπορεί να επαναλάβει οποιαδήποτε εντολή, και την <code>print</code>!</p>
+
+  <div class="try" data-id="s6-1"><script type="text/plain">
+    for i in range(3):
+        print("Χα!")
+  </script></div>
+
+  <h2>Τι είναι το i;</h2>
+  <p>Το <code>i</code> είναι ένας μετρητής: σε κάθε γύρο έχει άλλη τιμή. Ας τον τυπώσουμε:</p>
+  <div class="try" data-id="s6-2"><script type="text/plain">
+    for i in range(5):
+        print("Γύρος", i)
+  </script></div>
+  <p>Περίεργο! Το <code>range(5)</code> μετράει <strong>0, 1, 2, 3, 4</strong>. Είναι πέντε αριθμοί, αλλά ο υπολογιστής ξεκινάει να μετράει από το 0.</p>
+  <p>Αν θέλεις να ξεκινάει από άλλο αριθμό, βάζεις δύο αριθμούς: <code>range(1, 6)</code> μετράει 1, 2, 3, 4, 5. Ο δεύτερος αριθμός δεν μετριέται ποτέ!</p>
+  <div class="try" data-id="s6-3"><script type="text/plain">
+    for i in range(1, 6):
+        print(i)
+  </script></div>
+
+  <div class="predict" data-p="p6" data-answer="1">
+    <p class="pq">Πόσες φορές θα εμφανιστεί η λέξη «Γεια»;</p>
+    <script type="text/plain">
+      for i in range(4):
+          print("Γεια")
+    </script>
+    <ol class="opts"><li>3</li><li>4</li><li>5</li><li>1</li></ol>
+    <p class="why">Το <code>range(4)</code> κάνει 4 γύρους (0, 1, 2, 3), άρα 4 φορές «Γεια».</p>
+  </div>
+
+  <div class="ex" data-ex="e13" data-title="Δέκα φορές" data-kind="Άλλαξε">
+    <p>Άλλαξε το πρόγραμμα ώστε να γράψει <strong>10 φορές</strong> τη φράση <code>Μου αρέσει η Python!</code></p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Δύο αλλαγές: ο αριθμός μέσα στο <code>range</code> και το κείμενο μέσα στην <code>print</code>.</p></details>
+    <script type="text/plain" class="starter">
+      for i in range(3):
+          print("Χα!")
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e14" data-title="Μετράμε μέχρι το 10" data-kind="Γράψε">
+    <p>Τύπωσε τους αριθμούς από το <strong>1 έως το 10</strong>, έναν σε κάθε γραμμή.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Θέλεις να ξεκινάει από το 1 και να φτάνει μέχρι το 10. Θυμήσου ότι ο δεύτερος αριθμός του range δεν μετριέται ποτέ.</p></details>
+    <details class="hint"><summary>Κι άλλη βοήθεια</summary><p><code>range(1, 11)</code>, και μέσα στην επανάληψη <code>print(i)</code>.</p></details>
+    <script type="text/plain" class="starter">
+      for i in range(...):
+          print(...)
+    </script>
+  </div>
+</section>
+
+<!-- ============ 7. ΜΕΤΑΒΛΗΤΕΣ ============ -->
+<section class="step" data-title="Μεταβλητές" data-num="7">
+  <div class="kicker">Μάθημα 7</div>
+  <h1>Μεταβλητές: κουτάκια με ετικέτα</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> πώς κρατάει η Python πληροφορίες για να τις χρησιμοποιήσει αργότερα.</span><span class="time">⏱ περίπου 30 λεπτά</span></div>
   <p class="lead">Μια μεταβλητή είναι σαν ένα κουτάκι με ετικέτα. Βάζεις μέσα μια τιμή και τη βρίσκεις αργότερα με το όνομά της.</p>
 
-  <div class="try" data-id="s2-1"><script type="text/plain">
+  <div class="try" data-id="s7-1"><script type="text/plain">
     onoma = "Ελένη"
     fagito = "πίτσα"
     print("Γεια σου,", onoma)
     print("Το αγαπημένο σου φαγητό είναι η", fagito)
   </script></div>
-  <p>Το <code>=</code> σημαίνει «βάλε στο κουτάκι». Στην <code>print</code> μπορείς να βάλεις πολλά πράγματα χωρισμένα με κόμμα, και η Python αφήνει κενό ανάμεσά τους. Άλλαξε το όνομα και το φαγητό και τρέξε το ξανά!</p>
+  <p>Το <code>=</code> σημαίνει «βάλε στο κουτάκι». Στην <code>print</code> μπορείς να βάλεις πολλά πράγματα <strong>χωρισμένα με κόμμα</strong>, και η Python αφήνει κενό ανάμεσά τους. Πρόσεξε ότι το <code>onoma</code> δεν έχει εισαγωγικά, γιατί δεν θέλουμε τη λέξη «onoma» αλλά αυτό που υπάρχει μέσα στο κουτάκι.</p>
 
   <div class="callout tip"><span class="tag">Κανόνες για ονόματα</span>
-    <p>Τα ονόματα μεταβλητών έχουν λατινικά γράμματα, αριθμούς και <code>_</code>, χωρίς κενά, και δεν ξεκινούν με αριθμό. Σωστά: <code>onoma</code>, <code>agapimeno_xroma</code>, <code>paiktis2</code>. Λάθος: <code>2paiktis</code>, <code>to onoma</code>.</p>
+    <p>Λατινικά γράμματα, αριθμοί και <code>_</code>, χωρίς κενά, και όχι αριθμός στην αρχή. Σωστά: <code>onoma</code>, <code>agapimeno_xroma</code>, <code>paiktis2</code>. Λάθος: <code>2paiktis</code>, <code>to onoma</code>.</p>
   </div>
 
-  <h2>Η εντολή input</h2>
-  <p>Η <code>input</code> κάνει μια ερώτηση και περιμένει να απαντήσεις. Η απάντηση μπαίνει σε μια μεταβλητή.</p>
-  <div class="try" data-id="s2-2"><script type="text/plain">
+  <h2>Μεταβλητές με αριθμούς</h2>
+  <p>Τα κουτάκια μπορούν να έχουν και αριθμούς, και η Python κάνει λογαριασμούς μαζί τους:</p>
+  <div class="table-scroll"><table class="ref">
+    <tr><th>Σύμβολο</th><th>Τι κάνει</th><th>Παράδειγμα</th><th>Αποτέλεσμα</th></tr>
+    <tr><td><code>+</code></td><td>πρόσθεση</td><td><code>5 + 3</code></td><td>8</td></tr>
+    <tr><td><code>-</code></td><td>αφαίρεση</td><td><code>5 - 3</code></td><td>2</td></tr>
+    <tr><td><code>*</code></td><td>πολλαπλασιασμός</td><td><code>5 * 3</code></td><td>15</td></tr>
+    <tr><td><code>/</code></td><td>διαίρεση</td><td><code>7 / 2</code></td><td>3.5</td></tr>
+  </table></div>
+  <p>Όπως στα μαθηματικά, ο πολλαπλασιασμός γίνεται πριν από την πρόσθεση, εκτός αν βάλεις παρενθέσεις. Οι δεκαδικοί γράφονται με <strong>τελεία</strong>: <code>2.5</code>, όχι <code>2,5</code>.</p>
+  <div class="try" data-id="s7-2"><script type="text/plain">
+    lefta = 20
+    timi = 7
+    print("Μου μένουν", lefta - timi, "ευρώ")
+  </script></div>
+
+  <h2>Μεταβλητές για τη χελώνα</h2>
+  <p>Εδώ φαίνεται γιατί είναι χρήσιμες: άλλαξε τον αριθμό στην πρώτη γραμμή και αλλάζει όλο το τετράγωνο!</p>
+  <div class="try" data-id="s7-3"><script type="text/plain">
+    plevra = 60
+
+    import turtle
+    t = turtle.Turtle()
+    for i in range(4):
+        t.forward(plevra)
+        t.right(90)
+  </script></div>
+
+  <div class="predict" data-p="p7" data-answer="2">
+    <p class="pq">Τι θα εμφανίσει αυτό το πρόγραμμα;</p>
+    <script type="text/plain">
+      x = 5
+      x = x + 3
+      print(x)
+    </script>
+    <ol class="opts"><li>5</li><li>x</li><li>8</li><li>x + 3</li></ol>
+    <p class="why">Το κουτάκι x είχε 5. Η δεύτερη γραμμή λέει: «πάρε ό,τι έχει το x, πρόσθεσε 3 και βάλ' το ξανά στο x». Άρα τώρα έχει 8.</p>
+  </div>
+
+  <div class="ex" data-ex="e15" data-title="Μεγάλο τετράγωνο" data-kind="Άλλαξε">
+    <p>Κάνε το τετράγωνο να έχει πλευρά <strong>130</strong>, αλλάζοντας <strong>μόνο έναν αριθμό</strong>.</p>
+    <script type="text/plain" class="starter">
+      plevra = 50
+
+      import turtle
+      t = turtle.Turtle()
+      for i in range(4):
+          t.forward(plevra)
+          t.right(90)
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e16" data-title="Τα ψώνια" data-kind="Γράψε">
+    <p>Έχεις <strong>20 €</strong> και αγοράζεις <strong>3 τετράδια</strong> που κοστίζουν <strong>2.5 €</strong> το καθένα. Τύπωσε πόσα λεφτά σου μένουν.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Τα τετράδια κοστίζουν συνολικά <code>tetradia * timi</code>. Αυτό το αφαιρείς από τα <code>lefta</code>.</p></details>
+    <details class="hint"><summary>Κι άλλη βοήθεια</summary><p><code>print("Μου μένουν", lefta - tetradia * timi, "ευρώ")</code></p></details>
+    <script type="text/plain" class="starter">
+      lefta = 20
+      tetradia = 3
+      timi = 2.5
+      # τύπωσε πόσα λεφτά σου μένουν
+    </script>
+  </div>
+</section>
+
+<!-- ============ 8. INPUT ============ -->
+<section class="step" data-title="Ο υπολογιστής ρωτάει" data-num="8">
+  <div class="kicker">Μάθημα 8</div>
+  <h1>Ο υπολογιστής ρωτάει</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> η εντολή <code>input</code>, για να κάνει ερωτήσεις το πρόγραμμά σου.</span><span class="time">⏱ περίπου 25 λεπτά</span></div>
+  <p class="lead">Μέχρι τώρα τα προγράμματα έκαναν πάντα το ίδιο. Με την <code>input</code>, ο υπολογιστής κάνει μια ερώτηση και περιμένει την απάντησή σου.</p>
+
+  <div class="try" data-id="s8-1"><script type="text/plain">
     onoma = input("Πώς σε λένε; ")
     print("Χάρηκα που σε γνώρισα,", onoma)
   </script></div>
-  <p>Όταν πατήσεις «Τρέξε», θα εμφανιστεί ένα παραθυράκι για να γράψεις την απάντησή σου.</p>
+  <p>Όταν πατήσεις «Τρέξε», θα εμφανιστεί ένα <strong>παραθυράκι</strong>. Γράψε την απάντησή σου και πάτα OK. Η απάντηση μπαίνει στο κουτάκι <code>onoma</code>.</p>
 
-  <h2>Κόλλημα κειμένων</h2>
-  <p>Με το <code>+</code> κολλάς κείμενα μεταξύ τους. Πρόσεξε όμως: δεν βάζει κενό μόνο του!</p>
-  <div class="try" data-id="s2-3"><script type="text/plain">
-    print("Καλη" + "μέρα")
-    print("Γεια" + "σου")
-    print("Γεια" + " " + "σου")
-  </script></div>
+  <div class="predict" data-p="p8" data-answer="3">
+    <p class="pq">Τι θα βάλει η Python μέσα στο κουτάκι <code>zwo</code>;</p>
+    <script type="text/plain">zwo = input("Ποιο είναι το αγαπημένο σου ζώο; ")</script>
+    <ol class="opts"><li>Τη λέξη «zwo»</li><li>Την ερώτηση «Ποιο είναι το αγαπημένο σου ζώο;»</li><li>Πάντα τη λέξη «σκύλος»</li><li>Ό,τι γράψει ο χρήστης στο παραθυράκι</li></ol>
+    <p class="why">Η <code>input</code> δείχνει την ερώτηση και δίνει πίσω ό,τι απαντήσει ο χρήστης.</p>
+  </div>
 
-  <div class="ex" data-ex="e3" data-title="Ο ευγενικός υπολογιστής">
-    <p>Γράψε ένα πρόγραμμα που ρωτάει το όνομα του χρήστη και μετά τον χαιρετάει, π.χ. <code>Γεια σου, Νίκο!</code></p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Η πρώτη γραμμή είναι έτοιμη. Πρόσθεσε μια <code>print</code> που χρησιμοποιεί τη μεταβλητή <code>onoma</code> (χωρίς εισαγωγικά γύρω της!).</p></details>
+  <div class="ex" data-ex="e17" data-title="Ο ευγενικός υπολογιστής" data-kind="Άλλαξε">
+    <p>Η ερώτηση είναι έτοιμη. Πρόσθεσε μια <code>print</code> που χαιρετάει τον χρήστη με το όνομά του, π.χ. <code>Γεια σου, Νίκο!</code></p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Μοιάζει πολύ με το παράδειγμα πιο πάνω. Η μεταβλητή <code>onoma</code> μπαίνει στην <code>print</code> <strong>χωρίς</strong> εισαγωγικά, χωρισμένη με κόμμα από το «Γεια σου».</p></details>
     <script type="text/plain" class="starter">
       onoma = input("Πώς σε λένε; ")
       # γράψε εδώ την print
     </script>
-    <p class="more">Θες κι άλλο; Ρώτα και το αγαπημένο του φαγητό και απάντησε «Μμμ, κι εμένα μου αρέσει!».</p>
   </div>
 
-  <div class="ex" data-ex="e4" data-title="Γεννήτρια υπερήρωα">
+  <div class="ex" data-ex="e18" data-title="Γεννήτρια υπερήρωα" data-kind="Γράψε">
     <p>Ρώτα ένα <strong>χρώμα</strong> και ένα <strong>ζώο</strong>. Μετά τύπωσε το όνομα του υπερήρωα, π.χ. <code>Ο υπερήρωάς σου είναι: Κόκκινος Πάνθηρας!</code></p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Χρειάζεσαι δύο <code>input</code>, μία για κάθε ερώτηση, σε δύο διαφορετικές μεταβλητές. Μετά μια <code>print</code> με τις δύο μεταβλητές χωρισμένες με κόμμα.</p></details>
+    <details class="hint"><summary>Βοήθεια</summary><p>Χρειάζεσαι δύο <code>input</code>, μία για κάθε ερώτηση, σε δύο διαφορετικά κουτάκια. Μετά μια <code>print</code> με τα δύο κουτάκια χωρισμένα με κόμμα.</p></details>
+    <details class="hint"><summary>Κι άλλη βοήθεια</summary><p>Η δεύτερη γραμμή: <code>zwo = input("Πες μου ένα ζώο: ")</code>. Η τρίτη: <code>print("Ο υπερήρωάς σου είναι:", xroma, zwo)</code></p></details>
     <script type="text/plain" class="starter">
       xroma = input("Πες μου ένα χρώμα: ")
       # ρώτα ένα ζώο
@@ -388,326 +853,188 @@ footer button{background:none;border:0;color:var(--muted);text-decoration:underl
   </div>
 </section>
 
-<!-- ============ 3. ΑΡΙΘΜΟΙ ============ -->
-<section class="step" data-title="Αριθμοί και λογαριασμοί" data-num="3">
-  <div class="kicker">Βήμα 3</div>
-  <h1>Αριθμοί και λογαριασμοί</h1>
-  <p class="lead">Η Python είναι το πιο γρήγορο κομπιουτεράκι που έχεις δει. Κάνει λογαριασμούς σε κλάσματα του δευτερολέπτου.</p>
+<!-- ============ 9. INT ============ -->
+<section class="step" data-title="Αριθμοί από τον χρήστη" data-num="9">
+  <div class="kicker">Μάθημα 9</div>
+  <h1>Αριθμοί από τον χρήστη</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> πώς κάνεις λογαριασμούς με την απάντηση του χρήστη.</span><span class="time">⏱ περίπου 30 λεπτά</span></div>
+  <p class="lead">Δοκίμασε αυτό το πρόγραμμα. Γράψε τον αριθμό <strong>5</strong> στο παραθυράκι και δες τι θα γίνει…</p>
 
-  <div class="table-scroll"><table class="ref">
-    <tr><th>Σύμβολο</th><th>Τι κάνει</th><th>Παράδειγμα</th><th>Αποτέλεσμα</th></tr>
-    <tr><td><code>+</code></td><td>πρόσθεση</td><td><code>5 + 3</code></td><td>8</td></tr>
-    <tr><td><code>-</code></td><td>αφαίρεση</td><td><code>5 - 3</code></td><td>2</td></tr>
-    <tr><td><code>*</code></td><td>πολλαπλασιασμός</td><td><code>5 * 3</code></td><td>15</td></tr>
-    <tr><td><code>/</code></td><td>διαίρεση</td><td><code>7 / 2</code></td><td>3.5</td></tr>
-    <tr><td><code>//</code></td><td>ακέραια διαίρεση</td><td><code>7 // 2</code></td><td>3</td></tr>
-    <tr><td><code>%</code></td><td>υπόλοιπο διαίρεσης</td><td><code>7 % 2</code></td><td>1</td></tr>
-    <tr><td><code>**</code></td><td>δύναμη</td><td><code>2 ** 3</code></td><td>8</td></tr>
-  </table></div>
-
-  <div class="try" data-id="s3-1"><script type="text/plain">
-    print(7 * 8)
-    print(100 / 4)
-    print(2 ** 10)
-    print((3 + 4) * 2)
-    print(3 + 4 * 2)
+  <div class="try" data-id="s9-1"><script type="text/plain">
+    x = input("Γράψε έναν αριθμό: ")
+    print("Επί 3 κάνει:", x * 3)
   </script></div>
-  <p>Όπως στα μαθηματικά, ο πολλαπλασιασμός γίνεται πριν από την πρόσθεση, εκτός αν βάλεις παρενθέσεις. Οι δεκαδικοί αριθμοί γράφονται με <strong>τελεία</strong>: <code>2.5</code>, όχι <code>2,5</code>.</p>
+  <p>Βγήκε <strong>555</strong> αντί για 15! Γιατί; Η <code>input</code> δίνει πάντα <strong>κείμενο</strong>, ακόμα κι αν γράψεις αριθμό. Για την Python, το <code>"5"</code> είναι σαν τη λέξη «πέντε». Κείμενο επί 3 σημαίνει «γράψ' το 3 φορές»!</p>
 
-  <div class="callout oops"><span class="tag">Συχνό λάθος</span>
-    <p>Η <code>input</code> δίνει πάντα <strong>κείμενο</strong>, ακόμα κι αν γράψεις αριθμό. Για την Python, το <code>"12"</code> (κείμενο) δεν είναι το ίδιο με το <code>12</code> (αριθμός). Για να κάνεις λογαριασμούς, μετάτρεψέ το σε αριθμό με την <code>int()</code>.</p>
+  <h2>Η int() κάνει το κείμενο αριθμό</h2>
+  <p>Για να κάνεις λογαριασμούς, μετατρέπεις το κείμενο σε αριθμό με την <code>int()</code>:</p>
+  <div class="try" data-id="s9-2"><script type="text/plain">
+    apantisi = input("Γράψε έναν αριθμό: ")
+    arithmos = int(apantisi)
+    print("Επί 3 κάνει:", arithmos * 3)
+  </script></div>
+  <p>Τώρα βγαίνει 15. Οι προγραμματιστές συνήθως τα γράφουν όλα σε μία γραμμή, βάζοντας την <code>input</code> <strong>μέσα</strong> στην <code>int</code>. Κάνει ακριβώς το ίδιο:</p>
+  <div class="try" data-id="s9-3"><script type="text/plain">
+    arithmos = int(input("Γράψε έναν αριθμό: "))
+    print("Επί 3 κάνει:", arithmos * 3)
+  </script></div>
+
+  <div class="predict" data-p="p9" data-answer="1">
+    <p class="pq">Τι θα εμφανίσει;</p>
+    <script type="text/plain">
+      x = "4"
+      print(x * 2)
+    </script>
+    <ol class="opts"><li>8</li><li>44</li><li>Σφάλμα</li><li>4 4</li></ol>
+    <p class="why">Το "4" έχει εισαγωγικά, άρα είναι κείμενο. Κείμενο επί 2 σημαίνει «γράψ' το δύο φορές»: 44.</p>
   </div>
-  <div class="try" data-id="s3-2"><script type="text/plain">
-    ilikia = int(input("Πόσων χρονών είσαι; "))
-    print("Του χρόνου θα είσαι", ilikia + 1)
-  </script></div>
-  <p>Πείραμα: σβήσε το <code>int(</code> και την τελευταία <code>)</code> της πρώτης γραμμής και τρέξε το. Τι λέει το σφάλμα;</p>
 
-  <div class="ex" data-ex="e5" data-title="Σκυλίσια χρόνια">
+  <div class="ex" data-ex="e19" data-title="Σκυλίσια χρόνια" data-kind="Γράψε">
     <p>Λένε ότι ένας χρόνος για τον άνθρωπο είναι σαν 7 χρόνια για τον σκύλο. Ρώτα την ηλικία του χρήστη και τύπωσε πόσων χρονών θα ήταν αν ήταν σκύλος.</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Πολλαπλασίασε την ηλικία με το 7: <code>ilikia * 7</code>.</p></details>
+    <details class="hint"><summary>Βοήθεια</summary><p>Η πρώτη γραμμή είναι έτοιμη και έχει ήδη την <code>int</code>. Τώρα τύπωσε <code>ilikia * 7</code>.</p></details>
     <script type="text/plain" class="starter">
       ilikia = int(input("Πόσων χρονών είσαι; "))
       # τύπωσε την ηλικία σε σκυλίσια χρόνια
     </script>
-    <p class="more">Θες κι άλλο; Υπολόγισε περίπου πόσες μέρες έχεις ζήσει (κάθε χρόνος έχει 365 μέρες).</p>
   </div>
 
-  <div class="ex" data-ex="e6" data-title="Η πιτσαρία της γειτονιάς">
+  <div class="ex" data-ex="e20" data-title="Η πιτσαρία της γειτονιάς" data-kind="Γράψε">
     <p>Ένα κομμάτι πίτσα κοστίζει <strong>2.5 €</strong>. Ρώτα πόσα κομμάτια θέλει ο πελάτης και τύπωσε πόσα πρέπει να πληρώσει.</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Φτιάξε μια μεταβλητή <code>timi = 2.5</code>. Το σύνολο είναι <code>kommatia * timi</code>.</p></details>
+    <details class="hint"><summary>Βοήθεια</summary><p>Το σύνολο είναι <code>kommatia * timi</code>.</p></details>
     <script type="text/plain" class="starter">
       timi = 2.5
       kommatia = int(input("Πόσα κομμάτια θέλεις; "))
       # υπολόγισε και τύπωσε το σύνολο
     </script>
-    <p class="more">Θες κι άλλο; Ρώτα πόσα χρήματα δίνει ο πελάτης και υπολόγισε τα ρέστα. Για δεκαδικούς χρησιμοποίησε <code>float()</code> αντί για <code>int()</code>.</p>
+  </div>
+
+  <div class="ex" data-ex="e21" data-title="Η χελώνα ρωτάει" data-kind="Άλλαξε">
+    <p>Τώρα ο χρήστης διαλέγει πόσο μεγάλο θα είναι το τετράγωνο! Άλλαξε την πρώτη γραμμή ώστε η <code>plevra</code> να έρχεται από μια ερώτηση.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Αντί για <code>plevra = 100</code>, γράψε <code>plevra = int(input("Πόσο μεγάλη πλευρά; "))</code>. Μην ξεχάσεις την <code>int</code>!</p></details>
+    <script type="text/plain" class="starter">
+      plevra = 100
+
+      import turtle
+      t = turtle.Turtle()
+      for i in range(4):
+          t.forward(plevra)
+          t.right(90)
+    </script>
   </div>
 </section>
 
-<!-- ============ 4. ΧΕΛΩΝΑ ============ -->
-<section class="step" data-title="Η χελώνα ζωγραφίζει" data-num="4">
-  <div class="kicker">Βήμα 4</div>
-  <h1>Η χελώνα ζωγραφίζει</h1>
-  <p class="lead">Φαντάσου μια χελώνα στη μέση ενός χαρτιού, με έναν μαρκαδόρο κολλημένο στην ουρά της. Όπου περπατάει, αφήνει γραμμή. Εσύ της δίνεις τις οδηγίες!</p>
-
-  <div class="try" data-id="s4-1"><script type="text/plain">
-    import turtle
-    t = turtle.Turtle()
-
-    t.forward(100)
-    t.left(90)
-    t.forward(50)
-  </script></div>
-  <p>Η γραμμή <code>import turtle</code> φέρνει τη βιβλιοθήκη της χελώνας. Η <code>t = turtle.Turtle()</code> φτιάχνει μια χελώνα με όνομα <code>t</code>. Μετά, κάθε εντολή για τη χελώνα ξεκινά με <code>t.</code></p>
-
-  <h2>Οι εντολές της χελώνας</h2>
-  <div class="table-scroll"><table class="ref">
-    <tr><th>Εντολή</th><th>Τι κάνει</th></tr>
-    <tr><td><code>t.forward(100)</code></td><td>προχωράει 100 βήματα</td></tr>
-    <tr><td><code>t.backward(50)</code></td><td>πάει πίσω 50 βήματα</td></tr>
-    <tr><td><code>t.left(90)</code></td><td>στρίβει αριστερά 90 μοίρες</td></tr>
-    <tr><td><code>t.right(90)</code></td><td>στρίβει δεξιά 90 μοίρες</td></tr>
-    <tr><td><code>t.penup()</code> / <code>t.pendown()</code></td><td>σηκώνει / κατεβάζει τον μαρκαδόρο</td></tr>
-    <tr><td><code>t.goto(0, 100)</code></td><td>πηγαίνει στο σημείο (0, 100)</td></tr>
-    <tr><td><code>t.color("red")</code></td><td>αλλάζει χρώμα</td></tr>
-    <tr><td><code>t.pensize(5)</code></td><td>αλλάζει πάχος γραμμής</td></tr>
-    <tr><td><code>t.circle(50)</code></td><td>κάνει κύκλο με ακτίνα 50</td></tr>
-    <tr><td><code>t.dot(20)</code></td><td>κάνει μια τελεία μεγέθους 20</td></tr>
-    <tr><td><code>t.speed(0)</code></td><td>η χελώνα πάει πολύ γρήγορα (1 = αργά, 10 = γρήγορα, 0 = αστραπή)</td></tr>
-    <tr><td><code>turtle.bgcolor("lightblue")</code></td><td>αλλάζει το χρώμα του φόντου</td></tr>
-  </table></div>
-
-  <div class="callout tip"><span class="tag">Χρώματα</span>
-    <p>Τα χρώματα γράφονται στα αγγλικά: <code>"red"</code>, <code>"blue"</code>, <code>"green"</code>, <code>"orange"</code>, <code>"purple"</code>, <code>"pink"</code>, <code>"gold"</code>, <code>"black"</code>, <code>"brown"</code>, <code>"skyblue"</code>…</p>
-  </div>
-
-  <div class="try" data-id="s4-2"><script type="text/plain">
-    import turtle
-    t = turtle.Turtle()
-
-    t.color("purple")
-    t.pensize(4)
-    t.circle(60)
-
-    t.penup()
-    t.goto(-25, 150)
-    t.pendown()
-    t.color("orange")
-    t.dot(30)
-  </script></div>
-
-  <div class="callout fun"><span class="tag">Μοίρες</span>
-    <p>Μια ολόκληρη βόλτα γύρω-γύρω είναι <strong>360 μοίρες</strong>. Μισή βόλτα είναι 180°. Η στροφή 90° κάνει γωνία όπως η γωνία ενός τετραγώνου.</p>
-  </div>
-
-  <div class="ex" data-ex="e7" data-title="Το τετράγωνο">
-    <p>Βάλε τη χελώνα να ζωγραφίσει ένα <strong>τετράγωνο</strong> με πλευρά 100. Θα πρέπει να γυρίσει εκεί απ' όπου ξεκίνησε.</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Το τετράγωνο έχει 4 πλευρές. Για καθεμία: προχώρα 100 και στρίψε 90 μοίρες. Δηλαδή τέσσερις φορές το ζευγάρι <code>t.forward(100)</code> και <code>t.right(90)</code>.</p></details>
-    <script type="text/plain" class="starter">
-      import turtle
-      t = turtle.Turtle()
-
-      t.forward(100)
-      t.right(90)
-      # συνέχισε...
-    </script>
-  </div>
-
-  <div class="ex" data-ex="e8" data-title="Το τρίγωνο">
-    <p>Ζωγράφισε ένα <strong>ισόπλευρο τρίγωνο</strong> με πλευρά 120. Πόσες μοίρες πρέπει να στρίβει η χελώνα;</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Για να κλείσει το σχήμα, η χελώνα πρέπει να κάνει μια ολόκληρη βόλτα (360°) σε 3 στροφές. Άρα κάθε στροφή είναι 360 ÷ 3 = 120 μοίρες.</p></details>
-    <script type="text/plain" class="starter">
-      import turtle
-      t = turtle.Turtle()
-      t.color("green")
-
-    </script>
-    <p class="more">Θες κι άλλο; Πάνω στο τετράγωνο βάλε ένα τρίγωνο για σκεπή και φτιάξε ένα σπίτι!</p>
-  </div>
-</section>
-
-<!-- ============ 5. ΕΠΑΝΑΛΗΨΕΙΣ ============ -->
-<section class="step" data-title="Επαναλήψεις" data-num="5">
-  <div class="kicker">Βήμα 5</div>
-  <h1>Επαναλήψεις με το for</h1>
-  <p class="lead">Στο τετράγωνο έγραψες τέσσερις φορές τα ίδια. Οι προγραμματιστές βαριούνται να γράφουν ξανά και ξανά το ίδιο πράγμα. Γι' αυτό υπάρχει το <code>for</code>.</p>
-
-  <div class="try" data-id="s5-1"><script type="text/plain">
-    for i in range(5):
-        print("Γεια!", i)
-  </script></div>
-  <p>Οι γραμμές με <strong>εσοχή</strong> (τα 4 κενά στην αρχή) είναι αυτές που επαναλαμβάνονται. Το <code>range(5)</code> μετράει 0, 1, 2, 3, 4. Είναι πέντε αριθμοί, αλλά ξεκινάει από το 0! Αν θες να μετρήσεις από 1 έως 10, γράφεις <code>range(1, 11)</code>.</p>
-
-  <div class="callout oops"><span class="tag">Συχνό λάθος</span>
-    <p>Το <code>for</code> θέλει <strong>άνω-κάτω τελεία</strong> <code>:</code> στο τέλος της γραμμής, και οι γραμμές από κάτω θέλουν <strong>εσοχή</strong>. Πάτα <kbd>Tab</kbd> για να μπουν τα 4 κενά.</p>
-  </div>
-
-  <h2>Το τετράγωνο με for</h2>
-  <div class="try" data-id="s5-2"><script type="text/plain">
-    import turtle
-    t = turtle.Turtle()
-
-    for i in range(4):
-        t.forward(100)
-        t.right(90)
-
-    print("Έτοιμο!")
-  </script></div>
-  <p>Το <code>print("Έτοιμο!")</code> δεν έχει εσοχή, άρα δεν είναι μέσα στην επανάληψη. Τρέχει μία φορά, στο τέλος. Δοκίμασε να αλλάξεις το 4 σε 6 και τη γωνία σε 60. Τι σχήμα βγαίνει;</p>
-
-  <h2>Λίστες</h2>
-  <p>Μια <strong>λίστα</strong> κρατάει πολλές τιμές μαζί, μέσα σε αγκύλες <code>[ ]</code>. Το <code>for</code> μπορεί να περάσει μία-μία όλες τις τιμές της.</p>
-  <div class="try" data-id="s5-3"><script type="text/plain">
-    import turtle
-    t = turtle.Turtle()
-    t.pensize(8)
-
-    xromata = ["red", "orange", "gold", "green", "blue", "purple"]
-    for x in xromata:
-        print("Τώρα ζωγραφίζω με", x)
-        t.color(x)
-        t.forward(50)
-        t.left(60)
-  </script></div>
-
-  <div class="ex" data-ex="e9" data-title="Μετράμε μέχρι το 10">
-    <p>Με ένα <code>for</code>, τύπωσε τους αριθμούς από το <strong>1 έως το 10</strong>, έναν σε κάθε γραμμή.</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Θυμήσου ότι το <code>range(1, 11)</code> μετράει από 1 έως 10 (το 11 δεν το φτάνει ποτέ). Μέσα στην επανάληψη γράψε <code>print(i)</code>.</p></details>
-    <script type="text/plain" class="starter">
-      for i in range(...):
-          print(...)
-    </script>
-  </div>
-
-  <div class="ex" data-ex="e10" data-title="Το αστέρι">
-    <p>Ζωγράφισε ένα αστέρι: επανάλαβε <strong>5 φορές</strong> «προχώρα 150, στρίψε δεξιά 144 μοίρες».</p>
-    <script type="text/plain" class="starter">
-      import turtle
-      t = turtle.Turtle()
-      t.color("gold")
-      t.pensize(3)
-
-    </script>
-    <p class="more">Θες κι άλλο; Κάν' το κόκκινο με κίτρινο γέμισμα: γράψε <code>t.color("red", "yellow")</code> και <code>t.begin_fill()</code> πριν από την επανάληψη, και <code>t.end_fill()</code> μετά.</p>
-  </div>
-
-  <div class="ex" data-ex="e11" data-title="Η μαγική σπείρα">
-    <p>Συμπλήρωσε την επανάληψη: σε κάθε γύρο η χελώνα να προχωράει <code>i * 3</code> βήματα και να στρίβει 91 μοίρες. Θα δεις μια πολύχρωμη σπείρα!</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Μέσα στο <code>for</code> (με εσοχή) πρόσθεσε <code>t.forward(i * 3)</code> και <code>t.right(91)</code>. Το <code>xromata[i % 6]</code> διαλέγει τα χρώματα με τη σειρά, ξανά και ξανά.</p></details>
-    <script type="text/plain" class="starter">
-      import turtle
-      turtle.bgcolor("black")
-      t = turtle.Turtle()
-      t.speed(0)
-      xromata = ["red", "orange", "yellow", "green", "blue", "purple"]
-
-      for i in range(100):
-          t.color(xromata[i % 6])
-          # προχώρα i * 3 βήματα και στρίψε 91 μοίρες
-    </script>
-    <p class="more">Θες κι άλλο; Δοκίμασε άλλες γωνίες: 89, 120, 145… Κάθε αριθμός φτιάχνει άλλο σχέδιο!</p>
-  </div>
-</section>
-
-<!-- ============ 6. IF ============ -->
-<section class="step" data-title="Αποφάσεις με if" data-num="6">
-  <div class="kicker">Βήμα 6</div>
+<!-- ============ 10. IF ============ -->
+<section class="step" data-title="Αποφάσεις με if" data-num="10">
+  <div class="kicker">Μάθημα 10</div>
   <h1>Αποφάσεις με το if</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> πώς αποφασίζει το πρόγραμμα τι θα κάνει.</span><span class="time">⏱ περίπου 30 λεπτά</span></div>
   <p class="lead">Τα προγράμματα μπορούν να αποφασίζουν: «<em>αν</em> συμβαίνει αυτό, κάνε εκείνο, <em>αλλιώς</em> κάνε κάτι άλλο».</p>
 
-  <div class="try" data-id="s6-1"><script type="text/plain">
-    vathmos = int(input("Τι βαθμό πήρες στο διαγώνισμα (1-20); "))
+  <div class="try" data-id="s10-1"><script type="text/plain">
+    ilikia = int(input("Πόσων χρονών είσαι; "))
 
-    if vathmos >= 18:
-        print("Άριστα! Μπράβο σου!")
-    elif vathmos >= 10:
-        print("Πέρασες! Συνέχισε έτσι.")
+    if ilikia >= 12:
+        print("Είσαι στο Γυμνάσιο ή πιο μεγάλος!")
     else:
-        print("Την επόμενη φορά θα τα πας καλύτερα!")
+        print("Είσαι ακόμα στο Δημοτικό!")
   </script></div>
-  <p>Η Python ελέγχει τις συνθήκες με τη σειρά. Το <code>if</code> σημαίνει «αν», το <code>elif</code> σημαίνει «αλλιώς, αν» και το <code>else</code> σημαίνει «σε κάθε άλλη περίπτωση». Τρέξε το πολλές φορές με διαφορετικούς βαθμούς.</p>
+  <p>Το <code>if</code> σημαίνει «αν» και το <code>else</code> σημαίνει «αλλιώς». Όπως στο <code>for</code>, θέλουν <strong>άνω-κάτω τελεία</strong> και οι γραμμές από κάτω θέλουν <strong>εσοχή</strong>. Τρέξε το δύο φορές, με 10 και με 13.</p>
 
   <div class="table-scroll"><table class="ref">
     <tr><th>Σύγκριση</th><th>Σημαίνει</th><th>Παράδειγμα που ισχύει</th></tr>
     <tr><td><code>==</code></td><td>ίσο</td><td><code>5 == 5</code></td></tr>
     <tr><td><code>!=</code></td><td>διαφορετικό</td><td><code>5 != 3</code></td></tr>
-    <tr><td><code>&lt;</code> / <code>&gt;</code></td><td>μικρότερο / μεγαλύτερο</td><td><code>3 &lt; 5</code></td></tr>
-    <tr><td><code>&lt;=</code> / <code>&gt;=</code></td><td>μικρότερο ή ίσο / μεγαλύτερο ή ίσο</td><td><code>5 &gt;= 5</code></td></tr>
+    <tr><td><code>&lt;</code></td><td>μικρότερο</td><td><code>3 &lt; 5</code></td></tr>
+    <tr><td><code>&gt;</code></td><td>μεγαλύτερο</td><td><code>5 &gt; 3</code></td></tr>
+    <tr><td><code>&gt;=</code></td><td>μεγαλύτερο ή ίσο</td><td><code>5 &gt;= 5</code></td></tr>
   </table></div>
 
   <div class="callout oops"><span class="tag">Συχνό λάθος</span>
-    <p>Το <code>=</code> (ένα ίσον) βάζει τιμή σε μεταβλητή. Το <code>==</code> (δύο ίσον) <strong>ρωτάει</strong> αν δύο πράγματα είναι ίσα. Στο <code>if</code> θέλεις σχεδόν πάντα το <code>==</code>.</p>
+    <p>Το <code>=</code> (ένα ίσον) βάζει τιμή σε κουτάκι. Το <code>==</code> (δύο ίσον) <strong>ρωτάει</strong> αν δύο πράγματα είναι ίσα. Στο <code>if</code> θέλεις το <code>==</code>.</p>
   </div>
 
-  <h2>Ζυγός ή μονός;</h2>
-  <p>Θυμάσαι το <code>%</code> από το Βήμα 3; Δίνει το υπόλοιπο της διαίρεσης. Ένας αριθμός είναι ζυγός όταν το υπόλοιπο της διαίρεσής του με το 2 είναι 0.</p>
-  <div class="try" data-id="s6-2"><script type="text/plain">
-    print(8 % 2)
-    print(7 % 2)
-    print(15 % 2)
-  </script></div>
+  <div class="predict" data-p="p10" data-answer="1">
+    <p class="pq">Τι θα εμφανίσει;</p>
+    <script type="text/plain">
+      x = 7
+      if x > 10:
+          print("Μεγάλος")
+      else:
+          print("Μικρός")
+    </script>
+    <ol class="opts"><li>Μεγάλος</li><li>Μικρός</li><li>Μεγάλος και Μικρός</li><li>Τίποτα</li></ol>
+    <p class="why">Το 7 δεν είναι μεγαλύτερο από το 10, άρα η Python πηγαίνει στο <code>else</code>.</p>
+  </div>
 
-  <div class="ex" data-ex="e12" data-title="Ο μυστικός κωδικός">
+  <div class="ex" data-ex="e22" data-title="Το κουίζ της πρωτεύουσας" data-kind="Άλλαξε">
+    <p>Το πρόγραμμα λέει «Σωστά!» όταν η απάντηση είναι σωστή, αλλά δεν λέει τίποτα όταν είναι λάθος. Πρόσθεσε ένα <code>else</code> που τυπώνει <code>Λάθος! Είναι η Αθήνα.</code></p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Το <code>else:</code> γράφεται <strong>χωρίς</strong> εσοχή, στο ίδιο ύψος με το <code>if</code>. Η <code>print</code> από κάτω του θέλει εσοχή.</p></details>
+    <script type="text/plain" class="starter">
+      apantisi = input("Ποια είναι η πρωτεύουσα της Ελλάδας; ")
+
+      if apantisi == "Αθήνα":
+          print("Σωστά!")
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e23" data-title="Ο μυστικός κωδικός" data-kind="Γράψε">
     <p>Ρώτα τον χρήστη τον κωδικό. Αν γράψει <code>python123</code>, τύπωσε <code>Καλώς ήρθες, πράκτορα!</code>. Αλλιώς τύπωσε <code>Πρόσβαση απαγορεύεται!</code></p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Χρησιμοποίησε <code>if kodikos == "python123":</code> και ένα <code>else:</code>. Μην ξεχάσεις τις άνω-κάτω τελείες και τις εσοχές!</p></details>
+    <details class="hint"><summary>Βοήθεια</summary><p>Μοιάζει με την προηγούμενη άσκηση: <code>if kodikos == "python123":</code>, μετά <code>else:</code>.</p></details>
     <script type="text/plain" class="starter">
       kodikos = input("Γράψε τον μυστικό κωδικό: ")
 
     </script>
-    <p class="more">Θες κι άλλο; Δώσε στον χρήστη 3 προσπάθειες.</p>
   </div>
 
-  <div class="ex" data-ex="e13" data-title="Ζυγός ή μονός;">
-    <p>Ρώτα έναν αριθμό και τύπωσε <code>ζυγός</code> αν είναι ζυγός ή <code>μονός</code> αν είναι μονός.</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Μην ξεχάσεις το <code>int()</code>! Μετά: <code>if arithmos % 2 == 0:</code></p></details>
+  <div class="ex" data-ex="e24" data-title="Μπορώ να ψηφίσω;" data-kind="Γράψε">
+    <p>Ρώτα την ηλικία. Αν είναι <strong>18 ή μεγαλύτερη</strong>, τύπωσε <code>Μπορείς να ψηφίσεις!</code>. Αλλιώς τύπωσε <code>Όχι ακόμα!</code></p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Μην ξεχάσεις την <code>int</code> γύρω από την <code>input</code>. Για «18 ή μεγαλύτερο» χρησιμοποίησε <code>&gt;=</code>.</p></details>
     <script type="text/plain" class="starter">
-      arithmos = int(input("Γράψε έναν αριθμό: "))
+      ilikia = int(input("Πόσων χρονών είσαι; "))
 
     </script>
   </div>
 </section>
 
-<!-- ============ 7. RANDOM ============ -->
-<section class="step" data-title="Τύχη και παιχνίδια" data-num="7">
-  <div class="kicker">Βήμα 7</div>
-  <h1>Τύχη και παιχνίδια</h1>
-  <p class="lead">Τα παιχνίδια χρειάζονται λίγη τύχη: ένα ζάρι, μια τυχαία κάρτα, έναν κρυμμένο αριθμό. Αυτό το κάνει η βιβλιοθήκη <code>random</code>.</p>
+<!-- ============ 11. RANDOM ============ -->
+<section class="step" data-title="Τύχη με random" data-num="11">
+  <div class="kicker">Μάθημα 11</div>
+  <h1>Λίγη τύχη με το random</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> τυχαίοι αριθμοί για παιχνίδια και ζωγραφιές.</span><span class="time">⏱ περίπου 25 λεπτά</span></div>
+  <p class="lead">Τα παιχνίδια χρειάζονται τύχη: ένα ζάρι, μια τυχαία κάρτα, έναν κρυμμένο αριθμό. Αυτό το κάνει η βιβλιοθήκη <code>random</code>.</p>
 
-  <div class="try" data-id="s7-1"><script type="text/plain">
+  <div class="try" data-id="s11-1"><script type="text/plain">
     import random
 
     zari = random.randint(1, 6)
     print("Το ζάρι έφερε:", zari)
-
-    frouta = ["μήλο", "μπανάνα", "κεράσι", "καρπούζι"]
-    print("Σήμερα θα φας:", random.choice(frouta))
   </script></div>
-  <p>Τρέξε το πολλές φορές: κάθε φορά βγαίνει κάτι διαφορετικό! Το <code>random.randint(1, 6)</code> δίνει έναν τυχαίο ακέραιο από 1 έως 6. Το <code>random.choice(...)</code> διαλέγει κάτι τυχαίο από μια λίστα.</p>
+  <p>Τρέξε το πολλές φορές: κάθε φορά βγαίνει κάτι διαφορετικό! Το <code>random.randint(1, 6)</code> δίνει έναν τυχαίο ακέραιο από το 1 μέχρι <strong>και</strong> το 6.</p>
 
-  <h2>Επανάληψη με while</h2>
-  <p>Το <code>while</code> επαναλαμβάνει κάτι <strong>όσο</strong> ισχύει μια συνθήκη. Είναι χρήσιμο όταν δεν ξέρεις από πριν πόσες φορές θα χρειαστεί.</p>
-  <div class="try" data-id="s7-2"><script type="text/plain">
+  <h2>Τυχαία ζωγραφιά</h2>
+  <div class="try" data-id="s11-2"><script type="text/plain">
+    import turtle
     import random
+    t = turtle.Turtle()
+    t.speed(0)
+    t.penup()
 
-    apantiseis = ["Σίγουρα!", "Μάλλον όχι...", "Ρώτα ξανά αύριο",
-                  "Τα άστρα λένε ναι", "Ούτε να το σκέφτεσαι!"]
-
-    erotisi = input("Κάνε μια ερώτηση στη μαγική μπάλα (ή γράψε τέλος): ")
-    while erotisi != "τέλος":
-        print("🔮", random.choice(apantiseis))
-        erotisi = input("Άλλη ερώτηση; (ή γράψε τέλος): ")
-
-    print("Η μαγική μπάλα πάει για ύπνο. Αντίο!")
+    for i in range(30):
+        x = random.randint(-180, 180)
+        y = random.randint(-180, 180)
+        t.goto(x, y)
+        t.dot(random.randint(5, 30))
   </script></div>
 
-  <div class="callout oops"><span class="tag">Προσοχή</span>
-    <p>Το <code>while</code> πρέπει κάποια στιγμή να σταματάει! Αν η συνθήκη ισχύει πάντα, το πρόγραμμα τρέχει για πάντα. Εδώ η σελίδα θα το σταματήσει για σένα και θα σου το πει.</p>
+  <div class="predict" data-p="p11" data-answer="2">
+    <p class="pq">Ποιους αριθμούς μπορεί να δώσει το <code>random.randint(1, 3)</code>;</p>
+    <ol class="opts"><li>Μόνο το 1 ή το 3</li><li>Οποιονδήποτε αριθμό</li><li>Το 1, το 2 ή το 3</li><li>Πάντα το 2</li></ol>
+    <p class="why">Δίνει έναν τυχαίο ακέραιο ανάμεσα στους δύο αριθμούς, μαζί και με τους δύο.</p>
   </div>
 
-  <div class="ex" data-ex="e14" data-title="Το ζάρι">
+  <div class="ex" data-ex="e25" data-title="Το ζάρι" data-kind="Γράψε">
     <p>Φτιάξε ένα ηλεκτρονικό ζάρι: τύπωσε έναν <strong>τυχαίο αριθμό από 1 έως 6</strong>.</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Ξεκίνα με <code>import random</code> και χρησιμοποίησε <code>random.randint(1, 6)</code>.</p></details>
+    <details class="hint"><summary>Βοήθεια</summary><p>Κοίτα το πρώτο παράδειγμα του μαθήματος.</p></details>
     <script type="text/plain" class="starter">
       import random
 
@@ -715,13 +1042,203 @@ footer button{background:none;border:0;color:var(--muted);text-decoration:underl
     <p class="more">Θες κι άλλο; Ρίξε δύο ζάρια και τύπωσε και το άθροισμά τους.</p>
   </div>
 
-  <div class="ex" data-ex="e15" data-title="Μάντεψε τον αριθμό">
-    <p>Ο υπολογιστής κρύβει έναν αριθμό από 1 έως 20. Μέσα στο <code>while</code>, πρόσθεσε τις βοήθειες:</p>
+  <div class="ex" data-ex="e26" data-title="Ο έναστρος ουρανός" data-kind="Άλλαξε">
+    <p>Η χελώνα βάζει 20 αστεράκια, αλλά όλα στο ίδιο σημείο! Άλλαξε το <code>goto</code> ώστε κάθε αστεράκι να πηγαίνει σε <strong>τυχαία θέση</strong>.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Στη θέση των δύο μηδενικών, βάλε <code>random.randint(-180, 180)</code>. Κοίτα το παράδειγμα «Τυχαία ζωγραφιά».</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      import random
+      turtle.bgcolor("midnightblue")
+      t = turtle.Turtle()
+      t.speed(0)
+      t.color("white")
+      t.penup()
+
+      for i in range(20):
+          t.goto(0, 0)
+          t.dot(6)
+    </script>
+  </div>
+</section>
+
+<!-- ============ 12. ΛΙΣΤΕΣ ============ -->
+<section class="step" data-title="Λίστες" data-num="12">
+  <div class="kicker">Μάθημα 12</div>
+  <h1>Λίστες</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> πώς κρατάς πολλά πράγματα μαζί.</span><span class="time">⏱ περίπου 25 λεπτά</span></div>
+  <p class="lead">Μια <strong>λίστα</strong> είναι ένα κουτάκι που χωράει πολλές τιμές. Γράφεται με αγκύλες <code>[ ]</code> και οι τιμές χωρίζονται με κόμμα.</p>
+
+  <div class="try" data-id="s12-1"><script type="text/plain">
+    frouta = ["μήλο", "μπανάνα", "κεράσι", "καρπούζι"]
+    print(frouta)
+  </script></div>
+
+  <h2>Το for περνάει όλη τη λίστα</h2>
+  <p>Με το <code>for</code> παίρνεις τις τιμές μία-μία. Εδώ σε κάθε γύρο το <code>frouto</code> έχει άλλο φρούτο:</p>
+  <div class="try" data-id="s12-2"><script type="text/plain">
+    frouta = ["μήλο", "μπανάνα", "κεράσι", "καρπούζι"]
+    for frouto in frouta:
+        print("Μου αρέσει το", frouto)
+  </script></div>
+
+  <h2>Τυχαίο από τη λίστα</h2>
+  <p>Το <code>random.choice</code> διαλέγει κάτι τυχαίο από μια λίστα:</p>
+  <div class="try" data-id="s12-3"><script type="text/plain">
+    import random
+    frouta = ["μήλο", "μπανάνα", "κεράσι", "καρπούζι"]
+    print("Σήμερα θα φας:", random.choice(frouta))
+  </script></div>
+
+  <div class="predict" data-p="p12" data-answer="0">
+    <p class="pq">Τι θα κάνει αυτό το πρόγραμμα;</p>
+    <script type="text/plain">
+      xromata = ["κόκκινο", "μπλε", "πράσινο"]
+      for x in xromata:
+          print(x)
+    </script>
+    <ol class="opts"><li>Θα τυπώσει τα τρία χρώματα, ένα σε κάθε γραμμή</li><li>Θα τυπώσει «x» τρεις φορές</li><li>Θα τυπώσει ένα τυχαίο χρώμα</li><li>Θα τυπώσει μόνο το «κόκκινο»</li></ol>
+    <p class="why">Το <code>x</code> παίρνει με τη σειρά κάθε τιμή της λίστας, και η <code>print(x)</code> τυπώνει αυτό που έχει μέσα.</p>
+  </div>
+
+  <div class="ex" data-ex="e27" data-title="Η μαγική μπάλα" data-kind="Γράψε">
+    <p>Ο χρήστης κάνει μια ερώτηση και η μαγική μπάλα απαντά κάτι τυχαίο από τη λίστα. Πρόσθεσε τουλάχιστον <strong>2 ακόμα απαντήσεις</strong> στη λίστα και μια <code>print</code> που διαλέγει μία στην τύχη.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Στη λίστα, πρόσθεσε π.χ. <code>, "Ρώτα ξανά αύριο"</code> πριν από την αγκύλη <code>]</code>. Μετά, στο τέλος: <code>print(random.choice(apantiseis))</code>.</p></details>
+    <script type="text/plain" class="starter">
+      import random
+      apantiseis = ["Σίγουρα!", "Μάλλον όχι..."]
+
+      erotisi = input("Κάνε μια ερώτηση στη μαγική μπάλα: ")
+      # τύπωσε μια τυχαία απάντηση
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e28" data-title="Ουράνιο τόξο" data-kind="Άλλαξε">
+    <p>Η χελώνα περνάει όλα τα χρώματα της λίστας, αλλά ζωγραφίζει πάντα με μαύρο! Πρόσθεσε μία γραμμή μέσα στο <code>for</code> ώστε να αλλάζει χρώμα σε κάθε γύρο.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Πρώτη γραμμή μέσα στο <code>for</code> (με εσοχή): <code>t.color(x)</code>.</p></details>
+    <script type="text/plain" class="starter">
+      import turtle
+      t = turtle.Turtle()
+      t.pensize(10)
+      xromata = ["red", "orange", "gold", "green", "blue", "purple"]
+
+      for x in xromata:
+          t.forward(50)
+          t.left(60)
+    </script>
+  </div>
+</section>
+
+<!-- ============ 13. WHILE ============ -->
+<section class="step" data-title="Επανάληψη με while" data-num="13">
+  <div class="kicker">Μάθημα 13</div>
+  <h1>Επανάληψη με το while</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> επανάληψη που σταματάει μόνο όταν το πεις εσύ.</span><span class="time">⏱ περίπου 30 λεπτά</span></div>
+  <p class="lead">Το <code>for</code> επαναλαμβάνει κάτι συγκεκριμένες φορές. Το <code>while</code> επαναλαμβάνει κάτι <strong>όσο</strong> ισχύει μια συνθήκη. Είναι χρήσιμο όταν δεν ξέρεις από πριν πόσες φορές θα χρειαστεί.</p>
+
+  <div class="try" data-id="s13-1"><script type="text/plain">
+    n = 5
+    while n > 0:
+        print(n)
+        n = n - 1
+    print("Απογείωση! 🚀")
+  </script></div>
+  <p>Διάβασέ το σαν πρόταση: «<em>όσο</em> το n είναι μεγαλύτερο από 0, τύπωσέ το και μίκρυνέ το κατά 1». Όταν το n γίνει 0, η επανάληψη σταματάει και πάμε στην απογείωση.</p>
+
+  <h2>Μέχρι να πεις «τέλος»</h2>
+  <div class="try" data-id="s13-2"><script type="text/plain">
+    apantisi = input("Πες κάτι (ή γράψε τέλος): ")
+    while apantisi != "τέλος":
+        print("Είπες:", apantisi)
+        apantisi = input("Πες κάτι άλλο (ή γράψε τέλος): ")
+    print("Αντίο!")
+  </script></div>
+
+  <div class="callout oops"><span class="tag">Προσοχή</span>
+    <p>Το <code>while</code> πρέπει κάποια στιγμή να σταματάει! Αν η συνθήκη ισχύει για πάντα, π.χ. επειδή ξέχασες το <code>n = n - 1</code>, το πρόγραμμα δεν τελειώνει ποτέ. Εδώ η σελίδα θα το σταματήσει για σένα και θα σου το πει.</p>
+  </div>
+
+  <div class="predict" data-p="p13" data-answer="1">
+    <p class="pq">Τι θα τυπώσει;</p>
+    <script type="text/plain">
+      n = 1
+      while n < 4:
+          print(n)
+          n = n + 1
+    </script>
+    <ol class="opts"><li>1 2 3 4</li><li>1 2 3</li><li>4</li><li>Θα τρέχει για πάντα</li></ol>
+    <p class="why">Τυπώνει 1, 2, 3. Όταν το n γίνει 4, το «4 &lt; 4» δεν ισχύει και η επανάληψη σταματάει.</p>
+  </div>
+
+  <div class="ex" data-ex="e29" data-title="Αντίστροφη μέτρηση" data-kind="Άλλαξε">
+    <p>Κάνε την αντίστροφη μέτρηση να ξεκινάει από το <strong>10</strong> αντί για το 5.</p>
+    <script type="text/plain" class="starter">
+      n = 5
+      while n > 0:
+          print(n)
+          n = n - 1
+      print("Απογείωση! 🚀")
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e30" data-title="Ο παπαγάλος" data-kind="Γράψε">
+    <p>Φτιάξε έναν παπαγάλο που επαναλαμβάνει ό,τι του λες, μέχρι να γράψεις <code>τέλος</code>. Η αρχή και το τέλος είναι έτοιμα. Συμπλήρωσε τη γραμμή που λείπει.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Μέσα στο <code>while</code>, πριν από τη νέα ερώτηση, ο παπαγάλος πρέπει να τυπώσει αυτό που άκουσε: <code>print(lexi)</code>.</p></details>
+    <script type="text/plain" class="starter">
+      lexi = input("Πες κάτι στον παπαγάλο: ")
+      while lexi != "τέλος":
+          # ο παπαγάλος επαναλαμβάνει τη λέξη
+          lexi = input("Πες κάτι άλλο: ")
+      print("Ο παπαγάλος πάει για ύπνο. 🦜")
+    </script>
+  </div>
+</section>
+
+<!-- ============ 14. PROJECT ============ -->
+<section class="step" data-title="Μεγάλο project: Μάντεψε τον αριθμό" data-num="14">
+  <div class="kicker">Μάθημα 14</div>
+  <h1>Μεγάλο project: Μάντεψε τον αριθμό</h1>
+  <div class="today"><span><strong>Σήμερα:</strong> φτιάχνεις ένα ολόκληρο παιχνίδι, σε τρία κομμάτια.</span><span class="time">⏱ περίπου 45 λεπτά (ή σε δύο φορές)</span></div>
+  <p class="lead">Ο υπολογιστής κρύβει έναν αριθμό από 1 έως 20 και εσύ πρέπει να τον βρεις. Θα χρησιμοποιήσεις σχεδόν όλα όσα έμαθες: <code>random</code>, <code>input</code>, <code>int</code>, <code>if</code> και <code>while</code>. Μην ανησυχείς, το φτιάχνουμε λίγο-λίγο!</p>
+
+  <div class="ex" data-ex="e31" data-title="Κομμάτι 1: μία προσπάθεια" data-kind="Γράψε">
+    <p>Ο υπολογιστής διαλέγει αριθμό και ο παίκτης έχει <strong>μία</strong> προσπάθεια. Αν βρει τον αριθμό, τύπωσε <code>Μπράβο!</code>. Αλλιώς τύπωσε <code>Όχι, ήταν το</code> και τον μυστικό αριθμό.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Ένα <code>if</code> που συγκρίνει με <code>==</code> τη <code>manteia</code> με τον <code>mystikos</code>, και ένα <code>else</code>.</p></details>
+    <details class="hint"><summary>Κι άλλη βοήθεια</summary><p>Στο <code>else</code>: <code>print("Όχι, ήταν το", mystikos)</code></p></details>
+    <script type="text/plain" class="starter">
+      import random
+
+      mystikos = random.randint(1, 20)
+      manteia = int(input("Μάντεψε έναν αριθμό από 1 έως 20: "))
+
+      # αν τον βρήκε, πες «Μπράβο!», αλλιώς πες ποιος ήταν
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e32" data-title="Κομμάτι 2: ξανά και ξανά" data-kind="Άλλαξε">
+    <p>Τώρα ο παίκτης ξαναδοκιμάζει <strong>μέχρι να τον βρει</strong>. Συμπλήρωσε τη γραμμή του <code>while</code>.</p>
+    <details class="hint"><summary>Βοήθεια</summary><p>Η επανάληψη συνεχίζει <strong>όσο</strong> η μαντεψιά είναι <strong>διαφορετική</strong> από τον μυστικό αριθμό. Το «διαφορετικό» γράφεται <code>!=</code>.</p></details>
+    <details class="hint"><summary>Κι άλλη βοήθεια</summary><p><code>while manteia != mystikos:</code></p></details>
+    <script type="text/plain" class="starter">
+      import random
+
+      mystikos = random.randint(1, 20)
+      manteia = int(input("Μάντεψε έναν αριθμό από 1 έως 20: "))
+
+      while ...:
+          manteia = int(input("Όχι! Ξαναδοκίμασε: "))
+
+      print("Μπράβο! Τον βρήκες!")
+    </script>
+  </div>
+
+  <div class="ex" data-ex="e33" data-title="Κομμάτι 3: βοήθειες" data-kind="Άλλαξε">
+    <p>Τελευταίο κομμάτι! Μέσα στο <code>while</code>, πριν από τη νέα ερώτηση, βοήθησε τον παίκτη:</p>
     <ul>
       <li>αν ο μυστικός αριθμός είναι <strong>μεγαλύτερος</strong> από τη μαντεψιά, τύπωσε <code>Μεγαλύτερος!</code></li>
       <li>αλλιώς τύπωσε <code>Μικρότερος!</code></li>
     </ul>
-    <details class="hint"><summary>Βοήθεια</summary><p>Μέσα στο <code>while</code>, πριν από τη νέα <code>input</code>: <code>if mystikos &gt; manteia:</code> … <code>else:</code> … Πρόσεξε τις εσοχές: οι <code>print</code> θέλουν 8 κενά.</p></details>
+    <details class="hint"><summary>Βοήθεια</summary><p><code>if mystikos &gt; manteia:</code> και <code>else:</code>. Αυτό το <code>if</code> είναι <strong>μέσα</strong> στο <code>while</code>, οπότε έχει 4 κενά εσοχή, και οι <code>print</code> του έχουν 8.</p></details>
+    <details class="hint"><summary>Κι άλλη βοήθεια</summary><p>Οι τέσσερις γραμμές που λείπουν:<br><code>&nbsp;&nbsp;&nbsp;&nbsp;if mystikos &gt; manteia:</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Μεγαλύτερος!")</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;else:</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Μικρότερος!")</code></p></details>
     <script type="text/plain" class="starter">
       import random
 
@@ -735,42 +1252,7 @@ footer button{background:none;border:0;color:var(--muted);text-decoration:underl
 
       print("Μπράβο! Τον βρήκες!")
     </script>
-    <p class="more">Θες κι άλλο; Μέτρα τις προσπάθειες και τύπωσέ τες στο τέλος.</p>
-  </div>
-</section>
-
-<!-- ============ 8. ΛΑΘΗ + ΚΟΥΙΖ ============ -->
-<section class="step" data-title="Κυνήγι σφαλμάτων και κουίζ" data-num="8">
-  <div class="kicker">Βήμα 8</div>
-  <h1>Κυνήγι σφαλμάτων</h1>
-  <p class="lead">Όλοι οι προγραμματιστές κάνουν λάθη, κάθε μέρα! Το σημαντικό είναι να ξέρεις να τα βρίσκεις. Όταν κάτι πάει στραβά, εδώ θα δεις ένα κόκκινο κουτάκι που σου εξηγεί τι έγινε και σε ποια γραμμή.</p>
-
-  <div class="table-scroll"><table class="ref">
-    <tr><th>Σφάλμα</th><th>Τι σημαίνει συνήθως</th></tr>
-    <tr><td><code>SyntaxError</code></td><td>Κάτι είναι λάθος γραμμένο: εισαγωγικά, παρενθέσεις ή <code>:</code></td></tr>
-    <tr><td><code>IndentationError</code></td><td>Λάθος εσοχές (κενά στην αρχή της γραμμής)</td></tr>
-    <tr><td><code>NameError</code></td><td>Η Python δεν ξέρει μια λέξη: ορθογραφικό ή κεφαλαίο γράμμα</td></tr>
-    <tr><td><code>TypeError</code></td><td>Ανακάτεψες κείμενο με αριθμό</td></tr>
-    <tr><td><code>ValueError</code></td><td>Το <code>int()</code> πήρε κάτι που δεν είναι αριθμός</td></tr>
-  </table></div>
-
-  <p>Τρέξε αυτό το πρόγραμμα για να δεις πώς φαίνεται ένα σφάλμα:</p>
-  <div class="try" data-id="s8-1"><script type="text/plain">
-    print("Όλα καλά μέχρι εδώ")
-    print("Εδώ ξέχασα κάτι...)
-  </script></div>
-
-  <div class="ex" data-ex="e16" data-title="Βρες τα 4 λάθη">
-    <p>Αυτό το πρόγραμμα θέλει να ζωγραφίσει ένα τετράγωνο, αλλά έχει <strong>4 λάθη</strong>. Βρες τα και διόρθωσέ τα ένα-ένα. Το κόκκινο κουτάκι θα σε βοηθάει!</p>
-    <details class="hint"><summary>Βοήθεια</summary><p>Ψάξε για: εισαγωγικά που δεν κλείνουν, κεφαλαίο γράμμα εκεί που δεν πρέπει, μια άνω-κάτω τελεία που λείπει, και μια γραμμή με λάθος εσοχή.</p></details>
-    <script type="text/plain" class="starter">
-      print("Ας ζωγραφίσουμε!)
-      import Turtle
-      t = turtle.Turtle()
-      for i in range(4)
-          t.forward(100)
-        t.right(90)
-    </script>
+    <p class="more">Θες κι άλλο; Μέτρα τις προσπάθειες με μια μεταβλητή <code>prospatheies</code> που μεγαλώνει κατά 1 σε κάθε γύρο, και τύπωσέ τες στο τέλος.</p>
   </div>
 
   <h2>Δοκιμαστήριο</h2>
@@ -782,8 +1264,8 @@ footer button{background:none;border:0;color:var(--muted);text-decoration:underl
   <div id="diploma"></div>
 </section>
 
-<!-- ============ 9. ΕΡΓΑΣΤΗΡΙ ============ -->
-<section class="step" data-title="Το εργαστήρι σου" data-num="9">
+<!-- ============ ΕΡΓΑΣΤΗΡΙ ============ -->
+<section class="step" data-title="Το εργαστήρι σου" data-num="🛠">
   <div class="kicker">Ελεύθερο παιχνίδι</div>
   <h1>Το εργαστήρι σου</h1>
   <p class="lead">Εδώ δεν υπάρχουν ασκήσεις. Γράψε ό,τι θέλεις! Ο κώδικάς σου αποθηκεύεται αυτόματα.</p>
@@ -796,11 +1278,11 @@ footer button{background:none;border:0;color:var(--muted);text-decoration:underl
 
   <h2>Ιδέες</h2>
   <ul>
-    <li><strong>Ουράνιο τόξο:</strong> κύκλοι με διαφορετικά χρώματα και ακτίνες, μέσα σε ένα <code>for</code>.</li>
+    <li><strong>Σπίτι:</strong> ένα τετράγωνο με ένα τρίγωνο για σκεπή, και μια πόρτα.</li>
     <li><strong>Λουλούδι:</strong> 36 κύκλοι, με στροφή 10° μετά από κάθε κύκλο.</li>
+    <li><strong>Μαγική σπείρα:</strong> <code>for i in range(100):</code> με <code>t.forward(i * 3)</code> και <code>t.right(91)</code>. Δοκίμασε κι άλλες γωνίες!</li>
     <li><strong>Κουίζ γνώσεων:</strong> 5 ερωτήσεις με <code>input</code> και <code>if</code>, που μετράει τις σωστές απαντήσεις.</li>
     <li><strong>Πέτρα, ψαλίδι, χαρτί</strong> με τον υπολογιστή, με <code>random.choice</code>.</li>
-    <li><strong>Νυχτερινός ουρανός:</strong> μαύρο φόντο και 50 αστεράκια σε τυχαίες θέσεις με <code>t.goto(...)</code> και <code>t.dot(...)</code>.</li>
   </ul>
 
   <h2>Πού να συνεχίσεις</h2>
@@ -956,6 +1438,7 @@ class Turtle:
     def circle(self, radius, extent=None, steps=None):
         radius = _num(radius)
         extent = 360.0 if extent is None else _num(extent)
+        _ops.append(['circ', self._id, radius, extent])
         frac = abs(extent) / 360.0
         if steps is None:
             steps = 1 + int(min(11 + abs(radius) / 6.0, 59.0) * frac)
@@ -1166,10 +1649,10 @@ const PYODIDE_INDEX = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
 
 /* ---------- αποθήκευση (μόνο σε αυτόν τον browser) ---------- */
 const LS = {
-  get(k, d){ try{ const v = localStorage.getItem('mp:'+k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
-  set(k, v){ try{ localStorage.setItem('mp:'+k, JSON.stringify(v)); }catch(e){} },
-  del(k){ try{ localStorage.removeItem('mp:'+k); }catch(e){} },
-  clearAll(){ try{ Object.keys(localStorage).filter(k=>k.startsWith('mp:')).forEach(k=>localStorage.removeItem(k)); }catch(e){} }
+  get(k, d){ try{ const v = localStorage.getItem('mp2:'+k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem('mp2:'+k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem('mp2:'+k); }catch(e){} },
+  clearAll(){ try{ Object.keys(localStorage).filter(k=>k.startsWith('mp2:')).forEach(k=>localStorage.removeItem(k)); }catch(e){} }
 };
 
 const $ = (s, el=document) => el.querySelector(s);
@@ -1274,7 +1757,7 @@ function friendly(err){
     title = `Δεν υπάρχει βιβλιοθήκη «${esc(n)}»${where}.`; text = 'Έλεγξε το όνομα. Οι βιβλιοθήκες γράφονται με μικρά γράμματα, π.χ. <code>turtle</code>, <code>random</code>.';
   } else if (t === 'AttributeError'){
     const n = grab(/has no attribute '(.+?)'/);
-    if (/turtle|Turtle/.test(m)){ title = `Η χελώνα δεν ξέρει την εντολή «${esc(n)}»${where}.`; text = 'Έλεγξε την ορθογραφία. Όλες οι εντολές της χελώνας είναι στον πίνακα του Βήματος 4.'; }
+    if (/turtle|Turtle/.test(m)){ title = `Η χελώνα δεν ξέρει την εντολή «${esc(n)}»${where}.`; text = 'Έλεγξε την ορθογραφία. Οι εντολές της χελώνας είναι στους πίνακες των Μαθημάτων 3 και 4.'; }
     else if (/random/.test(m)){ title = `Η βιβλιοθήκη random δεν έχει «${esc(n)}»${where}.`; text = 'Μήπως εννοούσες <code>random.randint</code> ή <code>random.choice</code>;'; }
     else text = `Το «${esc(n)}» δεν υπάρχει εδώ. Έλεγξε την ορθογραφία.`;
   } else if (t === 'IndexError'){
@@ -1390,14 +1873,16 @@ function markDone(id){
   if (done.has(id)) return false;
   done.add(id); LS.set('done', [...done]); refreshProgress(); return true;
 }
-const allTasks = () => [...$$('.ex').map(e => e.dataset.ex), 'quiz'];
+const taskIds = el => [...$$('.ex, .predict', el).map(e => e.dataset.ex || e.dataset.p), ...($('#quiz', el) ? ['quiz'] : [])];
+const allTasks = () => taskIds(document);
 function refreshProgress(){
   const all = allTasks();
   $('#starCount').textContent = all.filter(id => done.has(id)).length;
   $('#starTotal').textContent = all.length;
   $$('.ex').forEach(e => e.classList.toggle('done', done.has(e.dataset.ex)));
+  $$('.predict').forEach(e => e.classList.toggle('done', done.has(e.dataset.p)));
   sections.forEach((sec, i) => {
-    const ids = $$('.ex', sec).map(e => e.dataset.ex).concat($('#quiz', sec) ? ['quiz'] : []);
+    const ids = taskIds(sec);
     const b = navBtns[i]; if (!b) return;
     const d = ids.filter(x => done.has(x)).length;
     $('.prog', b).textContent = ids.length ? `${d}/${ids.length} ★` : '';
@@ -1412,98 +1897,206 @@ const lines = r => r.out.replace(/\r/g, '').split('\n').map(s => s.trim()).filte
 const has = (r, s) => flat(r.out).includes(flat(s));
 function segs(r){
   return r.ops.filter(o => o[0] === 'line')
-    .map(o => ({ x1: o[2], y1: o[3], x2: o[4], y2: o[5], c: o[6], len: Math.hypot(o[4] - o[2], o[5] - o[3]) }))
+    .map(o => ({ x1: o[2], y1: o[3], x2: o[4], y2: o[5], c: o[6], w: o[7], len: Math.hypot(o[4] - o[2], o[5] - o[3]) }))
     .filter(s => s.len > 0.01);
 }
 function closedPath(sg){
   if (!sg.length) return false;
   return Math.hypot(sg[0].x1 - sg[sg.length - 1].x2, sg[0].y1 - sg[sg.length - 1].y2) < 1.5;
 }
+const circs = r => r.ops.filter(o => o[0] === 'circ').map(o => Math.abs(o[2]));
 const countLen = (sg, L) => sg.filter(s => Math.abs(s.len - L) < 1).length;
 const OK = msg => ({ ok: true, msg });
 const NO = msg => ({ ok: false, msg });
 const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 
 const CHECKS = {
-  e1: { tests: [[]], fn: ([r]) => lines(r).length >= 3 ? OK('Ωραία κάρτα! Τώρα ο υπολογιστής σε ξέρει λίγο καλύτερα.')
+  e1: { tests: [[]], fn: ([r]) => {
+        const want = flat('Γεια σου, Python!').replace(/\s+/g, ' ');
+        if (lines(r).some(l => flat(l).replace(/\s+/g, ' ') === want)) return OK('Η Python σε χαιρετάει πίσω!');
+        if (has(r, 'κοσμε')) return NO('Ακόμα γράφει «κόσμε». Άλλαξε αυτή τη λέξη σε «Python».');
+        return NO('Η φράση πρέπει να είναι ακριβώς: Γεια σου, Python! (με το κόμμα και το θαυμαστικό).');
+      } },
+  e2: { tests: [[]], fn: ([r]) => lines(r).length >= 3 ? OK('Ωραία κάρτα! Τώρα ο υπολογιστής σε ξέρει λίγο καλύτερα.')
         : NO(`Βλέπω ${lines(r).length} γραμμή/ές στην οθόνη. Χρειάζονται τουλάχιστον 3: μία print για κάθε γραμμή.`) },
-  e2: { tests: [[]], fn: ([r]) => {
-        if (lines(r).some(l => l.replace(/\s+/g, ' ') === 'Μου αρέσει η Python!')) return OK('Ακριβώς έτσι! Ο υπολογιστής σε συγχαίρει.');
-        if (lines(r).some(l => flat(l).replace(/[^a-zα-ω]/g, '') === flat('Μου αρέσει η Python').replace(/[^a-zα-ω]/g, ''))) return NO('Σχεδόν! Έλεγξε κεφαλαία, τόνους και το θαυμαστικό στο τέλος.');
-        return NO('Η φράση πρέπει να είναι ακριβώς: Μου αρέσει η Python!');
+  e3: { tests: [[]], fn: ([r]) => {
+        if (lines(r).some(l => l === '100')) return OK('25 × 4 = 100. Η Python είναι γρήγορη στους λογαριασμούς!');
+        if (has(r, '25 * 4')) return NO('Η Python τύπωσε «25 * 4» σαν κείμενο. Σβήσε τα εισαγωγικά για να κάνει τον λογαριασμό.');
+        return NO('Περίμενα να δω το αποτέλεσμα 100.');
       } },
-  e3: { tests: [['Ελένη'], ['Νίκο']], fn: ([a, b]) => {
-        if (has(a, 'Ελένη') && has(b, 'Νίκο')) return OK('Πολύ ευγενικός υπολογιστής! Χαιρετάει τον καθένα με το όνομά του.');
-        return NO('Δοκίμασα με το όνομα «Ελένη» και δεν το είδα στον χαιρετισμό. Βάλε τη μεταβλητή onoma μέσα στην print, χωρίς εισαγωγικά.');
+  e4: { tests: [[]], fn: ([r]) => has(r, 'καλημερα') ? OK('Διόρθωσες το πρώτο σου λάθος! 🔧') : NO('Περίμενα να δω «Καλημέρα!».') },
+  e5: { tests: [[]], fn: ([r]) => {
+        if (has(r, 'Γεια σου') && has(r, 'Μαθαίνω Python')) return OK('Και τα δύο λάθη διορθώθηκαν. Είσαι κυνηγός σφαλμάτων! 🔍');
+        return NO('Περίμενα δύο γραμμές: «Γεια σου» και «Μαθαίνω Python».');
       } },
-  e4: { tests: [['κόκκινος', 'Πάνθηρας'], ['Μπλε', 'Δελφίνι']], fn: ([a, b]) => {
-        if (has(a, 'κόκκινος') && has(a, 'Πάνθηρας') && has(b, 'Μπλε') && has(b, 'Δελφίνι')) return OK('Τρομερός υπερήρωας! Ο κόσμος είναι πια ασφαλής.');
-        if (!has(a, 'κόκκινος')) return NO('Το χρώμα δεν εμφανίζεται στο όνομα του υπερήρωα.');
-        return NO('Το ζώο δεν εμφανίζεται. Ρώτησες το ζώο με input και το έβαλες στην print;');
-      } },
-  e5: { tests: () => { const a = rnd(9, 15), b = rnd(20, 40); return [[String(a)], [String(b)]]; },
-        fn: ([a, b], ins) => {
-          const x = +ins[0][0], y = +ins[1][0];
-          if (has(a, String(x * 7)) && has(b, String(y * 7))) return OK('Γαβ! Σωστά λογαριάζεις τα σκυλίσια χρόνια.');
-          if (has(a, String(x).repeat(7))) return NO(`Δοκίμασα με ${x} και είδα «${String(x).repeat(7)}»! Η Python επανέλαβε το κείμενο 7 φορές αντί να πολλαπλασιάσει. Βάλε int(...) γύρω από την input.`);
-          return NO(`Δοκίμασα με ηλικία ${x} και περίμενα να δω ${x * 7}. Πολλαπλασίασε την ηλικία με το 7 και τύπωσέ την.`);
-        } },
-  e6: { tests: [['4'], ['3']], fn: ([a, b]) => {
-        if (has(a, '10') && has(b, '7.5')) return OK('Ο πελάτης πλήρωσε σωστά. Καλή όρεξη!');
-        return NO('Δοκίμασα 4 κομμάτια και περίμενα σύνολο 10 (4 × 2.5). Υπολόγισε kommatia * timi και τύπωσέ το.');
+  e6: { tests: [[]], fn: ([r]) => {
+        const sg = segs(r);
+        if (countLen(sg, 100) < 4) return NO(`Βλέπω ${countLen(sg, 100)} πλευρές. Το τετράγωνο θέλει 4.`);
+        if (!closedPath(sg)) return NO('Η χελώνα δεν γύρισε στην αρχή. Στρίβει πάντα δεξιά 90 μοίρες;');
+        return OK('Τέλειο τετράγωνο! Η χελώνα σε ακούει.');
       } },
   e7: { tests: [[]], fn: ([r]) => {
         const sg = segs(r);
         if (!sg.length) return NO('Η χελώνα δεν ζωγράφισε τίποτα. Έγραψες t.forward(...);');
-        if (countLen(sg, 100) < 4) return NO('Το τετράγωνο θέλει 4 πλευρές με μήκος 100.');
-        if (!closedPath(sg)) return NO('Οι πλευρές είναι εντάξει, αλλά η χελώνα δεν γύρισε στην αρχή. Στρίβει πάντα 90 μοίρες προς την ίδια μεριά;');
-        return OK('Τέλειο τετράγωνο! Η χελώνα σε ακούει.');
+        if (countLen(sg, 150) < 2 || countLen(sg, 80) < 2) return NO('Το ορθογώνιο θέλει δύο πλευρές 150 και δύο πλευρές 80.');
+        if (!closedPath(sg)) return NO('Οι πλευρές είναι σωστές, αλλά το σχήμα δεν κλείνει. Μετά από κάθε πλευρά στρίψε 90 μοίρες, πάντα προς την ίδια μεριά.');
+        return OK('Ωραίο ορθογώνιο, σαν πόρτα!');
       } },
   e8: { tests: [[]], fn: ([r]) => {
-        const sg = segs(r);
-        if (countLen(sg, 120) < 3) return NO('Το τρίγωνο θέλει 3 πλευρές με μήκος 120.');
-        if (!closedPath(sg)) return NO('Το τρίγωνο δεν κλείνει. Πόσες μοίρες στρίβει η χελώνα; Δες τη βοήθεια.');
-        return OK('Ένα υπέροχο ισόπλευρο τρίγωνο!');
+        const sg = segs(r).filter(s => Math.abs(s.len - 100) < 1);
+        if (sg.length < 4 || !closedPath(segs(r))) return NO('Το τετράγωνο χάλασε! Πρόσθεσε μόνο τις δύο γραμμές, χωρίς να σβήσεις άλλες.');
+        if (!sg.every(s => s.c === 'red')) return NO('Το τετράγωνο δεν είναι κόκκινο. Έγραψες t.color("red") πριν από το πρώτο forward;');
+        if (!sg.every(s => s.w >= 5)) return NO('Το χρώμα είναι σωστό! Τώρα κάνε τη γραμμή πιο χοντρή με t.pensize(5).');
+        return OK('Κόκκινο και χοντρό, ακριβώς όπως έπρεπε!');
       } },
   e9: { tests: [[]], fn: ([r]) => {
-        const nums = lines(r).filter(l => /^-?\d+$/.test(l)).map(Number);
-        if (JSON.stringify(nums) === JSON.stringify([1,2,3,4,5,6,7,8,9,10])) return OK('Ένα, δύο, τρία… δέκα! Σωστά.');
-        if (nums[0] === 0) return NO('Ξεκινάς από το 0. Θυμήσου: range(1, 11).');
-        if (nums.length && nums[nums.length - 1] === 9) return NO('Σταματάς στο 9. Το range δεν φτάνει ποτέ τον δεύτερο αριθμό, άρα γράψε 11.');
-        return NO('Περίμενα τους αριθμούς 1 έως 10, έναν σε κάθε γραμμή.');
+        const c = circs(r);
+        if (!c.some(x => Math.abs(x - 60) < 0.5)) return NO('Λείπει ο μεγάλος κύκλος με ακτίνα 60.');
+        if (!c.some(x => Math.abs(x - 30) < 0.5)) return NO('Ο μεγάλος κύκλος είναι εκεί. Τώρα κάνε το κεφάλι με t.circle(30).');
+        return OK('Ένας χαρούμενος χιονάνθρωπος! ⛄');
       } },
   e10: { tests: [[]], fn: ([r]) => {
+        const sg = segs(r);
+        if (countLen(sg, 80) < 6) return NO('Το εξάγωνο θέλει 6 πλευρές με μήκος 80. Έλεγξε τους αριθμούς στο range και στο forward.');
+        if (!closedPath(sg)) return NO('Το σχήμα δεν κλείνει. Η στροφή πρέπει να είναι 360 ÷ 6 = 60 μοίρες.');
+        return OK('Ένα εξάγωνο, σαν κελί από κηρήθρα! 🐝');
+      } },
+  e11: { tests: [[]], fn: ([r]) => {
+        const sg = segs(r);
+        if (countLen(sg, 120) < 3) return NO('Το τρίγωνο θέλει 3 πλευρές με μήκος 120. Χρησιμοποίησες for i in range(3):;');
+        if (!closedPath(sg)) return NO('Το τρίγωνο δεν κλείνει. Πόσες μοίρες στρίβει η χελώνα; 360 ÷ 3 = 120.');
+        return OK('Ένα υπέροχο τρίγωνο, με μόνο 4 γραμμές κώδικα!');
+      } },
+  e12: { tests: [[]], fn: ([r]) => {
         const sg = segs(r);
         if (countLen(sg, 150) < 5) return NO('Το αστέρι θέλει 5 γραμμές με μήκος 150. Χρησιμοποίησες for i in range(5):;');
         if (!closedPath(sg)) return NO('Το αστέρι δεν κλείνει. Η στροφή πρέπει να είναι 144 μοίρες.');
         return OK('Λάμπει σαν πραγματικό αστέρι! ⭐');
       } },
-  e11: { tests: [[]], fn: ([r]) => {
-        const sg = segs(r);
-        if (sg.length < 36) return NO('Η χελώνα δεν περπάτησε αρκετά. Μέσα στο for πρόσθεσε t.forward(i * 3) και t.right(91), με εσοχή.');
-        if (new Set(sg.map(s => s.c)).size < 3) return NO('Η σπείρα θέλει πολλά χρώματα. Κράτα τη γραμμή t.color(xromata[i % 6]) μέσα στο for.');
-        return OK('Μαγικό! Δοκίμασε τώρα να αλλάξεις τη γωνία και δες τι γίνεται.');
+  e13: { tests: [[]], fn: ([r]) => {
+        const want = flat('Μου αρέσει η Python!');
+        const n = lines(r).filter(l => flat(l).replace(/\s+/g, ' ') === want).length;
+        if (n === 10) return OK('Δέκα φορές, χωρίς να γράψεις δέκα print!');
+        if (n === 0) return NO('Δεν βλέπω τη φράση «Μου αρέσει η Python!». Άλλαξε το κείμενο μέσα στην print.');
+        return NO(`Η φράση εμφανίστηκε ${n} φορές. Πρέπει 10: άλλαξε τον αριθμό μέσα στο range.`);
       } },
-  e12: { tests: [['python123'], ['1234']], fn: ([a, b]) => {
+  e14: { tests: [[]], fn: ([r]) => {
+        const nums = lines(r).filter(l => /^-?\d+$/.test(l)).map(Number);
+        if (JSON.stringify(nums) === JSON.stringify([1,2,3,4,5,6,7,8,9,10])) return OK('Ένα, δύο, τρία… δέκα! Σωστά.');
+        if (nums[0] === 0) return NO('Ξεκινάς από το 0. Βάλε δύο αριθμούς στο range: πρώτα το 1.');
+        if (nums.length && nums[nums.length - 1] === 9) return NO('Σταματάς στο 9. Ο δεύτερος αριθμός του range δεν μετριέται ποτέ, άρα γράψε 11.');
+        return NO('Περίμενα τους αριθμούς 1 έως 10, έναν σε κάθε γραμμή.');
+      } },
+  e15: { tests: [[]], fn: ([r]) => {
+        const sg = segs(r);
+        if (countLen(sg, 130) >= 4 && closedPath(sg)) return OK('Άλλαξες έναν αριθμό και μεγάλωσε όλο το τετράγωνο. Αυτή είναι η δύναμη των μεταβλητών!');
+        return NO('Περίμενα τετράγωνο με πλευρά 130. Άλλαξε τον αριθμό στη γραμμή plevra = ...');
+      } },
+  e16: { tests: [[]], fn: ([r]) => {
+        if (has(r, '12.5')) return OK('Σου μένουν 12.5 €. Καλά ψώνια!');
+        if (has(r, '52.5')) return NO('Βγήκε 52.5. Μήπως έγραψες + αντί για -;');
+        if (has(r, '7.5')) return NO('Το 7.5 είναι όσα ξόδεψες. Αφαίρεσέ το από τα lefta.');
+        return NO('Περίμενα να δω 12.5 (20 - 3 × 2.5).');
+      } },
+  e17: { tests: [['Ελένη'], ['Νίκο']], fn: ([a, b]) => {
+        if (has(a, 'Ελένη') && has(b, 'Νίκο')) return OK('Πολύ ευγενικός υπολογιστής! Χαιρετάει τον καθένα με το όνομά του.');
+        if (has(a, 'onoma')) return NO('Βλέπω τη λέξη «onoma» αντί για το όνομα. Βγάλε τα εισαγωγικά από τη μεταβλητή.');
+        return NO('Δοκίμασα με το όνομα «Ελένη» και δεν το είδα στον χαιρετισμό. Βάλε τη μεταβλητή onoma μέσα στην print.');
+      } },
+  e18: { tests: [['κόκκινος', 'Πάνθηρας'], ['Μπλε', 'Δελφίνι']], fn: ([a, b]) => {
+        if (has(a, 'κόκκινος') && has(a, 'Πάνθηρας') && has(b, 'Μπλε') && has(b, 'Δελφίνι')) return OK('Τρομερός υπερήρωας! Ο κόσμος είναι πια ασφαλής.');
+        if (!has(a, 'κόκκινος')) return NO('Το χρώμα δεν εμφανίζεται στο όνομα του υπερήρωα.');
+        return NO('Το ζώο δεν εμφανίζεται. Ρώτησες το ζώο με input και το έβαλες στην print;');
+      } },
+  e19: { tests: () => { const a = rnd(9, 15), b = rnd(20, 40); return [[String(a)], [String(b)]]; },
+        fn: ([a, b], ins) => {
+          const x = +ins[0][0], y = +ins[1][0];
+          if (has(a, String(x * 7)) && has(b, String(y * 7))) return OK('Γαβ! Σωστά λογαριάζεις τα σκυλίσια χρόνια. 🐶');
+          if (has(a, String(x).repeat(7))) return NO(`Δοκίμασα με ${x} και είδα «${String(x).repeat(7)}»! Η Python έγραψε το κείμενο 7 φορές. Χρειάζεσαι int(...) γύρω από την input.`);
+          return NO(`Δοκίμασα με ηλικία ${x} και περίμενα να δω ${x * 7}. Τύπωσε ilikia * 7.`);
+        } },
+  e20: { tests: [['4'], ['3']], fn: ([a, b]) => {
+        if (has(a, '10') && has(b, '7.5')) return OK('Ο πελάτης πλήρωσε σωστά. Καλή όρεξη! 🍕');
+        return NO('Δοκίμασα 4 κομμάτια και περίμενα σύνολο 10 (4 × 2.5). Τύπωσε kommatia * timi.');
+      } },
+  e21: { tests: [['70'], ['140']], fn: ([a, b]) => {
+        const ok = (r, L) => countLen(segs(r), L) >= 4 && closedPath(segs(r));
+        if (ok(a, 70) && ok(b, 140)) return OK('Τώρα ο χρήστης αποφασίζει πόσο μεγάλο θα είναι το τετράγωνο!');
+        if (ok(a, 100)) return NO('Έγραψα 70, αλλά η χελώνα έκανε πάλι πλευρά 100. Η plevra πρέπει να έρχεται από την input.');
+        return NO('Έγραψα 70 και περίμενα τετράγωνο με πλευρά 70.');
+      } },
+  e22: { tests: [['Αθήνα'], ['Πάτρα']], fn: ([a, b]) => {
+        if (!has(a, 'Σωστά')) return NO('Με την απάντηση «Αθήνα» περίμενα «Σωστά!». Μην αλλάξεις το if!');
+        if (has(b, 'Σωστά')) return NO('Με την απάντηση «Πάτρα» μου είπες «Σωστά»! Έλεγξε τις εσοχές: η print του else θέλει εσοχή.');
+        if (!has(b, 'Λάθος')) return NO('Με την απάντηση «Πάτρα» δεν είδα «Λάθος!». Πρόσθεσε το else.');
+        return OK('Τώρα το κουίζ ξέρει να λέει και «Λάθος». 🏛️');
+      } },
+  e23: { tests: [['python123'], ['1234']], fn: ([a, b]) => {
         if (!has(a, 'Καλώς ήρθες')) return NO('Έγραψα python123 αλλά δεν είδα «Καλώς ήρθες, πράκτορα!».');
         if (has(b, 'Καλώς ήρθες')) return NO('Με λάθος κωδικό (1234) με άφησες να μπω! Χρειάζεσαι else.');
         if (!has(b, 'απαγορεύεται')) return NO('Με λάθος κωδικό περίμενα να δω «Πρόσβαση απαγορεύεται!».');
         return OK('Η βάση είναι ασφαλής, πράκτορα. 🕵️');
       } },
-  e13: { tests: () => [[String(2 * rnd(2, 40))], [String(2 * rnd(2, 40) + 1)], ['0']], fn: ([a, b, c], ins) => {
-        const z = x => has(x, 'ζυγ'), mo = x => has(x, 'μον');
-        if (z(a) && !mo(a) && mo(b) && !z(b) && z(c)) return OK('Σωστά! Το % είναι πολύ χρήσιμο εργαλείο.');
-        if (!z(a) || mo(a)) return NO(`Για τον αριθμό ${ins[0][0]} περίμενα να δω μόνο «ζυγός».`);
-        return NO(`Για τον αριθμό ${ins[1][0]} περίμενα να δω μόνο «μονός».`);
+  e24: { tests: [['25'], ['12'], ['18']], fn: ([a, b, c]) => {
+        const yes = r => has(r, 'Μπορείς'), no = r => has(r, 'Όχι ακόμα');
+        if (yes(a) && !no(a) && no(b) && !yes(b) && yes(c) && !no(c)) return OK('Σωστά, ακόμα και για τα 18 ακριβώς!');
+        if (yes(a) && no(b) && !yes(c)) return NO('Με 18 χρονών μου είπες «Όχι ακόμα». Στα 18 μπορείς να ψηφίσεις: χρησιμοποίησε >= αντί για >.');
+        if (!yes(a)) return NO('Με 25 χρονών περίμενα «Μπορείς να ψηφίσεις!».');
+        return NO('Με 12 χρονών περίμενα μόνο «Όχι ακόμα!».');
       } },
-  e14: { tests: () => Array.from({ length: 12 }, () => []), fn: rs => {
+  e25: { tests: () => Array.from({ length: 12 }, () => []), fn: rs => {
         const vals = rs.map(r => { const n = r.out.match(/-?\d+/g); return n ? +n[n.length - 1] : null; });
         if (vals.some(v => v === null)) return NO('Δεν βλέπω αριθμό στην οθόνη. Τύπωσε το αποτέλεσμα του random.randint(1, 6).');
         if (vals.some(v => v < 1 || v > 6)) return NO('Βγήκε αριθμός έξω από το 1 έως 6. Έλεγξε το randint.');
         if (new Set(vals).size < 2) return NO('Έτρεξα το ζάρι 12 φορές και έφερνε πάντα το ίδιο. Χρησιμοποιείς random.randint;');
         return OK(`Έριξα το ζάρι 12 φορές: ${vals.join(', ')}. Δουλεύει! 🎲`);
       } },
-  e15: { tests: () => Array.from({ length: 4 }, () => ['20', ...Array.from({ length: 19 }, (_, i) => String(i + 1))]),
+  e26: { tests: [[]], fn: ([r]) => {
+        const d = r.ops.filter(o => o[0] === 'dot');
+        if (d.length < 20) return NO('Λείπουν αστεράκια! Μην σβήσεις το t.dot(6).');
+        const pos = new Set(d.map(o => Math.round(o[2]) + ',' + Math.round(o[3])));
+        if (pos.size < 10) return NO('Τα αστεράκια είναι ακόμα όλα στο ίδιο σημείο. Βάλε random.randint(-180, 180) στη θέση των μηδενικών.');
+        return OK('Ένας πανέμορφος έναστρος ουρανός! ✨');
+      } },
+  e27: { tests: () => Array.from({ length: 10 }, () => ['Θα βρέξει αύριο;']), fn: rs => {
+        const outs = rs.map(r => lines(r).join(' '));
+        if (outs.some(o => !o)) return NO('Η μαγική μπάλα δεν απάντησε. Πρόσθεσε print(random.choice(apantiseis)).');
+        if (new Set(outs).size < 2) return NO('Ρώτησα 10 φορές και η μπάλα έλεγε πάντα το ίδιο. Χρησιμοποιείς random.choice;');
+        if (new Set(outs).size < 3) return NO('Η μπάλα δουλεύει! Τώρα πρόσθεσε τουλάχιστον 2 ακόμα απαντήσεις στη λίστα.');
+        return OK('Η μαγική μπάλα έχει μιλήσει! 🔮');
+      } },
+  e28: { tests: [[]], fn: ([r]) => {
+        const cs = new Set(segs(r).map(s => s.c));
+        if (cs.size >= 5) return OK('Ένα πολύχρωμο ουράνιο τόξο! 🌈');
+        return NO('Η χελώνα ζωγραφίζει ακόμα με ένα χρώμα. Πρόσθεσε t.color(x) μέσα στο for, με εσοχή.');
+      } },
+  e29: { tests: [[]], fn: ([r]) => {
+        const nums = lines(r).filter(l => /^\d+$/.test(l)).map(Number);
+        if (JSON.stringify(nums) === JSON.stringify([10,9,8,7,6,5,4,3,2,1]) && has(r, 'Απογείωση')) return OK('3… 2… 1… Απογείωση! 🚀');
+        return NO('Περίμενα να μετρήσει 10, 9, 8… 1 και μετά «Απογείωση!». Άλλαξε μόνο τον αριθμό της πρώτης γραμμής.');
+      } },
+  e30: { tests: [['γεια', 'τι κάνεις', 'τέλος']], fn: ([r]) => {
+        if (has(r, 'γεια') && has(r, 'τι κάνεις')) return OK('Γεια! Τι κάνεις! Ο παπαγάλος σου μιλάει! 🦜');
+        return NO('Είπα «γεια» στον παπαγάλο, αλλά δεν το επανέλαβε. Πρόσθεσε print(lexi) μέσα στο while.');
+      } },
+  e31: { tests: () => Array.from({ length: 25 }, () => ['7']), fn: rs => {
+        let bravo = 0, no = 0;
+        for (const r of rs){
+          if (has(r, 'Μπράβο')) bravo++;
+          else if (has(r, 'Όχι')) {
+            no++;
+            const n = r.out.match(/\d+/g);
+            if (!n) return NO('Όταν ο παίκτης χάνει, πες του ποιος ήταν ο μυστικός αριθμός: print("Όχι, ήταν το", mystikos).');
+          } else return NO('Το πρόγραμμα δεν είπε ούτε «Μπράβο!» ούτε «Όχι, ήταν το…».');
+        }
+        if (!no) return NO('Μάντευα συνέχεια 7 και μου έλεγες πάντα «Μπράβο». Συγκρίνεις τη manteia με τον mystikos;');
+        return OK('Το πρώτο κομμάτι του παιχνιδιού είναι έτοιμο! Πάμε στο επόμενο.');
+      } },
+  e32: { tests: () => Array.from({ length: 4 }, () => Array.from({ length: 20 }, (_, i) => String(i + 1))), fn: rs => {
+        if (rs.every(r => has(r, 'Μπράβο'))) return OK('Τώρα ο παίκτης έχει όσες προσπάθειες θέλει! Πάμε στο τελευταίο κομμάτι.');
+        return NO('Μάντεψα 1, 2, 3… μέχρι το 20, αλλά το παιχνίδι δεν έφτασε στο «Μπράβο». Έλεγξε τη γραμμή του while.');
+      } },
+  e33: { tests: () => Array.from({ length: 4 }, () => ['20', ...Array.from({ length: 19 }, (_, i) => String(i + 1))]),
         fn: rs => {
           let sawSmall = false, sawBig = false;
           for (const r of rs){
@@ -1515,31 +2108,25 @@ const CHECKS = {
               sawSmall = true; if (hints.length > 1) sawBig = true;
             }
           }
-          if (!sawSmall || !sawBig) return NO('Δεν είδα τις βοήθειες «Μεγαλύτερος!» και «Μικρότερος!». Γράψε το if μέσα στο while.');
-          return OK('Έπαιξα 4 φορές και με βοήθησες σωστά κάθε φορά. Έφτιαξες το πρώτο σου παιχνίδι! 🎉');
-        } },
-  e16: { tests: [[]], fn: ([r]) => {
-        const sg = segs(r);
-        if (!has(r, 'Ας ζωγραφίσουμε')) return NO('Το μήνυμα «Ας ζωγραφίσουμε!» δεν εμφανίστηκε. Μην το σβήσεις, διόρθωσέ το!');
-        if (countLen(sg, 100) < 4 || !closedPath(sg)) return NO('Δεν βγαίνει ακόμα τετράγωνο. Έλεγξε την εσοχή της τελευταίας γραμμής.');
-        return OK('Βρήκες και τα 4 λάθη! Είσαι αληθινός κυνηγός σφαλμάτων. 🔍');
-      } }
+          if (!sawSmall || !sawBig) return NO('Δεν είδα τις βοήθειες «Μεγαλύτερος!» και «Μικρότερος!». Γράψε το if μέσα στο while (με εσοχή).');
+          return OK('Έπαιξα 4 φορές και με βοήθησες σωστά κάθε φορά. Έφτιαξες ένα ολόκληρο παιχνίδι! 🎉');
+        } }
 };
 
 /* ---------- κουτιά κώδικα ---------- */
 const editorsBySection = new Map();
 function makeRunner(host, opts){
-  const { id, starter, exId, label } = opts;
-  const saved = LS.get('code:' + id, null);
+  const { id, starter, exId, label, readOnly } = opts;
+  const saved = readOnly ? null : LS.get('code:' + id, null);
   const box = document.createElement('div');
   box.className = 'runner';
   box.innerHTML = `
-    ${exId ? '' : `<div class="label">▶ ${esc(label || 'Δοκίμασε')}</div>`}
+    ${exId || readOnly ? '' : `<div class="label">▶ ${esc(label || 'Δοκίμασε')}</div>`}
     <div class="editor"></div>
     <div class="bar">
       <button class="btn run">▶ Τρέξε</button>
       ${exId ? '<button class="btn check">✓ Έλεγξε</button>' : ''}
-      <button class="btn reset" title="Ο κώδικας γυρίζει όπως ήταν στην αρχή">↺ Από την αρχή</button>
+      ${readOnly ? '' : '<button class="btn reset" title="Ο κώδικας γυρίζει όπως ήταν στην αρχή">↺ Από την αρχή</button>'}
       <span class="hint-k"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> για να τρέξει</span>
     </div>
     <div class="result" hidden>
@@ -1547,6 +2134,7 @@ function makeRunner(host, opts){
       <div class="turtle-wrap" hidden><canvas class="base"></canvas><canvas class="over"></canvas></div>
     </div>`;
   host.appendChild(box);
+  const leftCol = $('.left', box);
   const edEl = $('.editor', box), result = $('.result', box), msg = $('.msg', box), cons = $('.console', box), tw = $('.turtle-wrap', box);
   const runBtn = $('.run', box), checkBtn = $('.check', box);
   const value = saved !== null ? saved : starter;
@@ -1554,7 +2142,7 @@ function makeRunner(host, opts){
   let ed;
   if (window.CodeMirror){
     const cm = CodeMirror(edEl, {
-      value, mode: 'python', lineNumbers: true, indentUnit: 4, tabSize: 4, indentWithTabs: false,
+      value, mode: 'python', lineNumbers: true, readOnly: readOnly ? 'nocursor' : false, indentUnit: 4, tabSize: 4, indentWithTabs: false,
       matchBrackets: true, autoCloseBrackets: true, viewportMargin: Infinity, lineWrapping: false,
       extraKeys: {
         Tab: c => c.somethingSelected() ? c.indentSelection('add') : c.replaceSelection('    ', 'end'),
@@ -1581,20 +2169,22 @@ function makeRunner(host, opts){
   let t0;
   ed.onChange(() => { ed.clearErr(); clearTimeout(t0); t0 = setTimeout(() => LS.set('code:' + id, ed.get()), 400); });
 
-  function showMsg(kind, html){ msg.hidden = false; msg.className = 'msg ' + kind; msg.innerHTML = html; }
+  function layout(){ const empty = cons.hidden && msg.hidden; leftCol.hidden = empty; result.classList.toggle('with-turtle', !tw.hidden && !empty); }
+  function showMsg(kind, html){ msg.hidden = false; msg.className = 'msg ' + kind; msg.innerHTML = html; layout(); }
   function showRes(res, { instant = false } = {}){
     result.hidden = false;
     const text = res.display;
     cons.innerHTML = text ? esc(text) : '<span class="empty">(το πρόγραμμα δεν τύπωσε τίποτα)</span>';
     const hasTurtle = res.ops && res.ops.length > 0;
     cons.hidden = !text && (hasTurtle || !!res.err);
-    tw.hidden = !hasTurtle; result.classList.toggle('with-turtle', hasTurtle);
+    tw.hidden = !hasTurtle;
     if (hasTurtle) drawTurtle(tw, res, instant);
     if (res.err){
       const f = friendly(res.err);
       showMsg('err', `<strong>${f.title}</strong>${f.text}${f.tech ? `<span class="tech">${esc(f.tech)}</span>` : ''}`);
       ed.markErr(res.err.line);
     } else { msg.hidden = true; ed.clearErr(); }
+    layout();
   }
   async function busy(fn){
     runBtn.disabled = true; if (checkBtn) checkBtn.disabled = true;
@@ -1603,7 +2193,15 @@ function makeRunner(host, opts){
     catch (e){ console.error(e); result.hidden = false; showMsg('err', '<strong>Η Python δεν μπόρεσε να ξεκινήσει.</strong>Έλεγξε ότι έχεις internet και ανανέωσε τη σελίδα.'); }
     finally { runBtn.disabled = false; if (checkBtn) checkBtn.disabled = false; }
   }
+  function blanks(){
+    const code = ed.get().replace(/#.*$/gm, '').replace(/"[^"\n]*"|'[^'\n]*'/g, '""');
+    if (!/\.\.\./.test(code)) return false;
+    result.hidden = false; cons.hidden = true; tw.hidden = true; result.classList.remove('with-turtle');
+    showMsg('no', '<strong>Πρώτα συμπλήρωσε τις τελείες!</strong>Στη θέση των <code>...</code> πρέπει να γράψεις κάτι δικό σου. Διάβασε ξανά την άσκηση και τη «Βοήθεια».');
+    return true;
+  }
   async function run(){
+    if (blanks()) return;
     await busy(async () => {
       await new Promise(r => setTimeout(r, 20));
       const res = await runPy(ed.get(), null);
@@ -1611,6 +2209,7 @@ function makeRunner(host, opts){
     });
   }
   async function check(){
+    if (blanks()) return;
     await busy(async () => {
       const spec = CHECKS[exId];
       const ins = typeof spec.tests === 'function' ? spec.tests() : spec.tests;
@@ -1633,8 +2232,47 @@ function makeRunner(host, opts){
   }
   runBtn.addEventListener('click', run);
   if (checkBtn) checkBtn.addEventListener('click', check);
-  $('.reset', box).addEventListener('click', () => { ed.set(starter); LS.del('code:' + id); result.hidden = true; ed.clearErr(); });
+  if (!readOnly) $('.reset', box).addEventListener('click', () => { ed.set(starter); LS.del('code:' + id); result.hidden = true; ed.clearErr(); });
+  ed.box = box; ed.runBtn = runBtn;
   return ed;
+}
+
+/* ---------- «Πρόβλεψε» ---------- */
+function initPredict(el){
+  const id = el.dataset.p, ans = +el.dataset.answer;
+  const head = document.createElement('div'); head.className = 'ex-head';
+  head.innerHTML = `<span class="badge p">🤔 Πρόβλεψε</span><span class="star" aria-hidden="true">★</span>`;
+  el.prepend(head);
+  const src = $('script', el); let ed = null;
+  if (src){
+    const holder = document.createElement('div'); src.replaceWith(holder);
+    ed = makeRunner(holder, { id: 'pred-' + id, starter: dedent(src.textContent), readOnly: true });
+    ed.runBtn.disabled = true; ed.runBtn.textContent = '▶ Απάντησε πρώτα, μετά τρέξ\' το!';
+    editorsBySection.get(el.closest('section.step')).push(ed);
+  }
+  const ol = $('ol.opts', el);
+  const items = $$('li', ol).map((li, j) => {
+    const b = document.createElement('button'); b.type = 'button'; b.innerHTML = li.innerHTML;
+    li.innerHTML = ''; li.appendChild(b); return b;
+  });
+  const why = $('.why', el);
+  const whyText = why ? why.innerHTML : '';
+  function reveal(j, quiet){
+    items.forEach(b => b.classList.remove('right', 'wrong'));
+    const ok = j === ans;
+    items[j].classList.add(ok ? 'right' : 'wrong');
+    if (ok){
+      el.classList.add('answered');
+      if (why) why.innerHTML = `<strong>Σωστά!</strong> ${whyText}`;
+      if (ed){ ed.runBtn.disabled = false; ed.runBtn.textContent = '▶ Τρέξε για να το δεις'; }
+      if (!quiet && markDone(id)){ el.classList.add('pop'); setTimeout(() => el.classList.remove('pop'), 700); }
+    } else {
+      el.classList.add('answered');
+      if (why) why.innerHTML = '<strong>Όχι ακριβώς.</strong> Σκέψου ξανά και διάλεξε άλλη απάντηση!';
+    }
+  }
+  items.forEach((b, j) => b.addEventListener('click', () => reveal(j)));
+  if (done.has(id)) reveal(ans, true);
 }
 
 /* ---------- κουίζ ---------- */
@@ -1647,7 +2285,7 @@ const QUIZ = [
   { q: 'Ποιο ελέγχει αν το x είναι ίσο με 10;', a: ['x = 10', 'x == 10', 'x => 10', 'ίσο(x, 10)'], c: 1, why: 'Το == συγκρίνει. Το = βάζει τιμή σε μεταβλητή.' },
   { q: 'Για να ζωγραφίσει η χελώνα κανονικό εξάγωνο, πόσες μοίρες στρίβει κάθε φορά;', a: ['45', '60', '90', '120'], c: 1, why: '360 ÷ 6 = 60 μοίρες.' },
   { q: 'Τι κάνει το random.randint(1, 6);', a: ['Δίνει πάντα 6', 'Δίνει έναν τυχαίο ακέραιο από 1 έως 6', 'Ρίχνει 6 ζάρια', 'Δίνει τον αριθμό 1.6'], c: 1, why: 'Σαν ένα ηλεκτρονικό ζάρι!' },
-  { q: 'Πόσο κάνει 10 % 3;', a: ['3.33', '1', '3', '30'], c: 1, why: 'Το 10 διά 3 κάνει 3 και περισσεύει 1. Το % δίνει το υπόλοιπο.' },
+  { q: 'Πότε σταματάει ένα while;', a: ['Μετά από 10 γύρους', 'Όταν η συνθήκη του δεν ισχύει πια', 'Ποτέ', 'Όταν τυπώσει κάτι'], c: 1, why: 'Το while επαναλαμβάνει όσο ισχύει η συνθήκη. Μόλις πάψει να ισχύει, σταματάει.' },
   { q: 'Γιατί οι γραμμές κάτω από ένα for έχουν κενά στην αρχή;', a: ['Για να φαίνονται πιο ωραίες', 'Δείχνουν ποιες εντολές επαναλαμβάνονται', 'Για να τρέχει πιο γρήγορα', 'Δεν χρειάζονται, είναι προαιρετικά'], c: 1, why: 'Η εσοχή δείχνει στην Python ποιες γραμμές ανήκουν μέσα στην επανάληψη.' }
 ];
 function renderQuiz(){
@@ -1684,10 +2322,10 @@ function renderDiploma(){
   if (left === 0){
     const n = userName();
     d.innerHTML = `<div class="diploma"><div class="big">🏆</div><h2>Συγχαρητήρια${n ? ', ' + esc(n) : ''}!</h2>
-      <p>Μάζεψες και τα ${all.length} αστέρια. Πλέον ξέρεις print, input, μεταβλητές, αριθμούς, τη χελώνα, for, if, while και random.</p>
+      <p>Μάζεψες και τα ${all.length} αστέρια. Πλέον ξέρεις print, τη χελώνα, for, μεταβλητές, input, int, if, random, λίστες και while.</p>
       <p><strong>Είσαι επίσημα προγραμματιστής Python!</strong> Πήγαινε στο «Το εργαστήρι σου» και φτιάξε ό,τι φανταστείς.</p></div>`;
   } else {
-    d.innerHTML = `<div class="callout fun"><span class="tag">Το δίπλωμά σου</span><p>Σου μένουν <strong>${left}</strong> αστέρια για να πάρεις το δίπλωμα του προγραμματιστή. Κοίτα στο μενού ποια βήματα δεν έχουν ακόμα όλα τα αστέρια.</p></div>`;
+    d.innerHTML = `<div class="callout fun"><span class="tag">Το δίπλωμά σου</span><p>Σου μένουν <strong>${left}</strong> αστέρια για να πάρεις το δίπλωμα του προγραμματιστή. Κοίτα στο μενού ποια μαθήματα δεν έχουν ακόμα όλα τα αστέρια.</p></div>`;
   }
 }
 
@@ -1740,12 +2378,13 @@ function init(){
   $$('.ex').forEach((el, k) => {
     const src = $('script.starter', el); const starter = dedent(src.textContent);
     const head = document.createElement('div'); head.className = 'ex-head';
-    head.innerHTML = `<span class="badge">Άσκηση ${k + 1}</span><h3>${esc(el.dataset.title)}</h3><span class="star" aria-hidden="true">★</span>`;
+    head.innerHTML = `<span class="badge">Άσκηση ${k + 1}</span><h3>${esc(el.dataset.title)}</h3>${el.dataset.kind ? `<span class="kind">${esc(el.dataset.kind)}</span>` : ''}<span class="star" aria-hidden="true">★</span>`;
     el.prepend(head);
     const holder = document.createElement('div'); src.replaceWith(holder);
     const ed = makeRunner(holder, { id: el.dataset.ex, starter, exId: el.dataset.ex });
     editorsBySection.get(el.closest('section.step')).push(ed);
   });
+  $$('.predict').forEach(initPredict);
   buildNav();
   renderQuiz();
   renderName();
